@@ -1,19 +1,25 @@
+import { darkTheme, lightTheme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, useColorScheme } from 'react-native';
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme();
   return (
     <Tabs
       screenOptions={{
         tabBarButton: (props) => <Pressable {...props} android_ripple={{ color: 'transparent' }} />,
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: colorScheme == 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
         tabBarStyle: { height: 70 },
         tabBarIconStyle: { height: 40 },
-        headerShown: false,
+        headerShadowVisible: false,
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: colorScheme == 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
+        },
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: ({ color }) => <Ionicons size={32} name="home" color={color} /> }} />
+      <Tabs.Screen name="index" options={{ title: 'AI Assistant', tabBarIcon: ({ color }) => <Ionicons size={32} name="home" color={color} /> }} />
 
       <Tabs.Screen name="chat" options={{ title: 'Chat', tabBarIcon: ({ color }) => <Ionicons size={32} name="chatbubble" color={color} /> }} />
 
