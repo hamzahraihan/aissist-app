@@ -1,4 +1,4 @@
-import { useTheme } from '@/context/useTheme';
+import { useTheme } from '@/hooks/useTheme';
 import { View, type ViewProps } from 'react-native';
 
 export type CardProps = ViewProps & {
