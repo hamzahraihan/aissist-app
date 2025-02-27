@@ -1,5 +1,5 @@
 import { fonts } from '@/constants/theme';
-import { useTheme } from '@/context/useTheme';
+import { useTheme } from '@/hooks/useTheme';
 import { StyleSheet, Text, TextProps } from 'react-native';
 
 export type ThemedTextProps = TextProps & {
