@@ -4,6 +4,7 @@ import { CustomTextInput } from '@/components/TextInput';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { openAiService } from '@/services/openai';
+import { Ionicons } from '@expo/vector-icons';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -72,11 +73,6 @@ export default function ChatScreen() {
               <Card style={styles.card}>
                 <Text>HALLO</Text>
               </Card>
-              <CustomTextInput style={styles.textInput} onChangeText={setInput} value={input} placeholder="How can I help you today?" />
-
-              <CustomButton style={styles.button} onPress={() => generateTextFromOpenAI()}>
-                <ThemedText>Generate</ThemedText>
-              </CustomButton>
             </>
           ) : (
             <>
@@ -85,13 +81,15 @@ export default function ChatScreen() {
                   <ThemedText>{item.content?.toString()}</ThemedText>
                 </View>
               ))}
-              <CustomTextInput style={styles.textInput} onChangeText={setInput} value={input} placeholder="How can I help you today?" />
-
-              <CustomButton style={styles.button} onPress={() => generateTextFromOpenAI()}>
-                <ThemedText>Generate</ThemedText>
-              </CustomButton>
             </>
           )}
+          <View style={styles.inputContainer}>
+            <CustomTextInput style={styles.textInput} onChangeText={setInput} value={input} placeholder="How can I help you today?" />
+
+            <CustomButton style={styles.button} onPress={() => generateTextFromOpenAI()}>
+              <Ionicons name="send" color="white" />
+            </CustomButton>
+          </View>
         </View>
       </ScrollView>
     </ThemedView>
@@ -104,8 +102,11 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   container: { flex: 1, display: 'flex', justifyContent: 'space-evenly', gap: 10 },
+  inputContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 },
   textInput: {
-    borderWidth: 1,
+    flex: 1,
+    borderWidth: 2,
+    borderRadius: 12,
     height: 40,
     padding: 12,
   },
@@ -114,6 +115,9 @@ const styles = StyleSheet.create({
     height: 100,
   },
   button: {
-    borderRadius: 12,
+    padding: 10,
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    right: 0,
   },
 });
