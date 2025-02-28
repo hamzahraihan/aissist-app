@@ -1,19 +1,21 @@
+import { AIResponse } from '@/components/AIResponse';
 import { CustomButton } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { CustomTextInput } from '@/components/TextInput';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useState } from 'react';
-import { Image, StyleSheet, useColorScheme, View } from 'react-native';
+import { StyleSheet, useColorScheme, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-
-const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import Markdown from 'react-native-markdown-display';
 
 export default function ChatScreen() {
   const colorScheme = useColorScheme();
+
   const [inputHeight, setInputHeight] = useState<number>(0);
 
   const { generateTextFromOpenAI, setInput, input, loading, openAiMessages } = useGenerateOpenaiChat();
@@ -22,7 +24,7 @@ export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        {openAiMessages.length == 0 ? (
+        {openAiMessages?.length == 0 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
@@ -46,11 +48,11 @@ export default function ChatScreen() {
           </View>
         ) : (
           <>
-            {openAiMessages.map((item, index) => (
-              <View style={[item.role == 'assistant' ? styles.assistantChat : styles.userChat, { padding: 18 }]} key={index}>
+            {openAiMessages.map((item: any, index) => (
+              <ThemedView type={item.role} style={{ padding: 18 }} key={index}>
                 {item.role == 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
-                <ThemedText>{item.content?.toString()}</ThemedText>
-              </View>
+                <AIResponse>{item.content}</AIResponse>
+              </ThemedView>
             ))}
           </>
         )}
@@ -110,12 +112,7 @@ const styles = StyleSheet.create({
     right: 12,
     top: 15,
   },
-  assistantChat: {
-    backgroundColor: 'whitesmoke',
-  },
-  userChat: {
-    backgroundColor: 'white',
-  },
+
   image: {
     flex: 1,
     height: 42,
