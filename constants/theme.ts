@@ -19,6 +19,7 @@ const fonts = {
   boldFont: 'Poppins_700Bold',
   extraBold: 'Poppins_800ExtraBold',
   blackFont: 'Poppins_900Black',
+  italicFont: 'Poppins_400Regular_Italic',
 };
 
 const lightTheme = {
