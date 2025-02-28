@@ -5,9 +5,12 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { Ionicons } from '@expo/vector-icons';
+
 import { useState } from 'react';
-import { StyleSheet, useColorScheme, View } from 'react-native';
+import { Image, StyleSheet, useColorScheme, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
+const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 export default function ChatScreen() {
   const colorScheme = useColorScheme();
@@ -19,39 +22,39 @@ export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        <View style={{ padding: 18 }}>
-          {openAiMessages.length == 0 ? (
-            <>
-              <ThemedText style={styles.textHeading} type="defaultSemiBold">
-                Hi!
-              </ThemedText>
+        {openAiMessages.length == 0 ? (
+          <View style={{ padding: 18 }}>
+            <ThemedText style={styles.textHeading} type="defaultSemiBold">
+              Hi!
+            </ThemedText>
 
-              <Card style={styles.card}>
-                <ThemedText style={{ textAlign: 'center' }}>Remembers what user said earlier in the conversation</ThemedText>
-              </Card>
+            <Card style={styles.card}>
+              <ThemedText style={{ textAlign: 'center' }}>Remembers what user said earlier in the conversation</ThemedText>
+            </Card>
 
-              <Card style={styles.card}>
-                <ThemedText style={{ textAlign: 'center' }}>Allows user to provide. follow-up corrections With Ai</ThemedText>
-              </Card>
+            <Card style={styles.card}>
+              <ThemedText style={{ textAlign: 'center' }}>Allows user to provide. follow-up corrections With Ai</ThemedText>
+            </Card>
 
-              <Card style={styles.card}>
-                <ThemedText style={{ textAlign: 'center' }}>Limited knowledge of world and events after 2021</ThemedText>
-              </Card>
+            <Card style={styles.card}>
+              <ThemedText style={{ textAlign: 'center' }}>Limited knowledge of world and events after 2021</ThemedText>
+            </Card>
 
-              <Card style={styles.card}>
-                <ThemedText style={{ textAlign: 'center' }}>May occasionally generate incorrect information</ThemedText>
-              </Card>
-            </>
-          ) : (
-            <>
-              {openAiMessages.map((item, index) => (
-                <View key={index}>
-                  <ThemedText>{item.content?.toString()}</ThemedText>
-                </View>
-              ))}
-            </>
-          )}
-        </View>
+            <Card style={styles.card}>
+              <ThemedText style={{ textAlign: 'center' }}>May occasionally generate incorrect information</ThemedText>
+            </Card>
+          </View>
+        ) : (
+          <>
+            {openAiMessages.map((item, index) => (
+              <View style={[item.role == 'assistant' ? styles.assistantChat : styles.userChat, { padding: 18 }]} key={index}>
+                {item.role == 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
+                <ThemedText>{item.content?.toString()}</ThemedText>
+              </View>
+            ))}
+          </>
+        )}
+
         {loading && <Ionicons name="logo-android" color={colorScheme == 'light' ? 'dark' : 'white'} size={20} />}
       </ScrollView>
       <View style={styles.inputContainer}>
@@ -69,6 +72,8 @@ const styles = StyleSheet.create({
   textHeading: {
     textAlign: 'center',
     fontSize: 50,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   container: {
     flex: 1,
@@ -104,5 +109,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     right: 12,
     top: 15,
+  },
+  assistantChat: {
+    backgroundColor: 'whitesmoke',
+  },
+  userChat: {
+    backgroundColor: 'white',
+  },
+  image: {
+    flex: 1,
+    height: 42,
+    width: 42,
   },
 });
