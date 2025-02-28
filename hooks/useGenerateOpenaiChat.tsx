@@ -5,7 +5,7 @@ export const useGenerateOpenaiChat = () => {
   const openAiContext = useContext(OpenaiContext);
 
   if (!openAiContext) {
-    throw new Error('useCurrentUser has to be used within <CurrentUserContext.Provider>');
+    throw new Error('useGenerateOpenaiChat has to be used within <OpenaiContext.Provider>');
   }
 
   return openAiContext;
