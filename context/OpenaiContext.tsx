@@ -18,10 +18,11 @@ export const OpenaiContext = createContext<{
 
 export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
-
+  const [loading, setLoading] = useState<boolean>(false);
+  console.log('Loading state from openai context', loading);
   // set messages for ai
   const [openAiMessages, setOpenAiMessages] = useState<ChatCompletionMessageParam[]>([]);
+  console.log('🚀 ~ OpenaiProvider ~ openAiMessages:', openAiMessages);
 
   const generateTextFromOpenAI = async (): Promise<void> => {
     setLoading(true);
