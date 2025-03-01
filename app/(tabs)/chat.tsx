@@ -4,14 +4,11 @@ import { Card } from '@/components/Card';
 import { CustomTextInput } from '@/components/TextInput';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { Ionicons } from '@expo/vector-icons';
-
 import { useState } from 'react';
 import { StyleSheet, useColorScheme, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Markdown from 'react-native-markdown-display';
 
 export default function ChatScreen() {
   const colorScheme = useColorScheme();
@@ -50,6 +47,7 @@ export default function ChatScreen() {
           <>
             {openAiMessages.map((item: any, index) => (
               <ThemedView type={item.role} style={{ padding: 18 }} key={index}>
+                {item.role == 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
                 {item.role == 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
                 <AIResponse>{item.content}</AIResponse>
               </ThemedView>
