@@ -7,8 +7,15 @@ import { ThemedView } from '@/components/ThemedView';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { StyleSheet, useColorScheme, View, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, useColorScheme, View, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
+const promptList: { prompt: string }[] = [
+  { prompt: 'If you could instantly master any skill, but only use it for one day each year, what skill would you choose and why?' },
+  { prompt: 'Imagine you wake up tomorrow with the ability to speak and understand one secret language (could be an ancient, lost, or even an alien language). Which one would you choose?' },
+  { prompt: 'You get to have dinner with one historical figure, one fictional character, and one person from your life. Who are they, and what’s the topic of conversation?' },
+  { prompt: 'If schools could teach one subject that isn’t currently part of the standard curriculum, what do you think it should be and why?' },
+];
 
 export default function ChatScreen() {
   const colorScheme = useColorScheme();
@@ -26,24 +33,13 @@ export default function ChatScreen() {
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
             </ThemedText>
-
-            <TouchableHighlight>
-              <Card style={styles.card}>
-                <ThemedText style={{ textAlign: 'center' }}>Remembers what user said earlier in the conversation</ThemedText>
-              </Card>
-            </TouchableHighlight>
-
-            <Card style={styles.card}>
-              <ThemedText style={{ textAlign: 'center' }}>Allows user to provide. follow-up corrections With Ai</ThemedText>
-            </Card>
-
-            <Card style={styles.card}>
-              <ThemedText style={{ textAlign: 'center' }}>Limited knowledge of world and events after 2021</ThemedText>
-            </Card>
-
-            <Card style={styles.card}>
-              <ThemedText style={{ textAlign: 'center' }}>May occasionally generate incorrect information</ThemedText>
-            </Card>
+            {promptList.map((item, index) => (
+              <TouchableOpacity key={index} onPress={() => setInput(item.prompt)}>
+                <Card style={styles.card}>
+                  <ThemedText style={{ textAlign: 'center' }}>{item.prompt}</ThemedText>
+                </Card>
+              </TouchableOpacity>
+            ))}
           </View>
         ) : (
           <>
