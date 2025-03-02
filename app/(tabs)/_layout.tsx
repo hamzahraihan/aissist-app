@@ -9,13 +9,13 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarButton: (props) => <Pressable {...props} android_ripple={{ color: 'transparent' }} />,
-        tabBarActiveTintColor: colorScheme == 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
+        tabBarActiveTintColor: colorScheme === 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
         tabBarStyle: { height: 70 },
         tabBarIconStyle: { height: 40 },
         headerShadowVisible: false,
         headerTitleAlign: 'center',
         headerStyle: {
-          backgroundColor: colorScheme == 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
+          backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
         },
       }}
     >
