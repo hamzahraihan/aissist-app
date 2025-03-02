@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { StyleSheet, useColorScheme, View, Image } from 'react-native';
+import { StyleSheet, useColorScheme, View, Image, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ChatScreen() {
@@ -21,15 +21,17 @@ export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        {openAiMessages?.length == 0 ? (
+        {openAiMessages?.length === 0 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
             </ThemedText>
 
-            <Card style={styles.card}>
-              <ThemedText style={{ textAlign: 'center' }}>Remembers what user said earlier in the conversation</ThemedText>
-            </Card>
+            <TouchableHighlight>
+              <Card style={styles.card}>
+                <ThemedText style={{ textAlign: 'center' }}>Remembers what user said earlier in the conversation</ThemedText>
+              </Card>
+            </TouchableHighlight>
 
             <Card style={styles.card}>
               <ThemedText style={{ textAlign: 'center' }}>Allows user to provide. follow-up corrections With Ai</ThemedText>
@@ -47,21 +49,21 @@ export default function ChatScreen() {
           <>
             {openAiMessages.map((item: any, index) => (
               <ThemedView type={item.role} style={{ padding: 18 }} key={index}>
-                {item.role == 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
-                {item.role == 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
+                {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
+                {item.role === 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
                 <AIResponse>{item.content}</AIResponse>
               </ThemedView>
             ))}
           </>
         )}
 
-        {loading && <Ionicons name="logo-android" color={colorScheme == 'light' ? 'dark' : 'white'} size={20} />}
+        {loading && <Ionicons name="logo-android" color={colorScheme === 'light' ? 'dark' : 'white'} size={20} />}
       </ScrollView>
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
         <CustomButton style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextFromOpenAI()}>
-          <Ionicons name="send" color={colorScheme == 'light' ? 'dark' : 'white'} size={18} />
+          <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
     </ThemedView>
