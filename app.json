@@ -36,7 +36,8 @@
             "node_modules/@expo-google-fonts/poppins/Poppins_600SemiBold.ttf",
             "node_modules/@expo-google-fonts/poppins/Poppins_700Bold.ttf",
             "node_modules/@expo-google-fonts/poppins/Poppins_800ExtraBold.ttf",
-            "node_modules/@expo-google-fonts/poppins/Poppins_900Black.ttf"
+            "node_modules/@expo-google-fonts/poppins/Poppins_900Black.ttf",
+            "node_modules/@expo-google-fonts/poppins/Poppins_400Regular_Italic.ttf"
           ]
         }
       ],
