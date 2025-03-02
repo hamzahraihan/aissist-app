@@ -11,5 +11,5 @@ export function CustomTextInput({ style, lightColor, darkColor, ...props }: Them
 
   const placeholderTextColor = useTheme({ light: lightColor, dark: darkColor }, 'placeholderTextColor');
 
-  return <TextInput style={[{ color: placeholderTextColor, borderColor }, style]} placeholderTextColor={placeholderTextColor} {...props} />;
+  return <TextInput style={[{ borderColor }, style]} placeholderTextColor={placeholderTextColor} {...props} />;
 }
