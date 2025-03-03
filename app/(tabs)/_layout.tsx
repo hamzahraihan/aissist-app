@@ -1,5 +1,5 @@
 import { darkTheme, lightTheme } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 
@@ -14,6 +14,8 @@ export default function TabLayout() {
         tabBarIconStyle: { height: 40 },
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        headerLeftContainerStyle: { padding: 10 },
+        headerRightContainerStyle: { padding: 10 },
         headerStyle: {
           backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
         },
@@ -21,7 +23,23 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" options={{ title: 'AI Assistant', tabBarIcon: ({ color }) => <Ionicons size={32} name="home" color={color} /> }} />
 
-      <Tabs.Screen name="chat" options={{ title: 'Chat', tabBarIcon: ({ color }) => <Ionicons size={32} name="chatbubble" color={color} /> }} />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: 'Chat',
+          tabBarIcon: ({ color }) => <Ionicons size={32} name="chatbubble" color={color} />,
+          headerLeft: (props) => (
+            <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
+              <MaterialIcons selectionColor="black" size={32} name="menu" color={props.tintColor} />
+            </Pressable>
+          ),
+          headerRight: (props) => (
+            <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
+              <MaterialIcons selectionColor="black" size={32} name="edit-note" color={props.tintColor} />
+            </Pressable>
+          ),
+        }}
+      />
 
       <Tabs.Screen name="images" options={{ title: 'Images', tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} /> }} />
 
