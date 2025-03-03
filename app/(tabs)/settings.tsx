@@ -22,10 +22,10 @@ export default function SettingsScreen() {
     <ThemedView style={styles.container}>
       <View style={[styles.flexRow, { margin: 10 }]}>
         <View style={[styles.flexRow, { gap: 10 }]}>
-          <Ionicons name="brush" color={colorScheme == 'light' ? 'black' : 'white'} size={22} />
+          <Ionicons name="brush" color={colorScheme === 'light' ? 'black' : 'white'} size={22} />
           <ThemedText>Dark mode</ThemedText>
         </View>
-        <CustomSwitch onValueChange={toggleSwitch} value={colorScheme == 'light' ? false : true} isEnabled />
+        <CustomSwitch onValueChange={toggleSwitch} value={colorScheme === 'light' ? false : true} isEnabled />
       </View>
     </ThemedView>
   );
