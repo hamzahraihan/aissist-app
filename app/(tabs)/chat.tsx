@@ -54,9 +54,15 @@ export default function ChatScreen() {
           </>
         )}
 
-        {loading && <Ionicons name="logo-android" color={colorScheme === 'light' ? 'dark' : 'white'} size={20} />}
+        {loading && (
+          <ThemedView type="assistant" style={{ padding: 24, display: 'flex', gap: 8 }}>
+            {Array.from({ length: 4 }, () => (
+              <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
+            ))}
+          </ThemedView>
+        )}
       </ScrollView>
-      <Skeleton colorMode={colorScheme} radius="round" height={75} width={75} />
+
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
