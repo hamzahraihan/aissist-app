@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { StyleSheet, useColorScheme, View, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Skeleton } from 'moti/skeleton';
 
 const promptList: { prompt: string }[] = [
   { prompt: 'If you could instantly master any skill, but only use it for one day each year, what skill would you choose and why?' },
@@ -18,7 +19,7 @@ const promptList: { prompt: string }[] = [
 ];
 
 export default function ChatScreen() {
-  const colorScheme = useColorScheme();
+  const colorScheme: any = useColorScheme();
 
   const [inputHeight, setInputHeight] = useState<number>(0);
 
@@ -55,6 +56,7 @@ export default function ChatScreen() {
 
         {loading && <Ionicons name="logo-android" color={colorScheme === 'light' ? 'dark' : 'white'} size={20} />}
       </ScrollView>
+      <Skeleton colorMode={colorScheme} radius="round" height={75} width={75} />
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
