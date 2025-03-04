@@ -1,5 +1,5 @@
 import { darkTheme, lightTheme } from '@/constants/theme';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
 
@@ -26,18 +26,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="chat"
         options={{
+          headerShown: false,
           title: 'Chat',
           tabBarIcon: ({ color }) => <Ionicons size={32} name="chatbubble" color={color} />,
-          headerLeft: (props) => (
-            <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
-              <MaterialIcons selectionColor="black" size={32} name="menu" color={props.tintColor} />
-            </Pressable>
-          ),
-          headerRight: (props) => (
-            <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
-              <MaterialIcons selectionColor="black" size={32} name="edit-note" color={props.tintColor} />
-            </Pressable>
-          ),
+          // headerRight: (props) => (
+          //   <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
+          //     <MaterialIcons selectionColor="black" size={32} name="edit-note" color={props.tintColor} />
+          //   </Pressable>
+          // ),
         }}
       />
 
