@@ -26,18 +26,17 @@ export default function ChatScreen() {
   const [inputHeight, setInputHeight] = useState<number>(0);
 
   const { generateTextFromOpenAI, setInput, input, loading, openAiMessages } = useGenerateOpenaiChat();
-  console.log('🚀 ~ ChatScreen ~ loading:', loading);
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        {openAiMessages?.length === 0 ? (
+        {openAiMessages?.message?.length === 0 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
             </ThemedText>
-            {promptList.map((item, index) => (
-              <TouchableOpacity key={index} onPress={() => setInput(item.prompt)}>
+            {promptList.map((item) => (
+              <TouchableOpacity key={item.prompt} onPress={() => setInput(item.prompt)}>
                 <Card style={styles.card}>
                   <ThemedText style={{ textAlign: 'center' }}>{item.prompt}</ThemedText>
                 </Card>
@@ -46,8 +45,8 @@ export default function ChatScreen() {
           </View>
         ) : (
           <>
-            {openAiMessages.map((item: any, index) => (
-              <ThemedView type={item.role} style={{ padding: 18 }} key={index}>
+            {openAiMessages?.message?.map((item) => (
+              <ThemedView type={item.role} style={{ padding: 18 }} key={item.content?.toString()}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
                 {item.role === 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
                 <AIResponse>{item.content}</AIResponse>
