@@ -1,13 +1,12 @@
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
-import { ReactNode } from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import Markdown, { MarkdownProps } from 'react-native-markdown-display';
 
 export type AIResponseProps = MarkdownProps & {
   lightColor?: string;
   darkColor?: string;
-  children: ReactNode;
+  children: any;
 };
 
 export function AIResponse({ style, lightColor, darkColor, ...props }: AIResponseProps) {
