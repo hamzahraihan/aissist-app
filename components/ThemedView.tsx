@@ -4,7 +4,7 @@ import { StyleSheet, View, type ViewProps } from 'react-native';
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'developer' | 'assistant' | 'user';
+  type?: 'function' | 'developer' | 'assistant' | 'user' | 'system' | 'tool';
 };
 
 export function ThemedView({ style, lightColor, darkColor, type = 'user', ...props }: ThemedViewProps) {
