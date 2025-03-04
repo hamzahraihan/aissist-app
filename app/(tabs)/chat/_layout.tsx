@@ -2,8 +2,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import { useColorScheme } from 'react-native';
+import { Pressable, useColorScheme } from 'react-native';
 import { darkTheme, lightTheme } from '@/constants/theme';
+import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 
 function CustomDrawerContent(props: any) {
   return (
@@ -15,6 +16,7 @@ function CustomDrawerContent(props: any) {
 }
 
 export default function ChatLayout() {
+  const { saveChatHistory } = useGenerateOpenaiChat();
   const colorScheme = useColorScheme();
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -22,7 +24,11 @@ export default function ChatLayout() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
         screenOptions={{
           drawerType: 'back',
-          headerRight: (props) => <MaterialIcons color={props.tintColor} name="edit-note" size={28} />,
+          headerRight: (props) => (
+            <Pressable onPress={saveChatHistory}>
+              <MaterialIcons color={props.tintColor} name="edit-note" size={28} />
+            </Pressable>
+          ),
           headerRightContainerStyle: { padding: 10 },
           headerStyle: {
             backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
