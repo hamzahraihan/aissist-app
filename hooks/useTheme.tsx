@@ -8,6 +8,6 @@ export function useTheme(props: { light?: string; dark?: string }, colorName: ke
   if (colorFromProps) {
     return colorFromProps;
   } else {
-    return theme == 'light' ? lightTheme[colorName] : darkTheme[colorName];
+    return theme === 'light' ? lightTheme[colorName] : darkTheme[colorName];
   }
 }
