@@ -1,6 +1,6 @@
 import { openAiService } from '@/services/openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-import { createContext, type Dispatch, ReactNode, useState } from 'react';
+import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
 
 export type ChatMessageProps = {
@@ -15,6 +15,7 @@ export const OpenaiContext = createContext<{
   setInput: Dispatch<React.SetStateAction<string>>;
   input: string;
   openAiMessages: ChatMessageProps;
+  setOpenAiMessages: Dispatch<React.SetStateAction<ChatMessageProps>>;
   chatHistory: ChatMessageProps[];
   setChatHistory: Dispatch<React.SetStateAction<ChatMessageProps[]>>;
   saveChatHistory: () => void;
@@ -24,6 +25,7 @@ export const OpenaiContext = createContext<{
   input: '',
   setInput: () => {},
   openAiMessages: { uuid: '', message: [], createdAt: new Date().toLocaleString() },
+  setOpenAiMessages: () => {},
   chatHistory: [],
   setChatHistory: () => {},
   saveChatHistory: () => {},
@@ -51,7 +53,7 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
     createdAt: formatDate(date),
     message: [],
   });
-  const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([{ uuid: '', message: [], createdAt: formatDate(date) }]);
+  const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
   console.log(chatHistory);
   console.log('🚀 ~ OpenaiProvider ~ openAiMessages:', openAiMessages);
 
@@ -97,5 +99,5 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
     setOpenAiMessages({ uuid: '', createdAt: formatDate(date), message: [] });
   };
 
-  return <OpenaiContext.Provider value={{ generateTextFromOpenAI, loading, setInput, input, openAiMessages, saveChatHistory, chatHistory, setChatHistory }}>{children}</OpenaiContext.Provider>;
+  return <OpenaiContext.Provider value={{ generateTextFromOpenAI, loading, setInput, input, openAiMessages, setOpenAiMessages, saveChatHistory, chatHistory, setChatHistory }}>{children}</OpenaiContext.Provider>;
 };
