@@ -2,19 +2,22 @@ import { CustomSwitch } from '@/components/Switch';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Appearance, StyleSheet, useColorScheme, View } from 'react-native';
 
 export default function SettingsScreen() {
-  const [isEnabled, setIsEnabled] = useState<boolean>();
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const colorScheme = useColorScheme();
 
-  const toggleSwitch = () => {
+  useEffect(() => {
     if (isEnabled) {
       Appearance.setColorScheme('light');
     } else {
       Appearance.setColorScheme('dark');
     }
+  }, [isEnabled]);
+
+  const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState);
   };
 
@@ -25,7 +28,7 @@ export default function SettingsScreen() {
           <Ionicons name="brush" color={colorScheme === 'light' ? 'black' : 'white'} size={22} />
           <ThemedText>Dark mode</ThemedText>
         </View>
-        <CustomSwitch onValueChange={toggleSwitch} value={colorScheme === 'light' ? false : true} isEnabled />
+        <CustomSwitch onValueChange={toggleSwitch} value={!isEnabled} isEnabled />
       </View>
     </ThemedView>
   );
