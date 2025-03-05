@@ -57,9 +57,10 @@ export default function ChatScreen() {
 
         {loading && (
           <ThemedView type="assistant" style={{ padding: 24, display: 'flex', gap: 8 }}>
-            {Array.from({ length: 4 }, () => (
-              <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
-            ))}
+            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
           </ThemedView>
         )}
       </ScrollView>
