@@ -5,12 +5,20 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navi
 import { Pressable, useColorScheme } from 'react-native';
 import { darkTheme, lightTheme } from '@/constants/theme';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
+import { ThemedText } from '@/components/ThemedText';
 
 function CustomDrawerContent(props: any) {
+  const { chatHistory, setOpenAiMessages } = useGenerateOpenaiChat();
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem style={{ padding: 10, backgroundColor: 'black' }} label="Help" onPress={() => {}} />
+
+      {chatHistory.length === 0 ? (
+        <ThemedText>You haven't create </ThemedText>
+      ) : (
+        chatHistory.map((item: any) => <DrawerItem key={item.uuid} style={{ padding: 10 }} label={item.message[0]?.content} onPress={() => setOpenAiMessages(item)} />)
+      )}
     </DrawerContentScrollView>
   );
 }
@@ -42,15 +50,6 @@ export default function ChatLayout() {
             title: 'Chat',
             headerShadowVisible: false,
             headerTitleAlign: 'center',
-          }}
-        />
-        <DrawerItem label="Help" onPress={() => {}} />
-
-        <Drawer.Screen
-          name="user/[id]" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: 'User',
-            title: 'overview',
           }}
         />
       </Drawer>
