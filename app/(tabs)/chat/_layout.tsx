@@ -1,23 +1,44 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import { Pressable, useColorScheme } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { darkTheme, lightTheme } from '@/constants/theme';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { ThemedText } from '@/components/ThemedText';
+import { ChatMessageProps } from '@/context/OpenaiContext';
 
 function CustomDrawerContent(props: any) {
   const { chatHistory, setOpenAiMessages } = useGenerateOpenaiChat();
 
+  const groupedChatHistory = chatHistory.reduce<Record<string, ChatMessageProps[]>>((acc, item) => {
+    if (!acc[item.createdAt]) {
+      acc[item.createdAt] = [];
+    }
+    acc[item.createdAt].push(item);
+    return acc;
+  }, {});
+
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-
       {chatHistory.length === 0 ? (
-        <ThemedText>You haven't create </ThemedText>
+        <ThemedText>You haven't create any chats yet!</ThemedText>
       ) : (
-        chatHistory.map((item: any) => <DrawerItem key={item.uuid} style={{ padding: 10 }} label={item.message[0]?.content} onPress={() => setOpenAiMessages(item)} />)
+        Object.entries(groupedChatHistory).map(([date, message]) => (
+          <>
+            <ThemedText>{date}</ThemedText>
+            {message.map((item: any) => (
+              <DrawerItem
+                key={item.uuid}
+                style={styles.container}
+                label={item.message[0]?.content?.toString()}
+                onPress={() => {
+                  setOpenAiMessages(item);
+                }}
+              />
+            ))}
+          </>
+        ))
       )}
     </DrawerContentScrollView>
   );
@@ -38,21 +59,18 @@ export default function ChatLayout() {
             </Pressable>
           ),
           headerRightContainerStyle: { padding: 10 },
+          headerTitle: 'Chat',
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
           headerStyle: {
             backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
           },
         }}
-      >
-        <Drawer.Screen
-          name="index" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: 'Home',
-            title: 'Chat',
-            headerShadowVisible: false,
-            headerTitleAlign: 'center',
-          }}
-        />
-      </Drawer>
+      />
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {},
+});
