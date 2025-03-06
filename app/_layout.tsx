@@ -20,6 +20,7 @@ import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
+import { FalaiProvider } from '@/context/GenerateImageContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -52,12 +53,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView>
       <OpenaiProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <FalaiProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" />
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </FalaiProvider>
       </OpenaiProvider>
     </GestureHandlerRootView>
   );
