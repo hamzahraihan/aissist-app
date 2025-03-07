@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regularFont,
   },
   subtitle: {
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: fonts.regularFont,
   },
   link: {
