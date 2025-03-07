@@ -1,6 +1,6 @@
 import { fal } from '@fal-ai/client';
 
-export async function generateImageFalAI(prompt: string = 'Photo of a rhino dressed suit and tie sitting at a table in a bar with a bar stools, award winning photography, Elke vogelsang') {
+export async function generateImageFalAI(prompt: string) {
   console.log('pressed');
   try {
     fal.config({
