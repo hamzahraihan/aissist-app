@@ -29,7 +29,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const generateImageUsingAi = async () => {
+  const generateImageUsingAi = async (input: string) => {
     setLoading(true);
     try {
       const { data, requestId } = await generateImageFalAI(input);
