@@ -77,17 +77,17 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  textHeading: {
-    textAlign: 'center',
-    fontSize: 50,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
   container: {
     flex: 1,
     display: 'flex',
     justifyContent: 'space-between',
     gap: 10,
+  },
+  textHeading: {
+    textAlign: 'center',
+    fontSize: 50,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   inputContainer: {
     position: 'relative',
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     right: 12,
     top: 15,
   },
-
   image: {
     flex: 1,
     height: 42,
