@@ -1,4 +1,4 @@
-import { openAiService } from '@/services/openai';
+import { openAiMessageService } from '@/services/openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
@@ -54,7 +54,8 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
     message: [],
   });
   const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
-  console.log(chatHistory);
+  console.log('🚀 ~ OpenaiProvider ~ chatHistory:', chatHistory);
+
   console.log('🚀 ~ OpenaiProvider ~ openAiMessages:', openAiMessages);
 
   const generateTextFromOpenAI = async (): Promise<void> => {
@@ -74,7 +75,7 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
       setInput(''); // Clear input field
 
       // Get response from OpenAI
-      const responseText = await openAiService([...openAiMessages.message, { role: 'user', content: input.trim() }]);
+      const responseText = await openAiMessageService([...openAiMessages.message, { role: 'user', content: input.trim() }]);
 
       if (!responseText) {
         console.warn('No response received from OpenAI.');
@@ -94,7 +95,18 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const saveChatHistory = () => {
-    setChatHistory((prev) => [...prev, { uuid: openAiMessages.uuid, createdAt: formatDate(date), message: openAiMessages.message }]);
+    if (!openAiMessages.uuid) {
+      return;
+    }
+
+    // update an existing messages from an existing chat history
+    setChatHistory((prev) => {
+      const existingChat = prev.find((item) => item.uuid === openAiMessages.uuid);
+      if (existingChat) {
+        return prev.map((item) => (item.uuid === openAiMessages.uuid ? { ...item, createdAt: formatDate(date), message: [...openAiMessages.message] } : item));
+      }
+      return [...prev, { uuid: openAiMessages.uuid, createdAt: openAiMessages.createdAt, message: openAiMessages.message }];
+    });
 
     setOpenAiMessages({ uuid: '', createdAt: formatDate(date), message: [] });
   };
