@@ -3,7 +3,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 
 const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, maxRetries: 3, timeout: 60 * 1000 });
 
-export async function openAiService(messages: ChatCompletionMessageParam[]) {
+export async function openAiMessageService(messages: ChatCompletionMessageParam[]) {
   // try {
   //   const response = await fetch('https://api.openai.com/v1/chat/completions', {
   //     method: 'POST',
@@ -72,5 +72,14 @@ export async function openAiService(messages: ChatCompletionMessageParam[]) {
     return completion.choices[0]?.message?.content || '';
   } catch (error) {
     console.error('OpenAI API Error:', error);
+  }
+}
+
+export async function openAiGenerateImage(prompt: string) {
+  try {
+    const result = await openai.images.generate({ model: 'dall-e-2', prompt });
+    return result;
+  } catch (error) {
+    throw new Error(error as any);
   }
 }
