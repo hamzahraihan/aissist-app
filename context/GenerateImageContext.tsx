@@ -1,39 +1,72 @@
 import { generateImageFalAI } from '@/services/fal-ai';
-import { FluxDevOutput } from '@fal-ai/client/endpoints';
+import { openAiGenerateImage } from '@/services/openai';
+import { Image } from '@fal-ai/client/endpoints';
 import { createContext, ReactNode, useState } from 'react';
+
+type ImageAiModelProps = 'openai' | 'falai' | 'stable-diff';
 
 export const GenerateImageContext = createContext<{
   generateImageUsingAi: (input: string) => Promise<void>;
-  generatedImage: FalaiImageProps[] | undefined;
+  generatedImage: GeneratedImageProps[] | undefined;
   loading: boolean;
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
+  setImageAiModels: React.Dispatch<React.SetStateAction<ImageAiModelProps>>;
+  imageAiModels: ImageAiModelProps;
 }>({
   generateImageUsingAi: async () => {},
   generatedImage: [],
   loading: false,
   input: '',
   setInput: () => {},
+  setImageAiModels: () => {},
+  imageAiModels: 'falai',
 });
 
-type FalaiImageProps = FluxDevOutput & {
+type OpenAiImageResponses = {
   input: string;
-  requestId: string;
+  source: string;
+  created?: number;
+  _request_id?: string | null;
 };
 
+type FalAiImageResponses = {
+  input: string;
+  source: string;
+  images: Image[];
+  timings: any;
+  seed: number;
+  has_nsfw_concepts: boolean[];
+  prompt: string;
+};
+
+type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses;
+
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
-  const [generatedImage, setGeneratedImage] = useState<FalaiImageProps[]>([]);
+  const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
+  const [imageAiModels, setImageAiModels] = useState<ImageAiModelProps>('falai');
 
   console.log(generatedImage);
 
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const generateImageUsingAi = async (input: string) => {
+  const generateImageUsingAi = (input: string): Promise<void> => {
+    switch (imageAiModels) {
+      case 'falai':
+        return generateImageWithFalai(input);
+      case 'openai':
+        return generateImageWithOpenai(input);
+      default:
+        return generateImageWithFalai(input);
+    }
+  };
+
+  const generateImageWithOpenai = async (input: string) => {
     setLoading(true);
     try {
-      const { data, requestId } = await generateImageFalAI(input);
-      setGeneratedImage((prev) => [...prev, { input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId }]);
+      const { data, _request_id } = await openAiGenerateImage(input);
+      setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: data, requestId: _request_id } as OpenAiImageResponses]);
       setLoading(false);
     } catch (error) {
       throw new Error(error as any);
@@ -42,5 +75,18 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  return <GenerateImageContext.Provider value={{ generateImageUsingAi, generatedImage, loading, input, setInput }}>{children}</GenerateImageContext.Provider>;
+  const generateImageWithFalai = async (input: string) => {
+    setLoading(true);
+    try {
+      const { data, requestId } = await generateImageFalAI(input);
+      setGeneratedImage((prev) => [...prev, { source: 'falai', input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId } as FalAiImageResponses]);
+      setLoading(false);
+    } catch (error) {
+      throw new Error(error as any);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return <GenerateImageContext.Provider value={{ generateImageUsingAi, generatedImage, setImageAiModels, imageAiModels, loading, input, setInput }}>{children}</GenerateImageContext.Provider>;
 }
