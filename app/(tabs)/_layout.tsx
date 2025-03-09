@@ -1,4 +1,5 @@
-import { darkTheme, lightTheme } from '@/constants/theme';
+import { ThemedText } from '@/components/ThemedText';
+import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, useColorScheme } from 'react-native';
@@ -16,6 +17,10 @@ export default function TabLayout() {
         headerTitleAlign: 'center',
         headerLeftContainerStyle: { padding: 10 },
         headerRightContainerStyle: { padding: 10 },
+        headerTitleStyle: {
+          fontSize: 20,
+          fontFamily: fonts.regularFont,
+        },
         headerStyle: {
           backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
         },
@@ -37,7 +42,19 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen name="images" options={{ title: 'Images', tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} /> }} />
+      <Tabs.Screen
+        name="images"
+        options={{
+          title: 'Image',
+          headerTitle: (props) => (
+            <Pressable {...(props as any)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+              <ThemedText style={{ fontSize: 20 }}>Images</ThemedText>
+              <Ionicons size={24} name="chevron-down" color={props.tintColor} />
+            </Pressable>
+          ),
+          tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} />,
+        }}
+      />
 
       <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon: ({ color }) => <Ionicons size={32} name="settings" color={color} /> }} />
     </Tabs>
