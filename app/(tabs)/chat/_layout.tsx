@@ -3,7 +3,7 @@ import { Drawer } from 'expo-router/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Pressable, StyleSheet, useColorScheme } from 'react-native';
-import { darkTheme, lightTheme } from '@/constants/theme';
+import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
 import { ThemedText } from '@/components/ThemedText';
 import { ChatMessageProps } from '@/context/OpenaiContext';
@@ -61,6 +61,10 @@ export default function ChatLayout() {
           headerRightContainerStyle: { padding: 10 },
           headerTitle: 'Chat',
           headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontFamily: fonts.regularFont,
+          },
           headerShadowVisible: false,
           headerStyle: {
             backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
