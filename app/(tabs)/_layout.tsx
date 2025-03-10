@@ -75,9 +75,10 @@ export default function TabLayout() {
       </Tabs>
 
       <BottomSheetModal
+        index={1}
         style={[styles.sheetContainer, styles.sheetContainerShadow]}
         backdropComponent={BottomSheetBackdrop}
-        snapPoints={[200, '50%']}
+        snapPoints={[200, '30%']}
         enablePanDownToClose={true}
         enableDynamicSizing={false}
         ref={bottomSheetModalRef}
