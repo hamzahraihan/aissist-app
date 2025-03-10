@@ -2,10 +2,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Pressable, StyleSheet, Text, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme } from 'react-native';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
+import { AiModel } from '@/constants/ai-model';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -85,7 +86,11 @@ export default function TabLayout() {
         onChange={handleSheetChanges}
       >
         <BottomSheetView style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
+          {AiModel.map((item) => (
+            <TouchableOpacity>
+              <ThemedText>{item.model}</ThemedText>
+            </TouchableOpacity>
+          ))}
         </BottomSheetView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
