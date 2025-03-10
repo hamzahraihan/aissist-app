@@ -6,7 +6,7 @@ const colors = {
   blueTintColor: '#0281ff',
   lightPink: '#F7B5CD',
   whitesmoke: '#F7F7F8',
-  lightBlack: '#232627',
+  lightBlack: 'rgb(22, 22, 22)',
 };
 
 const fonts = {
