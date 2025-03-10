@@ -3,7 +3,7 @@ import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
 import { createContext, ReactNode, useState } from 'react';
 
-type ImageAiModelProps = 'openai' | 'falai' | 'stable-diff';
+export type ImageAiProps = 'openai' | 'falai' | 'stable-diff' | undefined;
 
 export const GenerateImageContext = createContext<{
   generateImageUsingAi: (input: string) => Promise<void>;
@@ -11,8 +11,8 @@ export const GenerateImageContext = createContext<{
   loading: boolean;
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
-  setImageAiModels: React.Dispatch<React.SetStateAction<ImageAiModelProps>>;
-  imageAiModels: ImageAiModelProps;
+  setImageAiModels: React.Dispatch<React.SetStateAction<ImageAiProps>>;
+  imageAiModels: ImageAiProps;
 }>({
   generateImageUsingAi: async () => {},
   generatedImage: [],
@@ -20,7 +20,7 @@ export const GenerateImageContext = createContext<{
   input: '',
   setInput: () => {},
   setImageAiModels: () => {},
-  imageAiModels: 'falai',
+  imageAiModels: 'openai',
 });
 
 type OpenAiImageResponses = {
@@ -44,7 +44,8 @@ type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses;
 
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
-  const [imageAiModels, setImageAiModels] = useState<ImageAiModelProps>('falai');
+
+  const [imageAiModels, setImageAiModels] = useState<ImageAiProps>('falai');
 
   console.log(generatedImage);
 
