@@ -2,14 +2,17 @@ import { ThemedText } from '@/components/ThemedText';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
 import { AiModel } from '@/constants/ai-model';
+import { useGenerateImage } from '@/hooks/useGenerateImage';
+import { ImageAiProps } from '@/context/GenerateImageContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { setImageAiModels } = useGenerateImage();
   const { handlePresentModalPress, bottomSheetModalRef, handleSheetChanges } = useBottomSheet();
   return (
     <BottomSheetModalProvider>
@@ -65,7 +68,7 @@ export default function TabLayout() {
                 onPress={handlePresentModalPress}
               >
                 <ThemedText style={{ fontSize: 20 }}>Images</ThemedText>
-                <Ionicons size={24} name="chevron-down" color={props.tintColor} />
+                <Ionicons size={24} name="chevron-down" color={colorScheme === 'dark' ? 'white' : 'black'} />
               </Pressable>
             ),
             tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} />,
@@ -87,7 +90,7 @@ export default function TabLayout() {
       >
         <BottomSheetView style={styles.contentContainer}>
           {AiModel.map((item) => (
-            <TouchableOpacity>
+            <TouchableOpacity key={item.model} onPress={() => setImageAiModels(item.model as ImageAiProps)}>
               <ThemedText>{item.model}</ThemedText>
             </TouchableOpacity>
           ))}
