@@ -1,5 +1,5 @@
 import { ThemedText } from '@/components/ThemedText';
-import { darkTheme, fonts, lightTheme } from '@/constants/theme';
+import { colors, darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
@@ -80,6 +80,7 @@ export default function TabLayout() {
 
       <BottomSheetModal
         index={1}
+        backgroundStyle={{ backgroundColor: colorScheme === 'light' ? colors.lightWhite : colors.lightBlack }}
         style={[styles.sheetContainer, styles.sheetContainerShadow]}
         backdropComponent={BottomSheetBackdrop}
         snapPoints={[200, '30%']}
@@ -106,7 +107,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sheetContainer: {
-    backgroundColor: 'white',
     borderTopStartRadius: 24,
     borderTopEndRadius: 24,
   },
