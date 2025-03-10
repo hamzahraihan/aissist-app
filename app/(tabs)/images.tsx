@@ -19,6 +19,7 @@ export default function ImagesScreen() {
   const { generateImageUsingAi, imageAiModels, setImageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
   const [inputHeight, setInputHeight] = useState<number>(0);
   const colorScheme: any = useColorScheme();
+
   console.log(loading);
 
   return (
@@ -30,7 +31,7 @@ export default function ImagesScreen() {
         </View>
       ) : (
         <ScrollView>
-          {generatedImage?.map((item) => (
+          {generatedImage?.map((item: any) => (
             <View style={{ display: 'flex', alignItems: 'flex-end' }} key={item.requestId}>
               <ThemedView type="assistant" style={styles.prompt}>
                 <ThemedText type="subtitle">{item.prompt}</ThemedText>
