@@ -63,7 +63,6 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
     try {
       if (!input.trim()) {
         console.log('Input is empty, resetting messages...');
-        setOpenAiMessages({ message: [], uuid: '', createdAt: formatDate(date) });
         return;
       }
 
