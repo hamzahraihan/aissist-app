@@ -27,11 +27,11 @@ function CustomDrawerContent(props: any) {
         Object.entries(groupedChatHistory).map(([date, message]) => (
           <>
             <ThemedText>{date}</ThemedText>
-            {message.map((item: any) => (
+            {message.map((item) => (
               <DrawerItem
                 key={item.uuid}
                 style={styles.container}
-                label={item.message[0]?.content?.toString()}
+                label={item.message[0]?.content as string}
                 onPress={() => {
                   setOpenAiMessages(item);
                 }}
