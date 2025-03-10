@@ -21,6 +21,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
+import { BottomSheetProvider } from '@/context/BottomSheetContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -53,14 +54,16 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView>
       <OpenaiProvider>
-        <GenerateImageProvider>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(tabs)" />
-            </Stack>
-            <StatusBar style="auto" />
-          </ThemeProvider>
-        </GenerateImageProvider>
+        <BottomSheetProvider>
+          <GenerateImageProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(tabs)" />
+              </Stack>
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </GenerateImageProvider>
+        </BottomSheetProvider>
       </OpenaiProvider>
     </GestureHandlerRootView>
   );
