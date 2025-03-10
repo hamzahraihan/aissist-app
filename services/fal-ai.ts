@@ -1,7 +1,6 @@
 import { fal } from '@fal-ai/client';
 
 export async function generateImageFalAI(prompt: string) {
-  console.log('pressed');
   try {
     fal.config({
       credentials: process.env.EXPO_PUBLIC_FAL_API_KEY,
