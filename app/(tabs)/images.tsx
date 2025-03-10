@@ -62,7 +62,7 @@ export default function ImagesScreen() {
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="Make something unique!" />
 
-        <CustomButton style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageUsingAi(input)}>
+        <CustomButton disabled={!input} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageUsingAi(input)}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
