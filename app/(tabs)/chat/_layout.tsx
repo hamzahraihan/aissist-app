@@ -47,6 +47,7 @@ function CustomDrawerContent(props: any) {
 export default function ChatLayout() {
   const { saveChatHistory } = useGenerateOpenaiChat();
   const colorScheme = useColorScheme();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
