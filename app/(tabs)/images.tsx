@@ -12,8 +12,16 @@ import { colors } from '@/constants/theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import FalIcon from '@/components/svg/falai';
 import { Skeleton } from 'moti/skeleton';
+import { ImageAiProps } from '@/context/GenerateImageContext';
+import { SvgProps } from 'react-native-svg';
+import OpenaiIcon from '@/components/svg/openai';
 
 const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+
+type AiModelProps = {
+  type: ImageAiProps;
+  props: any;
+};
 
 export default function ImagesScreen() {
   const { generateImageUsingAi, imageAiModels, setImageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
@@ -22,11 +30,29 @@ export default function ImagesScreen() {
 
   console.log(loading);
 
+  const renderIcon = ({ type, props }: AiModelProps) => {
+    switch (type) {
+      case 'falai':
+        return <FalIcon {...props} />;
+      case 'openai':
+        return <OpenaiIcon {...props} />;
+      default:
+        return <FalIcon {...props} />;
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
       {!loading && generatedImage?.length === 0 ? (
         <View style={styles.flexCenter}>
-          <FalIcon width={200} height={200} fill={colorScheme === 'dark' ? '#414141' : '#adadad'} />
+          {renderIcon({
+            type: imageAiModels,
+            props: {
+              width: 200,
+              height: 100,
+              fill: colorScheme === 'dark' ? '#414141' : '#adadad',
+            },
+          })}
           <ThemedText type="subtitle">Turn your imagination to imagery</ThemedText>
         </View>
       ) : (
