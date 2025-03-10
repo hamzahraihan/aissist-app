@@ -1,8 +1,8 @@
 const colors = {
   white: '#fff',
   black: '#000',
-  gray: 'rgba(0, 0, 0, .5)',
-  lightWhite: 'rgba(255, 255, 255, .5)',
+  gray: 'rgb(26, 26, 26)',
+  lightWhite: 'rgb(255, 255, 255)',
   blueTintColor: '#0281ff',
   lightPink: '#F7B5CD',
   whitesmoke: '#F7F7F8',
