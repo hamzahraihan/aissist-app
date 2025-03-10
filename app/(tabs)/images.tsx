@@ -16,7 +16,7 @@ import { renderIcon } from '@/utils/render-icon';
 const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 export default function ImagesScreen() {
-  const { generateImageUsingAi, imageAiModels, setImageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
+  const { generateImageUsingAi, imageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
   const [inputHeight, setInputHeight] = useState<number>(0);
   const colorScheme: any = useColorScheme();
 
@@ -62,10 +62,7 @@ export default function ImagesScreen() {
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="Make something unique!" />
 
-        <CustomButton
-          style={[styles.button, { height: Math.max(35, inputHeight) }]}
-          onPress={() => generateImageUsingAi('Photo of a rhino dressed suit and tie sitting at a table in a bar with a bar stools, award winning photography, Elke vogelsang')}
-        >
+        <CustomButton style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageUsingAi(input)}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
