@@ -50,6 +50,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   console.log(generatedImage);
 
   const [input, setInput] = useState<string>('');
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const generateImageUsingAi = (input: string): Promise<void> => {
@@ -66,7 +67,9 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const generateImageWithOpenai = async (input: string) => {
     setLoading(true);
     try {
+      console.log('generating image using openai dall-e');
       const { data, _request_id } = await openAiGenerateImage(input);
+      console.log(data);
       setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: data, requestId: _request_id } as OpenAiImageResponses]);
       setLoading(false);
     } catch (error) {
@@ -79,6 +82,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const generateImageWithFalai = async (input: string) => {
     setLoading(true);
     try {
+      console.log('generating image using fal ai');
       const { data, requestId } = await generateImageFalAI(input);
       setGeneratedImage((prev) => [...prev, { source: 'falai', input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId } as FalAiImageResponses]);
       setLoading(false);
