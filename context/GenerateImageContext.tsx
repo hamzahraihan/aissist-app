@@ -23,14 +23,14 @@ export const GenerateImageContext = createContext<{
   imageAiModels: 'openai',
 });
 
-type OpenAiImageResponses = {
+export type OpenAiImageResponses = {
   input: string;
   source: string;
   created?: number;
   _request_id?: string | null;
 };
 
-type FalAiImageResponses = {
+export type FalAiImageResponses = {
   input: string;
   source: string;
   images: Image[];
@@ -45,7 +45,7 @@ type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses;
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
 
-  const [imageAiModels, setImageAiModels] = useState<ImageAiProps>('falai');
+  const [imageAiModels, setImageAiModels] = useState<ImageAiProps>('openai');
 
   console.log(generatedImage);
 
@@ -67,10 +67,16 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const generateImageWithOpenai = async (input: string) => {
     setLoading(true);
     try {
+      if (!input) {
+        console.log('input is empty');
+        setGeneratedImage((prev) => prev);
+        return;
+      }
       console.log('generating image using openai dall-e');
-      const { data, _request_id } = await openAiGenerateImage(input);
-      console.log(data);
-      setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: data, requestId: _request_id } as OpenAiImageResponses]);
+      const response = await openAiGenerateImage(input);
+      if (response?._request_id) {
+        setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: response?.data, requestId: response?._request_id } as OpenAiImageResponses]);
+      }
       setLoading(false);
     } catch (error) {
       throw new Error(error as any);
@@ -82,6 +88,11 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const generateImageWithFalai = async (input: string) => {
     setLoading(true);
     try {
+      if (!input) {
+        console.log('input is empty');
+        setGeneratedImage((prev) => prev);
+        return;
+      }
       console.log('generating image using fal ai');
       const { data, requestId } = await generateImageFalAI(input);
       setGeneratedImage((prev) => [...prev, { source: 'falai', input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId } as FalAiImageResponses]);
