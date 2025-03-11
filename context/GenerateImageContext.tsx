@@ -1,9 +1,11 @@
+import { cloudflareImageGenerator } from '@/services/cloudflare';
 import { generateImageFalAI } from '@/services/fal-ai';
 import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
+import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
 
-export type ImageAiProps = 'openai' | 'falai' | 'stable-diff' | undefined;
+export type ImageAiProps = 'openai' | 'falai' | 'stable-diff' | 'cloudflare' | undefined;
 
 export const GenerateImageContext = createContext<{
   generateImageUsingAi: (input: string) => Promise<void>;
@@ -40,7 +42,7 @@ export type FalAiImageResponses = {
   prompt: string;
 };
 
-type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses;
+type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses | AIRunResponse;
 
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
@@ -59,8 +61,29 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
         return generateImageWithFalai(input);
       case 'openai':
         return generateImageWithOpenai(input);
+      case 'cloudflare':
+        return generateImageWithCloudflare(input);
       default:
         return generateImageWithFalai(input);
+    }
+  };
+
+  const generateImageWithCloudflare = async (input: string) => {
+    try {
+      if (!input) {
+        console.log('input is empty');
+        setGeneratedImage((prev) => prev);
+        return;
+      }
+      console.log('generating image using openai dall-e');
+      const result = await cloudflareImageGenerator(input);
+      console.log(result);
+      // setGeneratedImage((prev) => [...prev, { source: 'cloudflare', data:  } as AIRunResponse]);
+      setLoading(false);
+    } catch (error) {
+      throw new Error(error as any);
+    } finally {
+      setLoading(false);
     }
   };
 
