@@ -63,11 +63,14 @@ export default function ChatLayout() {
           headerTitle: 'Chat',
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: fonts.regularFont,
           },
           headerShadowVisible: false,
           headerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
           },
         }}
