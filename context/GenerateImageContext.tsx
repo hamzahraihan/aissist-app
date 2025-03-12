@@ -6,16 +6,14 @@ import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
 
-export type ImageAiProps = 'openai' | 'falai' | 'stable-diff' | 'cloudflare' | undefined;
-
 export const GenerateImageContext = createContext<{
   generateImageUsingAi: (input: string) => Promise<void>;
   generatedImage: GeneratedImageProps[] | undefined;
   loading: boolean;
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
-  setImageAiModels: React.Dispatch<React.SetStateAction<ImageAiProps>>;
-  imageAiModels: ImageAiProps;
+  setImageAiModels: React.Dispatch<React.SetStateAction<string>>;
+  imageAiModels: string;
 }>({
   generateImageUsingAi: async () => {},
   generatedImage: [],
@@ -48,7 +46,7 @@ type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses | AIRunRes
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
 
-  const [imageAiModels, setImageAiModels] = useState<ImageAiProps>('openai');
+  const [imageAiModels, setImageAiModels] = useState<string>('black-forest-labs/flux-1-schnell');
 
   console.log(generatedImage);
 
@@ -63,13 +61,13 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       case 'openai':
         return generateImageWithOpenai(input);
       case 'cloudflare':
-        return generateImageWithCloudflare(input);
+        return generateImageWithCloudflare(input, imageAiModels);
       default:
         return generateImageWithFalai(input);
     }
   };
 
-  const generateImageWithCloudflare = async (input: string) => {
+  const generateImageWithCloudflare = async (input: string, modelName: string) => {
     setLoading(true);
     try {
       if (!input) {
@@ -78,7 +76,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
         return;
       }
       console.log('generating image using cloudflare service');
-      const response: any = await cloudflareImageGenerator(input);
+      const response: any = await cloudflareImageGenerator(input, modelName);
       if (response.images === undefined) {
         setGeneratedImage((prev) => prev);
       }
