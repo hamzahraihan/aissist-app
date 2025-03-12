@@ -4,6 +4,7 @@ import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
 import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
+import uuid from 'react-native-uuid';
 
 export type ImageAiProps = 'openai' | 'falai' | 'stable-diff' | 'cloudflare' | undefined;
 
@@ -69,19 +70,22 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
   };
 
   const generateImageWithCloudflare = async (input: string) => {
+    setLoading(true);
     try {
       if (!input) {
         console.log('input is empty');
         setGeneratedImage((prev) => prev);
         return;
       }
-      console.log('generating image using openai dall-e');
-      const result = await cloudflareImageGenerator(input);
-      console.log(result);
-      // setGeneratedImage((prev) => [...prev, { source: 'cloudflare', data:  } as AIRunResponse]);
+      console.log('generating image using cloudflare service');
+      const response: any = await cloudflareImageGenerator(input);
+      if (response.images === undefined) {
+        setGeneratedImage((prev) => prev);
+      }
+      setGeneratedImage((prev) => [...prev, { source: 'cloudflare', input: input, images: `data:image/png;base64,${response?.image}`, requestId: uuid.v4() }]);
       setLoading(false);
     } catch (error) {
-      throw new Error(error as any);
+      console.error(error);
     } finally {
       setLoading(false);
     }
