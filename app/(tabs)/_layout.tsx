@@ -1,18 +1,17 @@
 import { ThemedText } from '@/components/ThemedText';
 import { colors, darkTheme, fonts, lightTheme } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { EvilIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
-import { AiModel } from '@/constants/ai-model';
+import { AiModels } from '@/constants/ai-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
-import { ImageAiProps } from '@/context/GenerateImageContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { setImageAiModels } = useGenerateImage();
+  const { setImageAiModels, imageAiModels } = useGenerateImage();
   const { handlePresentModalPress, bottomSheetModalRef, handleSheetChanges } = useBottomSheet();
   return (
     <BottomSheetModalProvider>
@@ -27,7 +26,7 @@ export default function TabLayout() {
           headerLeftContainerStyle: { padding: 10 },
           headerRightContainerStyle: { padding: 10 },
           headerTitleStyle: {
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: fonts.regularFont,
           },
           headerStyle: {
@@ -54,24 +53,10 @@ export default function TabLayout() {
         <Tabs.Screen
           name="images"
           options={{
-            title: 'Image',
-            headerTitle: (props) => (
-              <Pressable
-                {...(props as any)}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 4,
-                }}
-                onPress={handlePresentModalPress}
-              >
-                <ThemedText style={{ fontSize: 20 }}>Images</ThemedText>
-                <Ionicons size={24} name="chevron-down" color={colorScheme === 'dark' ? 'white' : 'black'} />
-              </Pressable>
-            ),
+            title: 'images',
+            headerTitle: 'Images',
             tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} />,
+            headerRight: ({ tintColor }) => <MaterialIcons size={28} name="more-vert" color={tintColor} onPress={handlePresentModalPress} />,
           }}
         />
 
@@ -90,9 +75,9 @@ export default function TabLayout() {
         onChange={handleSheetChanges}
       >
         <BottomSheetView style={styles.contentContainer}>
-          {AiModel.map((item) => (
-            <TouchableOpacity key={item.model} onPress={() => setImageAiModels(item.model as ImageAiProps)}>
-              <ThemedText>{item.model}</ThemedText>
+          {AiModels.map((item) => (
+            <TouchableOpacity key={item.name} onPress={() => setImageAiModels(item.model)}>
+              <ThemedText>{item.name}</ThemedText>
             </TouchableOpacity>
           ))}
         </BottomSheetView>
