@@ -1,13 +1,14 @@
 import { cloudflareImageGenerator } from '@/services/cloudflare';
-import { generateImageFalAI } from '@/services/fal-ai';
-import { openAiGenerateImage } from '@/services/openai';
+// import { generateImageFalAI } from '@/services/fal-ai';
+// import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
 import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 import uuid from 'react-native-uuid';
 
 export const GenerateImageContext = createContext<{
-  generateImageUsingAi: (input: string) => Promise<void>;
+  generateImageWithCloudflare: (input: string, modelName: string) => Promise<void>;
   generatedImage: GeneratedImageProps[] | undefined;
   loading: boolean;
   input: string;
@@ -15,7 +16,7 @@ export const GenerateImageContext = createContext<{
   setImageAiModels: React.Dispatch<React.SetStateAction<string>>;
   imageAiModels: string;
 }>({
-  generateImageUsingAi: async () => {},
+  generateImageWithCloudflare: async () => {},
   generatedImage: [],
   loading: false,
   input: '',
@@ -54,18 +55,18 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const generateImageUsingAi = (input: string): Promise<void> => {
-    switch (imageAiModels) {
-      case 'falai':
-        return generateImageWithFalai(input);
-      case 'openai':
-        return generateImageWithOpenai(input);
-      case 'cloudflare':
-        return generateImageWithCloudflare(input, imageAiModels);
-      default:
-        return generateImageWithFalai(input);
-    }
-  };
+  // const generateImageUsingAi = (input: string): Promise<void> => {
+  //   switch (imageAiModels) {
+  //     case 'falai':
+  //       return generateImageWithFalai(input);
+  //     case 'openai':
+  //       return generateImageWithOpenai(input);
+  //     case 'cloudflare':
+  //       return generateImageWithCloudflare(input, imageAiModels);
+  //     default:
+  //       return generateImageWithFalai(input);
+  //   }
+  // };
 
   const generateImageWithCloudflare = async (input: string, modelName: string) => {
     setLoading(true);
@@ -75,59 +76,65 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
         setGeneratedImage((prev) => prev);
         return;
       }
-      console.log('generating image using cloudflare service');
       const response: any = await cloudflareImageGenerator(input, modelName);
-      if (response.images === undefined) {
+      console.log(response);
+      const image = response.image || response;
+
+      console.log(image);
+
+      if (image === undefined) {
         setGeneratedImage((prev) => prev);
       }
-      setGeneratedImage((prev) => [...prev, { source: 'cloudflare', input: input, images: `data:image/png;base64,${response?.image}`, requestId: uuid.v4() }]);
+
+      setGeneratedImage((prev) => [...prev, { source: 'cloudflare', input: input, images: `data:image/png;base64,${image}`, requestId: uuid.v4() }]);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      ToastAndroid.show('Failed to generate image, try again with different models', ToastAndroid.LONG);
     } finally {
       setLoading(false);
     }
   };
 
-  const generateImageWithOpenai = async (input: string) => {
-    setLoading(true);
-    try {
-      if (!input) {
-        console.log('input is empty');
-        setGeneratedImage((prev) => prev);
-        return;
-      }
-      console.log('generating image using openai dall-e');
-      const response = await openAiGenerateImage(input);
-      if (response?._request_id) {
-        setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: response?.data, requestId: response?._request_id } as OpenAiImageResponses]);
-      }
-      setLoading(false);
-    } catch (error) {
-      throw new Error(error as any);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const generateImageWithOpenai = async (input: string) => {
+  //   setLoading(true);
+  //   try {
+  //     if (!input) {
+  //       console.log('input is empty');
+  //       setGeneratedImage((prev) => prev);
+  //       return;
+  //     }
+  //     console.log('generating image using openai dall-e');
+  //     const response = await openAiGenerateImage(input);
+  //     if (response?._request_id) {
+  //       setGeneratedImage((prev) => [...prev, { source: 'openai', input: input, images: response?.data, requestId: response?._request_id } as OpenAiImageResponses]);
+  //     }
+  //     setLoading(false);
+  //   } catch (error) {
+  //     throw new Error(error as any);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const generateImageWithFalai = async (input: string) => {
-    setLoading(true);
-    try {
-      if (!input) {
-        console.log('input is empty');
-        setGeneratedImage((prev) => prev);
-        return;
-      }
-      console.log('generating image using fal ai');
-      const { data, requestId } = await generateImageFalAI(input);
-      setGeneratedImage((prev) => [...prev, { source: 'falai', input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId } as FalAiImageResponses]);
-      setLoading(false);
-    } catch (error) {
-      throw new Error(error as any);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const generateImageWithFalai = async (input: string) => {
+  //   setLoading(true);
+  //   try {
+  //     if (!input) {
+  //       console.log('input is empty');
+  //       setGeneratedImage((prev) => prev);
+  //       return;
+  //     }
+  //     console.log('generating image using fal ai');
+  //     const { data, requestId } = await generateImageFalAI(input);
+  //     setGeneratedImage((prev) => [...prev, { source: 'falai', input: input, images: data.images, prompt: data.prompt, seed: data.seed, timings: data.timings, has_nsfw_concepts: data.has_nsfw_concepts, requestId } as FalAiImageResponses]);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     throw new Error(error as any);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  return <GenerateImageContext.Provider value={{ generateImageUsingAi, generatedImage, setImageAiModels, imageAiModels, loading, input, setInput }}>{children}</GenerateImageContext.Provider>;
+  return <GenerateImageContext.Provider value={{ generateImageWithCloudflare, generatedImage, setImageAiModels, imageAiModels, loading, input, setInput }}>{children}</GenerateImageContext.Provider>;
 }
