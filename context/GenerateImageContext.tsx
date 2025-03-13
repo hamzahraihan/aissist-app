@@ -46,7 +46,7 @@ type GeneratedImageProps = OpenAiImageResponses | FalAiImageResponses | AIRunRes
 export function GenerateImageProvider({ children }: { children: ReactNode }) {
   const [generatedImage, setGeneratedImage] = useState<GeneratedImageProps[]>([]);
 
-  const [imageAiModels, setImageAiModels] = useState<string>('black-forest-labs/flux-1-schnell');
+  const [imageAiModels, setImageAiModels] = useState<string>('@cf/black-forest-labs/flux-1-schnell');
 
   console.log(generatedImage);
 
