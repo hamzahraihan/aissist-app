@@ -5,11 +5,15 @@ import { StyleSheet, Text, TextProps } from 'react-native';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
+  onSelected?: boolean;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
-export function ThemedText({ style, lightColor, darkColor, type = 'default', ...props }: ThemedTextProps) {
-  const color = useTheme({ light: lightColor, dark: darkColor }, 'textColor');
+export function ThemedText({ style, lightColor, darkColor, onSelected, type = 'default', ...props }: ThemedTextProps) {
+  let color = useTheme({ light: lightColor, dark: darkColor }, 'textColor');
+  if (onSelected) {
+    color = 'white';
+  }
 
   return (
     <Text
