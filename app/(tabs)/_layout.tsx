@@ -1,13 +1,14 @@
 import { ThemedText } from '@/components/ThemedText';
 import { colors, darkTheme, fonts, lightTheme } from '@/constants/theme';
-import { EvilIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
 import { AiModels } from '@/constants/ai-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
+import { ThemedView } from '@/components/ThemedView';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -68,19 +69,23 @@ export default function TabLayout() {
         backgroundStyle={{ backgroundColor: colorScheme === 'light' ? colors.lightWhite : colors.lightBlack }}
         style={[styles.sheetContainer, styles.sheetContainerShadow]}
         backdropComponent={BottomSheetBackdrop}
-        snapPoints={[200, '30%']}
+        snapPoints={[200, '40%']}
         enablePanDownToClose={true}
         enableDynamicSizing={false}
         ref={bottomSheetModalRef}
         onChange={handleSheetChanges}
       >
-        <BottomSheetView style={styles.contentContainer}>
+        <BottomSheetScrollView style={styles.contentContainer}>
           {AiModels.map((item) => (
             <TouchableOpacity key={item.name} onPress={() => setImageAiModels(item.model)}>
-              <ThemedText>{item.name}</ThemedText>
+              <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
+                <ThemedText onSelected={item.model === imageAiModels} style={{ textAlign: 'center' }}>
+                  {item.name}
+                </ThemedText>
+              </ThemedView>
             </TouchableOpacity>
           ))}
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
@@ -89,7 +94,12 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    alignItems: 'center',
+    padding: 10,
+  },
+  sheetSelectableContent: {
+    width: '100%',
+    padding: 10,
+    borderRadius: 12,
   },
   sheetContainer: {
     borderTopStartRadius: 24,
