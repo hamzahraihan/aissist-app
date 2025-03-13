@@ -76,10 +76,18 @@ export default function TabLayout() {
         onChange={handleSheetChanges}
       >
         <BottomSheetScrollView style={styles.contentContainer}>
+          <ThemedText style={{ textAlign: 'center' }}>Try different models</ThemedText>
+
           {AiModels.map((item) => (
-            <TouchableOpacity key={item.name} onPress={() => setImageAiModels(item.model)}>
+            <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
               <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
-                <ThemedText onSelected={item.model === imageAiModels} style={{ textAlign: 'center' }}>
+                <ThemedText
+                  onSelected={item.model === imageAiModels}
+                  style={{
+                    textAlign: 'center',
+                    color: !item.available ? 'gray' : 'white',
+                  }}
+                >
                   {item.name}
                 </ThemedText>
               </ThemedView>
