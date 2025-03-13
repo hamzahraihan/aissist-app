@@ -18,7 +18,7 @@ import * as MediaLibrary from 'expo-media-library';
 const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 export default function ImagesScreen() {
-  const { generateImageUsingAi, imageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
+  const { generateImageWithCloudflare, imageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
   const [inputHeight, setInputHeight] = useState<number>(0);
   const colorScheme: any = useColorScheme();
 
@@ -76,7 +76,7 @@ export default function ImagesScreen() {
       ) : (
         <ScrollView>
           {generatedImage?.map((item: any) => (
-            <TouchableOpacity onPress={() => handleDownloadImage(item?.images)}>
+            <TouchableOpacity disabled={loading} onPress={() => handleDownloadImage(item?.images)}>
               <View style={{ display: 'flex', alignItems: 'flex-end' }} key={item?.requestId}>
                 <ThemedView type="assistant" style={styles.prompt}>
                   <ThemedText type="subtitle">{item?.input}</ThemedText>
@@ -105,7 +105,7 @@ export default function ImagesScreen() {
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="Make something unique!" />
 
-        <CustomButton disabled={!input} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageUsingAi(input)}>
+        <CustomButton disabled={!input || loading} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageWithCloudflare(input, imageAiModels)}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
