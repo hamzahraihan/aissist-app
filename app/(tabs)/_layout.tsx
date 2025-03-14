@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-n
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
-import { AiImageModels } from '@/constants/ai-image-model';
+import { IMAGE_MODELS } from '@/constants/ai-image-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
 
@@ -78,7 +78,7 @@ export default function TabLayout() {
         <BottomSheetScrollView style={styles.contentContainer}>
           <ThemedText style={{ textAlign: 'center' }}>Try different models</ThemedText>
 
-          {AiImageModels.map((item) => (
+          {IMAGE_MODELS.map((item) => (
             <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
               <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
                 <ThemedText
