@@ -1,4 +1,4 @@
-import { OpenaiProvider } from '@/context/OpenaiContext';
+import { GenerateTextProvider } from '@/context/GenerateTextContext';
 import {
   Poppins_100Thin,
   Poppins_200ExtraLight,
@@ -53,7 +53,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <OpenaiProvider>
+      <GenerateTextProvider>
         <BottomSheetProvider>
           <GenerateImageProvider>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -64,7 +64,7 @@ export default function RootLayout() {
             </ThemeProvider>
           </GenerateImageProvider>
         </BottomSheetProvider>
-      </OpenaiProvider>
+      </GenerateTextProvider>
     </GestureHandlerRootView>
   );
 }
