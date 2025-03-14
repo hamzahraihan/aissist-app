@@ -49,9 +49,9 @@ export const OpenaiProvider = ({ children }: { children: ReactNode }) => {
 
   // set messages for ai
   const [openAiMessages, setOpenAiMessages] = useState<ChatMessageProps>({
-    uuid: '',
+    uuid: uuid.v4(),
     createdAt: formatDate(date),
-    message: [],
+    message: [{ role: 'assistant', content: 'You are a helpful assistant' }],
   });
   const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
   console.log('🚀 ~ OpenaiProvider ~ chatHistory:', chatHistory);
