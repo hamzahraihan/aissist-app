@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { StyleSheet, useColorScheme, View, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
-import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
+import { useGenerateText } from '@/hooks/useGenerateText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { Card } from '@/components/Card';
@@ -25,7 +25,7 @@ export default function ChatScreen() {
 
   const [inputHeight, setInputHeight] = useState<number>(0);
 
-  const { generateTextFromOpenAI, setInput, input, loading, openAiMessages } = useGenerateOpenaiChat();
+  const { generateTextFromOpenAI, setInput, input, loading, openAiMessages } = useGenerateText();
 
   return (
     <ThemedView style={styles.container}>
