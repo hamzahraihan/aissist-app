@@ -68,9 +68,6 @@ export default function ChatLayout() {
           },
           headerShadowVisible: false,
           headerStyle: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
           },
         }}
