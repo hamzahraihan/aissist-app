@@ -4,12 +4,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
-import { useGenerateOpenaiChat } from '@/hooks/useGenerateOpenaiChat';
+import { useGenerateText } from '@/hooks/useGenerateText';
 import { ThemedText } from '@/components/ThemedText';
-import { ChatMessageProps } from '@/context/OpenaiContext';
+import { ChatMessageProps } from '@/context/GenerateTextContext';
 
 function CustomDrawerContent(props: any) {
-  const { chatHistory, setOpenAiMessages } = useGenerateOpenaiChat();
+  const { chatHistory, setOpenAiMessages } = useGenerateText();
 
   const groupedChatHistory = chatHistory.reduce<Record<string, ChatMessageProps[]>>((acc, item) => {
     if (!acc[item.createdAt]) {
@@ -45,7 +45,7 @@ function CustomDrawerContent(props: any) {
 }
 
 export default function ChatLayout() {
-  const { saveChatHistory } = useGenerateOpenaiChat();
+  const { saveChatHistory } = useGenerateText();
   const colorScheme = useColorScheme();
 
   return (
