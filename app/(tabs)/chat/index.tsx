@@ -30,7 +30,7 @@ export default function ChatScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        {openAiMessages?.message?.length === 0 ? (
+        {openAiMessages?.message?.length <= 1 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
@@ -45,7 +45,7 @@ export default function ChatScreen() {
           </View>
         ) : (
           <>
-            {openAiMessages?.message?.map((item) => (
+            {openAiMessages?.message?.slice(1).map((item) => (
               <ThemedView type={item.role} style={{ padding: 18 }} key={item.content?.toString()}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
                 {item.role === 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
