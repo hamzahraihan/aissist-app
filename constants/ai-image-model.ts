@@ -1,4 +1,4 @@
-export const AiImageModels = [
+export const IMAGE_MODELS = [
   {
     name: 'flux-1-schnell',
     model: '@cf/black-forest-labs/flux-1-schnell',
