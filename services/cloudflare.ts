@@ -29,6 +29,8 @@ export const cloudflareTextGenerator = async (prompt: AIRunParams.Messages.Messa
       stream: true,
       messages: prompt,
     });
+
+    return stream;
   } catch (error: any) {
     throw new Error(error.message);
   }
