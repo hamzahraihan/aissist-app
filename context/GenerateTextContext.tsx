@@ -1,41 +1,46 @@
-import { AiTextModelType } from '@/constants/ai-text-models';
+import { cloudflareTextGenerator } from '@/services/cloudflare';
 import { openAiMessageService } from '@/services/openai';
+import { AIRunParams } from 'cloudflare/resources/ai/ai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
 
 export type ChatMessageProps = {
   uuid: any;
-  message: ChatCompletionMessageParam[];
+  message: (ChatCompletionMessageParam | AIRunParams.Messages.Message)[];
   createdAt: string;
 };
 
 export const GenerateTextContext = createContext<{
-  generateTextFromOpenAI: () => Promise<void>;
+  generateTextByAi: () => Promise<void>;
   loading: boolean;
   setInput: Dispatch<React.SetStateAction<string>>;
   input: string;
-  openAiMessages: ChatMessageProps;
-  setOpenAiMessages: Dispatch<React.SetStateAction<ChatMessageProps>>;
+  generatedMessages: ChatMessageProps;
+  setGeneratedMessages: Dispatch<React.SetStateAction<ChatMessageProps>>;
   chatHistory: ChatMessageProps[];
   setChatHistory: Dispatch<React.SetStateAction<ChatMessageProps[]>>;
   saveChatHistory: () => void;
+  setTextModel: React.Dispatch<React.SetStateAction<string>>;
+  textModel: string;
 }>({
-  generateTextFromOpenAI: async () => {},
+  generateTextByAi: async () => {},
   loading: false,
   input: '',
   setInput: () => {},
-  openAiMessages: { uuid: '', message: [], createdAt: new Date().toLocaleString() },
-  setOpenAiMessages: () => {},
+  generatedMessages: { uuid: '', message: [], createdAt: new Date().toLocaleString() },
+  setGeneratedMessages: () => {},
   chatHistory: [],
   setChatHistory: () => {},
   saveChatHistory: () => {},
+  setTextModel: () => {},
+  textModel: '',
 });
 
 export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [model, setModel] = useState<string>('openai');
+  const [textModel, setTextModel] = useState<string>('gpt-4o-mini');
 
   const date = Date.now();
 
@@ -50,7 +55,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // set messages for ai
-  const [openAiMessages, setOpenAiMessages] = useState<ChatMessageProps>({
+  const [generatedMessages, setGeneratedMessages] = useState<ChatMessageProps>({
     uuid: uuid.v4(),
     createdAt: formatDate(date),
     message: [{ role: 'assistant', content: 'You are a helpful assistant' }],
@@ -59,25 +64,61 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
   console.log('🚀 ~ GenerateTextProvider ~ chatHistory:', chatHistory);
 
-  console.log('🚀 ~ GenerateTextProvider ~ openAiMessages:', openAiMessages);
+  console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
+
+  // generate a text by AI following a model chosen by user
+  const generateTextByAi = () => {
+    switch (textModel) {
+      case 'gpt-4o-mini':
+        return generateTextFromOpenAI();
+      default:
+        return generateTextFromClouflare();
+    }
+  };
+
+  const generateTextFromClouflare = async () => {
+    try {
+      if (!input.trim()) {
+        console.log('Input is empty');
+        return;
+      }
+      // Append the new user message while keeping previous messages
+      setGeneratedMessages((prevMessages) => ({
+        uuid: uuid.v4(),
+        createdAt: formatDate(date),
+        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
+      }));
+
+      const response = await cloudflareTextGenerator([...(generatedMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }], textModel);
+
+      console.log(response);
+
+      // // Append OpenAI's response to the chat history
+      // setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: response as string }] }));
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error as any);
+    }
+  };
 
   const generateTextFromOpenAI = async (): Promise<void> => {
     setLoading(true);
     try {
       if (!input.trim()) {
-        console.log('Input is empty, resetting messages...');
+        console.log('Input is empty');
         return;
       }
 
       console.log('User input:', input);
 
       // Append the new user message while keeping previous messages
-      setOpenAiMessages((prevMessages) => ({ uuid: uuid.v4(), createdAt: formatDate(date), message: [...prevMessages.message, { role: 'user', content: input.trim() }] }));
+      setGeneratedMessages((prevMessages) => ({ uuid: uuid.v4(), createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }] }));
 
       setInput(''); // Clear input field
 
       // Get response from OpenAI
-      const responseText = await openAiMessageService([...openAiMessages.message, { role: 'user', content: input.trim() }]);
+      const responseText = await openAiMessageService([...(generatedMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }]);
 
       if (!responseText) {
         console.warn('No response received from OpenAI.');
@@ -85,7 +126,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Append OpenAI's response to the chat history
-      setOpenAiMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...prevMessages.message, { role: 'assistant', content: responseText }] }));
+      setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'assistant', content: responseText }] }));
 
       console.log('OpenAI Response:', responseText);
       setLoading(false);
@@ -97,21 +138,25 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const saveChatHistory = () => {
-    if (!openAiMessages.uuid) {
+    if (!generatedMessages.uuid) {
       return;
     }
 
     // update an existing messages from an existing chat history
     setChatHistory((prev) => {
-      const existingChat = prev.find((item) => item.uuid === openAiMessages.uuid);
+      const existingChat = prev.find((item) => item.uuid === generatedMessages.uuid);
       if (existingChat) {
-        return prev.map((item) => (item.uuid === openAiMessages.uuid ? { ...item, createdAt: formatDate(date), message: [...openAiMessages.message] } : item));
+        return prev.map((item) => (item.uuid === generatedMessages.uuid ? { ...item, createdAt: formatDate(date), message: [...generatedMessages.message] } : item));
       }
-      return [...prev, { uuid: openAiMessages.uuid, createdAt: openAiMessages.createdAt, message: openAiMessages.message }];
+      return [...prev, { uuid: generatedMessages.uuid, createdAt: generatedMessages.createdAt, message: [...generatedMessages.message] }];
     });
 
-    setOpenAiMessages({ uuid: '', createdAt: formatDate(date), message: [] });
+    setGeneratedMessages({ uuid: '', createdAt: formatDate(date), message: [] });
   };
 
-  return <GenerateTextContext.Provider value={{ generateTextFromOpenAI, loading, setInput, input, openAiMessages, setOpenAiMessages, saveChatHistory, chatHistory, setChatHistory }}>{children}</GenerateTextContext.Provider>;
+  return (
+    <GenerateTextContext.Provider value={{ generateTextByAi, loading, setTextModel, textModel, setInput, input, generatedMessages, setGeneratedMessages, saveChatHistory, chatHistory, setChatHistory }}>
+      {children}
+    </GenerateTextContext.Provider>
+  );
 };
