@@ -1,19 +1,30 @@
 import { ThemedText } from '@/components/ThemedText';
-import { colors, darkTheme, fonts, lightTheme } from '@/constants/theme';
+import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
-import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
 import { IMAGE_MODELS } from '@/constants/ai-image-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
+import CustomBottomSheet from '@/components/BottomSheet';
+import { useCallback, useRef } from 'react';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  // ref
+  const bottomSheetModalImageRef = useRef<BottomSheetModal>(null);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    // open bottom sheet modal
+    bottomSheetModalImageRef.current?.present();
+    // close bottom sheet modal
+    bottomSheetModalImageRef.current?.close();
+  }, []);
+
   const { setImageAiModels, imageAiModels } = useGenerateImage();
-  const { handlePresentModalPress, bottomSheetModalRef, handleSheetChanges } = useBottomSheet();
   return (
     <BottomSheetModalProvider>
       <Tabs
@@ -64,37 +75,23 @@ export default function TabLayout() {
         <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon: ({ color }) => <Ionicons size={32} name="settings" color={color} /> }} />
       </Tabs>
 
-      <BottomSheetModal
-        index={1}
-        backgroundStyle={{ backgroundColor: colorScheme === 'light' ? colors.lightWhite : colors.lightBlack }}
-        style={[styles.sheetContainer, styles.sheetContainerShadow]}
-        backdropComponent={BottomSheetBackdrop}
-        snapPoints={[200, '40%']}
-        enablePanDownToClose={true}
-        enableDynamicSizing={false}
-        ref={bottomSheetModalRef}
-        onChange={handleSheetChanges}
-      >
-        <BottomSheetScrollView style={styles.contentContainer}>
-          <ThemedText style={{ textAlign: 'center' }}>Try different models</ThemedText>
-
-          {IMAGE_MODELS.map((item) => (
-            <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
-              <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
-                <ThemedText
-                  onSelected={item.model === imageAiModels}
-                  style={{
-                    textAlign: 'center',
-                    color: !item.available ? 'gray' : 'white',
-                  }}
-                >
-                  {item.name}
-                </ThemedText>
-              </ThemedView>
-            </TouchableOpacity>
-          ))}
-        </BottomSheetScrollView>
-      </BottomSheetModal>
+      <CustomBottomSheet ref={bottomSheetModalImageRef}>
+        {IMAGE_MODELS.map((item) => (
+          <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
+            <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
+              <ThemedText
+                onSelected={item.model === imageAiModels}
+                style={{
+                  textAlign: 'center',
+                  color: !item.available ? 'gray' : 'white',
+                }}
+              >
+                {item.name}
+              </ThemedText>
+            </ThemedView>
+          </TouchableOpacity>
+        ))}
+      </CustomBottomSheet>
     </BottomSheetModalProvider>
   );
 }
