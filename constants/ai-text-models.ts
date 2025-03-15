@@ -6,6 +6,11 @@ export type AiTextModelType = {
 
 export const TEXT_MODELS: AiTextModelType[] = [
   {
+    name: 'gpt-4o-mini',
+    model: 'gpt-4o-mini',
+    available: true,
+  },
+  {
     name: 'deepseek-r1-distill-qwen-32b',
     model: '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
     available: true,
