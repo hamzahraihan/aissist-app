@@ -25,12 +25,12 @@ export default function ChatScreen() {
 
   const [inputHeight, setInputHeight] = useState<number>(0);
 
-  const { generateTextFromOpenAI, setInput, input, loading, openAiMessages } = useGenerateText();
+  const { generateTextByAi, setInput, input, loading, generatedMessages } = useGenerateText();
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView>
-        {openAiMessages?.message?.length <= 1 ? (
+        {generatedMessages?.message?.length <= 1 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hi!
@@ -45,8 +45,8 @@ export default function ChatScreen() {
           </View>
         ) : (
           <>
-            {openAiMessages?.message?.slice(1).map((item) => (
-              <ThemedView type={item.role} style={{ padding: 18 }} key={item.content?.toString()}>
+            {generatedMessages?.message?.slice(1).map((item) => (
+              <ThemedView type={item.role as any} style={{ padding: 18 }} key={item.content?.toString()}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
                 {item.role === 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
                 <AIResponse>{item.content}</AIResponse>
@@ -68,7 +68,7 @@ export default function ChatScreen() {
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
-        <CustomButton disabled={!input} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextFromOpenAI()}>
+        <CustomButton disabled={!input} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextByAi()}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
