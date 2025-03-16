@@ -1,0 +1,7 @@
+name = "aissist-app"
+
+[ai]
+binding = "AI"
+
+[vars]
+CLOUDFLARE_ACCOUNT_ID = "9b37eea8034fbf61191d273e000f450e"
