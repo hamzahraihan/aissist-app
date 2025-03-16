@@ -1,6 +1,9 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types"
+    ],
     "noEmit": true,
     "strict": true,
     "paths": {
