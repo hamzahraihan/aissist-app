@@ -4,6 +4,7 @@ import { AIRunParams } from 'cloudflare/resources/ai/ai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
+import { fetch } from 'expo/fetch';
 
 export type ChatMessageProps = {
   uuid: any;
@@ -67,7 +68,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
 
   // generate a text by AI following a model chosen by user
-  const generateTextByAi = () => {
+  const generateTextByAi = async () => {
     switch (textModel) {
       case 'gpt-4o-mini':
         return generateTextFromOpenAI();
@@ -82,16 +83,23 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         console.log('Input is empty');
         return;
       }
-      // Append the new user message while keeping previous messages
-      setGeneratedMessages((prevMessages) => ({
-        uuid: uuid.v4(),
-        createdAt: formatDate(date),
-        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
-      }));
 
-      const response = await cloudflareTextGenerator([...(generatedMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }], textModel);
+      // const response = await fetch('/api/chat', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ model: textModel, prompt: input }),
+      // });
+      const response = await fetch('http://192.168.100.166:8081/api/hello');
+      console.log(await response.json());
+      // // Append the new user message while keeping previous messages
+      // setGeneratedMessages((prevMessages) => ({
+      //   uuid: uuid.v4(),
+      //   createdAt: formatDate(date),
+      //   message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
+      // }));
 
-      console.log(response);
+      // const response = await cloudflareTextGenerator([...(generatedMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }], textModel);
+
+      // console.log(response);
 
       // // Append OpenAI's response to the chat history
       // setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: response as string }] }));
@@ -151,7 +159,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { uuid: generatedMessages.uuid, createdAt: generatedMessages.createdAt, message: [...generatedMessages.message] }];
     });
 
-    setGeneratedMessages({ uuid: '', createdAt: formatDate(date), message: [] });
+    setGeneratedMessages({ uuid: uuid.v4(), createdAt: formatDate(date), message: [{ role: 'assistant', content: 'You are a helpful assistant' }] });
   };
 
   return (
