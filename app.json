@@ -27,7 +27,7 @@
       [
         "expo-router",
         {
-          "origin": "http://192.168.100.166:8081/"
+          "origin": "https://aissist-app.hamzahraihan6.workers.dev"
         }
       ],
       [
