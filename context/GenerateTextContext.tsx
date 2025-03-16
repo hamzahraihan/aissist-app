@@ -5,6 +5,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
 import uuid from 'react-native-uuid';
 import { fetch } from 'expo/fetch';
+import { generateAPIUrl } from '@/utils/generateApiUrl';
 
 export type ChatMessageProps = {
   uuid: any;
@@ -84,12 +85,37 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // const response = await fetch('/api/chat', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ model: textModel, prompt: input }),
-      // });
-      const response = await fetch('http://192.168.100.166:8081/api/hello');
-      console.log(await response.json());
+      const apiUrl = generateAPIUrl('/api/chat') || '';
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ model: textModel, prompt: input }),
+      });
+      console.log(await response.body);
+      if (!response.ok) {
+        console.error('Error', response.status);
+        return;
+      }
+
+      if (response.body) {
+        const reader = response.body.getReader();
+        const textDecoder = new TextDecoder();
+        let accumulatedText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = textDecoder.decode(value, { stream: true });
+          accumulatedText += chunk;
+
+          console.log('Received chunk', chunk);
+        }
+        console.log('Final completed text', accumulatedText);
+      }
+
       // // Append the new user message while keeping previous messages
       // setGeneratedMessages((prevMessages) => ({
       //   uuid: uuid.v4(),
@@ -106,7 +132,9 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
 
       setLoading(false);
     } catch (error) {
-      console.error(error as any);
+      console.error('Response body is not available', error);
+    } finally {
+      setLoading(false);
     }
   };
 
