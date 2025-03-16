@@ -35,7 +35,7 @@ function CustomDrawerContent(props: any) {
             {message.map((item) => (
               <DrawerItem
                 key={item.uuid}
-                label={item.message[0]?.content as string}
+                label={item.message[1]?.content as string}
                 onPress={() => {
                   setGeneratedMessages(item);
                 }}
