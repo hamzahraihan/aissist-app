@@ -24,13 +24,23 @@ export const cloudflareTextGenerator = async (prompt: AIRunParams.Messages.Messa
   try {
     console.log(`generating text with ${modelName}`);
 
-    const stream = await client.ai.run(modelName, {
+    const stream: any = await client.ai.run(modelName, {
       account_id: '9b37eea8034fbf61191d273e000f450e',
       stream: true,
       messages: prompt,
     });
+    const reader = stream.getReader();
+    let result = '';
 
-    return stream;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = new TextDecoder().decode(value);
+      result += chunk;
+    }
+
+    console.log('Generated result:', result);
+    return result;
   } catch (error: any) {
     throw new Error(error.message);
   }
