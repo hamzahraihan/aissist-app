@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, maxRetries: 3, timeout: 60 * 1000 });
+const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, maxRetries: 3, timeout: 60 * 1000, dangerouslyAllowBrowser: true });
 
 export async function openAiMessageService(messages: ChatCompletionMessageParam[]) {
   // try {
