@@ -17,6 +17,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^1.2.5",
     "@ai-sdk/react": "^1.1.23",
+    "@cloudflare/workers-types": "^4.20250313.0",
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/poppins": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
