@@ -1,7 +1,7 @@
 name = "aissist-app"
-main = "app/api/workers/index.ts"
-compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
+main = "services/workers.ts"
+compatibility_date = "2024-07-31"
+
 
 # Bindings - Add the AI binding
 [ai]
