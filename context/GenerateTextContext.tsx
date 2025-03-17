@@ -2,7 +2,7 @@ import { cloudflareTextGenerator } from '@/services/cloudflare';
 import { openAiMessageService } from '@/services/openai';
 import { AIRunParams } from 'cloudflare/resources/ai/ai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-import React, { createContext, type Dispatch, ReactNode, useState } from 'react';
+import React, { createContext, type Dispatch, ReactNode, useEffect, useState } from 'react';
 import uuid from 'react-native-uuid';
 import { fetch } from 'expo/fetch';
 import { generateAPIUrl } from '@/utils/generateApiUrl';
@@ -68,6 +68,11 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
 
   console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
 
+  useEffect(() => {
+    generateTextByAi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // generate a text by AI following a model chosen by user
   const generateTextByAi = async () => {
     switch (textModel) {
@@ -102,8 +107,6 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: '' }],
       }));
 
-      setLoading(true);
-
       const apiUrl = generateAPIUrl('/api/chat') || '';
       const res = await fetch(apiUrl, {
         method: 'POST',
@@ -122,11 +125,11 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
 
       while (true) {
         const { done, value } = await reader.read();
+
         if (done) break;
 
         const chunkText = new TextDecoder().decode(value, { stream: true });
         fullText += chunkText;
-        console.log(chunkText);
 
         // Update UI with each chunk as it arrives
         setGeneratedMessages((prevMessages) => {
