@@ -85,54 +85,74 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
+      // Append the user message
+      setGeneratedMessages((prevMessages) => ({
+        uuid: uuid.v4(),
+        createdAt: formatDate(date),
+        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
+      }));
+
+      // Clear input field immediately
+      setInput('');
+
+      // Create initial empty assistant message
+      setGeneratedMessages((prevMessages) => ({
+        uuid: prevMessages.uuid,
+        createdAt: formatDate(date),
+        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: '' }],
+      }));
+
+      setLoading(true);
+
       const apiUrl = generateAPIUrl('/api/chat') || '';
-      const response = await fetch(apiUrl, {
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ model: textModel, prompt: input }),
       });
-      console.log(await response.body);
-      if (!response.ok) {
-        console.error('Error', response.status);
-        return;
+
+      if (!res.ok || !res.body) {
+        throw new Error(`API error: ${res.status}`);
       }
 
-      if (response.body) {
-        const reader = response.body.getReader();
-        const textDecoder = new TextDecoder();
-        let accumulatedText = '';
+      const reader = res.body.getReader();
+      let fullText = '';
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-          const chunk = textDecoder.decode(value, { stream: true });
-          accumulatedText += chunk;
+        const chunkText = new TextDecoder().decode(value, { stream: true });
+        fullText += chunkText;
+        console.log(chunkText);
 
-          console.log('Received chunk', chunk);
-        }
-        console.log('Final completed text', accumulatedText);
+        // Update UI with each chunk as it arrives
+        setGeneratedMessages((prevMessages) => {
+          const messages = [...prevMessages.message];
+          // Update the last message (assistant's message)
+          messages[messages.length - 1] = {
+            role: 'assistant',
+            content: fullText,
+          };
+
+          return {
+            uuid: prevMessages.uuid,
+            createdAt: prevMessages.createdAt,
+            message: messages,
+          };
+        });
       }
-
-      // // Append the new user message while keeping previous messages
-      // setGeneratedMessages((prevMessages) => ({
-      //   uuid: uuid.v4(),
-      //   createdAt: formatDate(date),
-      //   message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
-      // }));
-
-      // const response = await cloudflareTextGenerator([...(generatedMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }], textModel);
-
-      // console.log(response);
-
-      // // Append OpenAI's response to the chat history
-      // setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: response as string }] }));
-
-      setLoading(false);
     } catch (error) {
-      console.error('Response body is not available', error);
+      console.error('Error processing AI response:', error);
+
+      // Add an error message if needed
+      setGeneratedMessages((prevMessages) => ({
+        uuid: prevMessages.uuid,
+        createdAt: formatDate(date),
+        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: 'Sorry, there was an error processing your request.' }],
+      }));
     } finally {
       setLoading(false);
     }
