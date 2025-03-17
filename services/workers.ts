@@ -31,12 +31,10 @@ export default {
       prompt,
     });
     return result.toTextStreamResponse({
-      // add these headers to ensure that the
-      // response is chunked and streamed
       headers: {
-        'Content-Type': 'text/x-unknown',
-        'content-encoding': 'identity',
-        'transfer-encoding': 'chunked',
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
       },
     });
   },
