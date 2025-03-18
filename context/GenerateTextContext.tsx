@@ -114,7 +114,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         },
         body: JSON.stringify({
           model: textModel,
-          messages: generatedMessages.message,
+          messages: [...generatedMessages.message, { role: 'user', content: input.trim() }],
           prompt: input,
         }),
       });
