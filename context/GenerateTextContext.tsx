@@ -112,7 +112,11 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ model: textModel, messages: generatedMessages.message, prompt: input }),
+        body: JSON.stringify({
+          model: textModel,
+          messages: generatedMessages.message,
+          prompt: input,
+        }),
       });
 
       console.log(res);
@@ -124,10 +128,9 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       const reader = res.body.getReader();
 
       let fullText = '';
-      console.log(fullText);
+
       while (true) {
         const { done, value } = await reader.read();
-        console.log(value);
 
         if (done) break;
 
