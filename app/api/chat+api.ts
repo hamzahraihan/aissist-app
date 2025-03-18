@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
-// import OpenAI from 'openai';
 import { streamText, CoreMessage } from 'ai';
+// import OpenAI from 'openai';
 // import { ChatCompletionMessageParam } from 'openai/resources';
 // const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
@@ -46,7 +46,6 @@ export async function POST(req: Request) {
             // Split the text into lines
             const lines = text.split('\n');
 
-            // Process each line
             for (const line of lines) {
               // Check if the line starts with a digit followed by a colon (e.g., "0:")
               if (/^\d:/.test(line)) {
