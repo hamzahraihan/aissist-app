@@ -1,13 +1,11 @@
-// import { fetch } from 'expo/fetch';
-import { generateAPIUrl } from '@/utils/generateApiUrl';
-import OpenAI from 'openai';
+// import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-
-const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+// const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
 export async function POST(req: Request) {
-  const body: { model: any; prompt: ChatCompletionMessageParam[] } = await req.json();
-  const { model, prompt } = body;
+  const body: { model: any; messages: ChatCompletionMessageParam[]; prompt: string } = await req.json();
+  const { model, messages, prompt } = body;
+  console.log('🚀 ~ POST ~ prompt:', prompt);
 
   if (!prompt) {
     return new Response('No prompt provided', { status: 400 });
@@ -15,7 +13,7 @@ export async function POST(req: Request) {
 
   try {
     if (model !== 'gpt-4o-mini') {
-      const response = await fetch(generateAPIUrl(process.env.EXPO_PUBLIC_API_BASE_URL) || '', {
+      const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_WORKERS_URL || '', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,22 +29,21 @@ export async function POST(req: Request) {
         },
       });
     } else {
-      // Setup streaming response
-      const encoder = new TextEncoder();
-      const stream = new TransformStream();
-      const writer = stream.writable.getWriter();
-
-      // Chat stream
-      const completion = openai.beta.chat.completions.stream({
-        model: 'gpt-4o-2024-11-20',
-        messages: prompt,
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          stream: true,
+        }),
       });
 
-      completion.on('content.delta', async ({ parsed }) => await writer.write(encoder.encode(JSON.stringify(parsed))));
-      completion.on('content.done', async () => await writer.close());
-
       // Return the readable stream
-      return new Response(stream.readable, {
+      return new Response(response.body, {
         headers: {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
