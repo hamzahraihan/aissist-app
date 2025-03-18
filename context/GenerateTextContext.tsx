@@ -64,26 +64,25 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
-  console.log('🚀 ~ GenerateTextProvider ~ chatHistory:', chatHistory);
-
-  console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
+  // console.log('🚀 ~ GenerateTextProvider ~ chatHistory:', chatHistory);
+  // console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
 
   useEffect(() => {
     generateTextByAi();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // generate a text by AI following a model chosen by user
-  const generateTextByAi = async () => {
-    switch (textModel) {
-      case 'gpt-4o-mini':
-        return generateTextFromOpenAI();
-      default:
-        return generateTextFromClouflare();
-    }
-  };
+  // // generate a text by AI following a model chosen by user
+  // const generateTextByAi = async () => {
+  //   switch (textModel) {
+  //     case 'gpt-4o-mini':
+  //       return generateTextFromOpenAI();
+  //     default:
+  //       return generateTextFromClouflare();
+  //   }
+  // };
 
-  const generateTextFromClouflare = async () => {
+  const generateTextByAi = async () => {
     try {
       if (!input.trim()) {
         console.log('Input is empty');
@@ -94,7 +93,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       setGeneratedMessages((prevMessages) => ({
         uuid: uuid.v4(),
         createdAt: formatDate(date),
-        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'user', content: input.trim() }],
+        message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }],
       }));
 
       // Clear input field immediately
@@ -104,7 +103,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       setGeneratedMessages((prevMessages) => ({
         uuid: prevMessages.uuid,
         createdAt: formatDate(date),
-        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: '' }],
+        message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'assistant', content: '' }],
       }));
 
       const apiUrl = generateAPIUrl('/api/chat') || '';
@@ -116,15 +115,19 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         body: JSON.stringify({ model: textModel, prompt: input }),
       });
 
+      console.log(res);
+
       if (!res.ok || !res.body) {
         throw new Error(`API error: ${res.status}`);
       }
 
       const reader = res.body.getReader();
+      console.log(reader);
       let fullText = '';
 
       while (true) {
         const { done, value } = await reader.read();
+        console.log(value);
 
         if (done) break;
 
@@ -154,47 +157,47 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       setGeneratedMessages((prevMessages) => ({
         uuid: prevMessages.uuid,
         createdAt: formatDate(date),
-        message: [...(prevMessages.message as AIRunParams.Messages.Message[]), { role: 'assistant', content: 'Sorry, there was an error processing your request.' }],
+        message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'assistant', content: 'Sorry, there was an error processing your request.' }],
       }));
     } finally {
       setLoading(false);
     }
   };
 
-  const generateTextFromOpenAI = async (): Promise<void> => {
-    setLoading(true);
-    try {
-      if (!input.trim()) {
-        console.log('Input is empty');
-        return;
-      }
+  // const generateTextFromOpenAI = async (): Promise<void> => {
+  //   setLoading(true);
+  //   try {
+  //     if (!input.trim()) {
+  //       console.log('Input is empty');
+  //       return;
+  //     }
 
-      console.log('User input:', input);
+  //     console.log('User input:', input);
 
-      // Append the new user message while keeping previous messages
-      setGeneratedMessages((prevMessages) => ({ uuid: uuid.v4(), createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }] }));
+  //     // Append the new user message while keeping previous messages
+  //     setGeneratedMessages((prevMessages) => ({ uuid: uuid.v4(), createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }] }));
 
-      setInput(''); // Clear input field
+  //     setInput(''); // Clear input field
 
-      // Get response from OpenAI
-      const responseText = await openAiMessageService([...(generatedMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }]);
+  //     // Get response from OpenAI
+  //     const responseText = await openAiMessageService([...(generatedMessages.message as ChatCompletionMessageParam[]), { role: 'user', content: input.trim() }]);
 
-      if (!responseText) {
-        console.warn('No response received from OpenAI.');
-        return;
-      }
+  //     if (!responseText) {
+  //       console.warn('No response received from OpenAI.');
+  //       return;
+  //     }
 
-      // Append OpenAI's response to the chat history
-      setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'assistant', content: responseText }] }));
+  //     // Append OpenAI's response to the chat history
+  //     setGeneratedMessages((prevMessages) => ({ uuid: prevMessages.uuid, createdAt: formatDate(date), message: [...(prevMessages.message as ChatCompletionMessageParam[]), { role: 'assistant', content: responseText }] }));
 
-      console.log('OpenAI Response:', responseText);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error generating text from OpenAI:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     console.log('OpenAI Response:', responseText);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error('Error generating text from OpenAI:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const saveChatHistory = () => {
     if (!generatedMessages.uuid) {
