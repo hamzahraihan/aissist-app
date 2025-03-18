@@ -65,7 +65,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
 
   const [chatHistory, setChatHistory] = useState<ChatMessageProps[]>([]);
   // console.log('🚀 ~ GenerateTextProvider ~ chatHistory:', chatHistory);
-  // console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
+  console.log('🚀 ~ GenerateTextProvider ~ generatedMessages:', generatedMessages);
 
   useEffect(() => {
     generateTextByAi();
@@ -112,7 +112,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ model: textModel, prompt: input }),
+        body: JSON.stringify({ model: textModel, messages: generatedMessages.message, prompt: input }),
       });
 
       console.log(res);
@@ -122,9 +122,9 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const reader = res.body.getReader();
-      console.log(reader);
-      let fullText = '';
 
+      let fullText = '';
+      console.log(fullText);
       while (true) {
         const { done, value } = await reader.read();
         console.log(value);
