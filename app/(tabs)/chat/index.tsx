@@ -68,7 +68,7 @@ export default function ChatScreen() {
       <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
-        <CustomButton disabled={!input} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextByAi()}>
+        <CustomButton disabled={!input || loading} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextByAi()}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </View>
