@@ -1,5 +1,3 @@
-import { cloudflareTextGenerator } from '@/services/cloudflare';
-import { openAiMessageService } from '@/services/openai';
 import { AIRunParams } from 'cloudflare/resources/ai/ai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import React, { createContext, type Dispatch, ReactNode, useEffect, useState } from 'react';
@@ -83,6 +81,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   // };
 
   const generateTextByAi = async () => {
+    setLoading(true);
     try {
       if (!input.trim()) {
         console.log('Input is empty');
