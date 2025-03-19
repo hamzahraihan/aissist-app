@@ -76,8 +76,12 @@ export default function ChatLayout() {
             ),
             headerRightContainerStyle: { padding: 10 },
             headerTitle: () => (
-              <Pressable onPress={handlePresentModalPress}>
-                <ThemedText>Chat</ThemedText>
+              <Pressable
+                onPress={handlePresentModalPress}
+                style={{ borderColor: 'black', borderWidth: 1, borderRadius: 8, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4, paddingLeft: 4, paddingRight: 4 }}
+              >
+                <ThemedText>{textModel}</ThemedText>
+                <MaterialIcons name="assistant" size={18} />
               </Pressable>
             ),
             headerTitleAlign: 'center',
