@@ -11,6 +11,11 @@ export type ChatMessageProps = {
   createdAt: string;
 };
 
+export type ChatModelProps = {
+  name: string;
+  model: string;
+};
+
 export const GenerateTextContext = createContext<{
   generateTextByAi: () => Promise<void>;
   loading: boolean;
@@ -21,8 +26,8 @@ export const GenerateTextContext = createContext<{
   chatHistory: ChatMessageProps[];
   setChatHistory: Dispatch<React.SetStateAction<ChatMessageProps[]>>;
   saveChatHistory: () => void;
-  setTextModel: React.Dispatch<React.SetStateAction<string>>;
-  textModel: string;
+  setTextModel: React.Dispatch<React.SetStateAction<ChatModelProps>>;
+  textModel: ChatModelProps;
 }>({
   generateTextByAi: async () => {},
   loading: false,
@@ -34,13 +39,13 @@ export const GenerateTextContext = createContext<{
   setChatHistory: () => {},
   saveChatHistory: () => {},
   setTextModel: () => {},
-  textModel: '',
+  textModel: { name: '', model: '' },
 });
 
 export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [textModel, setTextModel] = useState<string>('gpt-4o-mini');
+  const [textModel, setTextModel] = useState<ChatModelProps>({ name: 'gpt-4o-mini', model: 'gpt-4o-mini' });
 
   const date = Date.now();
 
@@ -112,7 +117,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: textModel,
+          model: textModel.model,
           messages: [...generatedMessages.message, { role: 'user', content: input.trim() }],
           prompt: input,
         }),
