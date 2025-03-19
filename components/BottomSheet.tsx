@@ -15,6 +15,7 @@ const CustomBottomSheet = forwardRef(function CustomBottomSheet({ children }: { 
       backgroundStyle={{ backgroundColor: colorScheme === 'light' ? colors.lightWhite : colors.lightBlack }}
       style={[styles.sheetContainer, styles.sheetContainerShadow]}
       backdropComponent={BottomSheetBackdrop}
+      handleIndicatorStyle={{ backgroundColor: 'gray' }}
       snapPoints={[200, '40%']}
       enablePanDownToClose={true}
       enableDynamicSizing={false}
