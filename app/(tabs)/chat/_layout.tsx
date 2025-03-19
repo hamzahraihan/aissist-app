@@ -12,6 +12,7 @@ import CustomBottomSheet from '@/components/BottomSheet';
 import { TEXT_MODELS } from '@/constants/ai-text-models';
 import { ThemedView } from '@/components/ThemedView';
 import { useCallback, useRef } from 'react';
+import { CustomButton } from '@/components/Button';
 
 function CustomDrawerContent(props: any) {
   const { chatHistory, setGeneratedMessages } = useGenerateText();
@@ -75,14 +76,11 @@ export default function ChatLayout() {
               </Pressable>
             ),
             headerRightContainerStyle: { padding: 10 },
-            headerTitle: () => (
-              <Pressable
-                onPress={handlePresentModalPress}
-                style={{ borderColor: 'black', borderWidth: 1, borderRadius: 8, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4, paddingLeft: 4, paddingRight: 4 }}
-              >
-                <ThemedText>{textModel}</ThemedText>
-                <MaterialIcons name="assistant" size={18} />
-              </Pressable>
+            headerTitle: (props) => (
+              <CustomButton onPress={handlePresentModalPress} style={styles.headerTitle}>
+                <ThemedText>{textModel.name}</ThemedText>
+                <MaterialIcons color={colorScheme === 'dark' ? 'white' : 'black'} name="assistant" size={18} />
+              </CustomButton>
             ),
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -95,12 +93,12 @@ export default function ChatLayout() {
             },
           }}
         />
-        <CustomBottomSheet ref={bottomSheetModalTextRef}>
+        <CustomBottomSheet ref={bottomSheetModalTextRef} >
           {TEXT_MODELS.map((item) => (
-            <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel(item.model)}>
-              <ThemedView onSelected={item.model === textModel} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel ? '#272727' : '' }]}>
+            <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ name: item.name, model: item.model })}>
+              <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
                 <ThemedText
-                  onSelected={item.model === textModel}
+                  onSelected={item.model === textModel.model}
                   style={{
                     textAlign: 'center',
                   }}
@@ -121,5 +119,17 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     borderRadius: 12,
+  },
+  headerTitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 4,
+    borderRadius: 8,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 3,
+    paddingBottom: 3,
   },
 });
