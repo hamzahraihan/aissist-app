@@ -38,7 +38,7 @@ export default function TabLayout() {
           headerLeftContainerStyle: { padding: 10 },
           headerRightContainerStyle: { padding: 10 },
           headerTitleStyle: {
-            fontSize: 18,
+            fontSize: 16,
             fontFamily: fonts.regularFont,
           },
           headerStyle: {
