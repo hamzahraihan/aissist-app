@@ -80,7 +80,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       console.log(response);
       const image = response.image || response;
 
-      console.log(image);
+      setInput('');
 
       if (image === undefined) {
         setGeneratedImage((prev) => prev);
