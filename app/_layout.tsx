@@ -12,22 +12,32 @@ import {
   Poppins_900Black,
   useFonts,
 } from '@expo-google-fonts/poppins';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
+import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+function AppContent() {
+  const { theme } = useCustomTheme();
+  return (
+    <ThemeProvider value={theme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+      </Stack>
+      <StatusBar style="auto" />
+    </ThemeProvider>
+  );
+}
 
+export default function RootLayout() {
   const [loaded, error] = useFonts({
     Poppins_100Thin,
     Poppins_200ExtraLight,
@@ -53,18 +63,15 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <GenerateTextProvider>
-        <BottomSheetProvider>
-          <GenerateImageProvider>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(tabs)" />
-              </Stack>
-              <StatusBar style="auto" />
-            </ThemeProvider>
-          </GenerateImageProvider>
-        </BottomSheetProvider>
-      </GenerateTextProvider>
+      <CustomThemeProvider>
+        <GenerateTextProvider>
+          <BottomSheetProvider>
+            <GenerateImageProvider>
+              <AppContent />
+            </GenerateImageProvider>
+          </BottomSheetProvider>
+        </GenerateTextProvider>
+      </CustomThemeProvider>
     </GestureHandlerRootView>
   );
 }
