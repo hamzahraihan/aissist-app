@@ -76,8 +76,8 @@ export default function ImagesScreen() {
       ) : (
         <ScrollView>
           {generatedImage?.map((item: any) => (
-            <TouchableOpacity disabled={loading} onPress={() => handleDownloadImage(item?.images)}>
-              <View style={{ display: 'flex', alignItems: 'flex-end' }} key={item?.requestId}>
+            <TouchableOpacity key={item?.requestId} disabled={loading} onLongPress={() => handleDownloadImage(item?.images)}>
+              <View style={{ display: 'flex', alignItems: 'flex-end' }}>
                 <ThemedView type="assistant" style={styles.prompt}>
                   <ThemedText type="subtitle">{item?.input}</ThemedText>
                 </ThemedView>
