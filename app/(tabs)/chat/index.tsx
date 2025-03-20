@@ -33,7 +33,7 @@ export default function ChatScreen() {
         {generatedMessages?.message?.length <= 1 ? (
           <View style={{ padding: 18 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
-              Hi!
+              Hello!
             </ThemedText>
             {promptList.map((item) => (
               <TouchableOpacity key={item.prompt} onPress={() => setInput(item.prompt)}>
@@ -48,7 +48,6 @@ export default function ChatScreen() {
             {generatedMessages?.message?.slice(1).map((item, index) => (
               <ThemedView type={item.role as any} style={{ padding: 18 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
-                {item.role === 'assistant' && <Image style={styles.image} source={require('@/assets/images/brainbox.png')} />}
                 <AIResponse>{item.content}</AIResponse>
               </ThemedView>
             ))}
@@ -56,7 +55,7 @@ export default function ChatScreen() {
         )}
 
         {loading && (
-          <ThemedView type="assistant" style={{ padding: 24, display: 'flex', gap: 8 }}>
+          <ThemedView type="assistant" style={{ padding: 10, display: 'flex', gap: 8 }}>
             <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
             <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
             <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
@@ -65,13 +64,13 @@ export default function ChatScreen() {
         )}
       </ScrollView>
 
-      <View style={styles.inputContainer}>
-        <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
+      <ThemedView style={styles.inputContainer}>
+        <CustomTextInput style={{ width: '90%' }} multiline={true} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
-        <CustomButton disabled={!input || loading} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateTextByAi()}>
+        <CustomButton disabled={!input || loading} style={styles.button} onPress={() => generateTextByAi()}>
           <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
-      </View>
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -90,14 +89,17 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   inputContainer: {
+    display: 'flex',
     position: 'relative',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 10,
     marginBottom: 20,
     marginLeft: 18,
     marginRight: 18,
+    borderWidth: 2,
+    borderRadius: 12,
+    padding: 10,
   },
   card: {
     marginBottom: 10,
@@ -106,17 +108,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30,
   },
-  textInput: {
-    flex: 1,
-    borderWidth: 2,
-    borderRadius: 12,
-    padding: 12,
-  },
   button: {
-    position: 'absolute',
+    // position: 'absolute',
     backgroundColor: 'transparent',
-    right: 12,
-    top: 15,
+    marginTop: 'auto',
+    // right: 12,
+    // top: 15,
   },
   image: {
     flex: 1,
