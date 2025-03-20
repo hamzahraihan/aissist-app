@@ -12,6 +12,7 @@ export function ThemedView({ style, lightColor, darkColor, onSelected, type = 'u
   let backgroundColor = useTheme({ light: lightColor, dark: darkColor }, 'backgroundColor');
   const assistantBackground = useTheme({ light: lightColor, dark: darkColor }, 'cardColor');
   const userBackground = useTheme({ light: lightColor, dark: darkColor }, 'backgroundColor');
+  const borderColor = useTheme({ light: lightColor, dark: darkColor }, 'borderColor');
 
   const styles = StyleSheet.create({
     assistant: {
@@ -27,6 +28,7 @@ export function ThemedView({ style, lightColor, darkColor, onSelected, type = 'u
       style={[
         {
           backgroundColor,
+          borderColor,
         },
         type === 'assistant' ? styles.assistant : styles.user,
         style,
