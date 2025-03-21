@@ -4,7 +4,7 @@ import { cloudflareImageGenerator } from '@/services/cloudflare';
 import { Image } from '@fal-ai/client/endpoints';
 import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
 import uuid from 'react-native-uuid';
 
 export const GenerateImageContext = createContext<{
@@ -90,7 +90,9 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     } catch (error: any) {
       console.error(error);
-      ToastAndroid.show('Failed to generate image, try again with different models', ToastAndroid.LONG);
+      if (Platform.OS !== 'web') {
+        ToastAndroid.show('Failed to generate image, try again with different models', ToastAndroid.LONG);
+      }
     } finally {
       setLoading(false);
     }
