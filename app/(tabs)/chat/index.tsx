@@ -2,7 +2,7 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { StyleSheet, useColorScheme, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
 import { useGenerateText } from '@/hooks/useGenerateText';
@@ -12,6 +12,7 @@ import { Card } from '@/components/Card';
 import { CustomTextInput } from '@/components/TextInput';
 import { CustomButton } from '@/components/Button';
 import { AIResponse } from '@/components/AIResponse';
+import { useCustomTheme } from '@/context/ThemeContext';
 
 const promptList: { prompt: string }[] = [
   { prompt: 'If you could instantly master any skill, but only use it for one day each year, what skill would you choose and why?' },
@@ -21,7 +22,7 @@ const promptList: { prompt: string }[] = [
 ];
 
 export default function ChatScreen() {
-  const colorScheme: any = useColorScheme();
+  const { themeMode } = useCustomTheme();
 
   const [, setInputHeight] = useState<number>(0);
 
@@ -38,7 +39,9 @@ export default function ChatScreen() {
             {promptList.map((item) => (
               <TouchableOpacity key={item.prompt} onPress={() => setInput(item.prompt)}>
                 <Card style={styles.card}>
-                  <ThemedText style={{ textAlign: 'center' }}>{item.prompt}</ThemedText>
+                  <ThemedText selectable style={{ textAlign: 'center' }}>
+                    {item.prompt}
+                  </ThemedText>
                 </Card>
               </TouchableOpacity>
             ))}
@@ -48,7 +51,9 @@ export default function ChatScreen() {
             {generatedMessages?.message?.slice(1).map((item, index) => (
               <ThemedView type={item.role as any} style={{ padding: 18 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
-                <AIResponse>{item.content}</AIResponse>
+                <Text selectable>
+                  <AIResponse>{item.content}</AIResponse>
+                </Text>
               </ThemedView>
             ))}
           </>
@@ -56,10 +61,10 @@ export default function ChatScreen() {
 
         {loading && (
           <ThemedView type="assistant" style={{ padding: 10, display: 'flex', gap: 8 }}>
-            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
-            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
-            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
-            <Skeleton colorMode={colorScheme} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
+            <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
           </ThemedView>
         )}
       </ScrollView>
@@ -68,7 +73,7 @@ export default function ChatScreen() {
         <CustomTextInput style={{ width: '90%' }} multiline={true} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
         <CustomButton disabled={!input || loading} style={styles.button} onPress={() => generateTextByAi()}>
-          <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
+          <Ionicons name="send" color={themeMode === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
       </ThemedView>
     </ThemedView>
