@@ -2,7 +2,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Pressable, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
 import { IMAGE_MODELS } from '@/constants/ai-image-model';
@@ -10,9 +10,10 @@ import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
 import CustomBottomSheet from '@/components/BottomSheet';
 import { useCallback, useRef } from 'react';
+import { useCustomTheme } from '@/context/ThemeContext';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { themeMode } = useCustomTheme();
   // ref
   const bottomSheetModalImageRef = useRef<BottomSheetModal>(null);
 
@@ -30,7 +31,7 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           tabBarButton: (props) => <Pressable {...props} android_ripple={{ color: 'transparent' }} />,
-          tabBarActiveTintColor: colorScheme === 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
+          tabBarActiveTintColor: themeMode === 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
           tabBarStyle: { height: 70 },
           tabBarIconStyle: { height: 40 },
           headerShadowVisible: false,
@@ -42,7 +43,7 @@ export default function TabLayout() {
             fontFamily: fonts.regularFont,
           },
           headerStyle: {
-            backgroundColor: colorScheme === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
+            backgroundColor: themeMode === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
           },
         }}
       >
