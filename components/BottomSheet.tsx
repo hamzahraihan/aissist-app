@@ -3,16 +3,17 @@ import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@g
 import { ThemedText } from './ThemedText';
 import { ForwardedRef, forwardRef, ReactNode } from 'react';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { Platform, StyleSheet, useColorScheme } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { colors } from '@/constants/theme';
+import { useCustomTheme } from '@/context/ThemeContext';
 
 const CustomBottomSheet = forwardRef(function CustomBottomSheet({ children }: { children: ReactNode }, ref: ForwardedRef<BottomSheetModal<any>>) {
-  const colorScheme = useColorScheme();
+  const { themeMode } = useCustomTheme();
   const { handleSheetChanges } = useBottomSheet();
   return (
     <BottomSheetModal
       index={1}
-      backgroundStyle={{ backgroundColor: colorScheme === 'light' ? colors.lightWhite : colors.lightBlack }}
+      backgroundStyle={{ backgroundColor: themeMode === 'light' ? colors.lightWhite : colors.lightBlack }}
       style={[styles.sheetContainer, styles.sheetContainerShadow]}
       backdropComponent={BottomSheetBackdrop}
       handleIndicatorStyle={{ backgroundColor: 'gray' }}
