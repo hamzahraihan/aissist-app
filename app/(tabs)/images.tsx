@@ -1,7 +1,7 @@
 import { CustomButton } from '@/components/Button';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Image, StyleSheet, ToastAndroid, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { Image, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import * as FileSystem from 'expo-file-system';
 import { CustomTextInput } from '@/components/TextInput';
@@ -14,13 +14,14 @@ import { Skeleton } from 'moti/skeleton';
 import { renderIcon } from '@/utils/render-icon';
 import uuid from 'react-native-uuid';
 import * as MediaLibrary from 'expo-media-library';
+import { useCustomTheme } from '@/context/ThemeContext';
 
 const blurhash = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 export default function ImagesScreen() {
   const { generateImageWithCloudflare, imageAiModels, generatedImage, loading, setInput, input } = useGenerateImage();
-  const [inputHeight, setInputHeight] = useState<number>(0);
-  const colorScheme: any = useColorScheme();
+  const [, setInputHeight] = useState<number>(0);
+  const { themeMode } = useCustomTheme();
 
   const handleDownloadImage = async (imageData: string) => {
     const fileUri = FileSystem.documentDirectory + uuid.v4() + '.png';
@@ -68,7 +69,7 @@ export default function ImagesScreen() {
             props: {
               width: 200,
               height: 100,
-              fill: colorScheme === 'dark' ? '#414141' : '#adadad',
+              fill: themeMode === 'dark' ? '#414141' : '#adadad',
             },
           })}
           <ThemedText type="subtitle">Turn your imagination to imagery</ThemedText>
@@ -81,7 +82,7 @@ export default function ImagesScreen() {
                 <ThemedView type="assistant" style={styles.prompt}>
                   <ThemedText type="subtitle">{item?.input}</ThemedText>
                 </ThemedView>
-                <ThemedView style={[styles.imageCard, { borderColor: colorScheme === 'dark' ? colors.lightBlack : colors.whitesmoke }]}>
+                <ThemedView style={[styles.imageCard, { borderColor: themeMode === 'dark' ? colors.lightBlack : colors.whitesmoke }]}>
                   {item?.images[0]?.url ? (
                     <ExpoImage style={{ flex: 1, resizeMode: 'cover', width: '100%', height: 'auto' }} source={item?.images[0]?.url} placeholder={{ blurhash }} contentFit="cover" />
                   ) : (
@@ -96,19 +97,26 @@ export default function ImagesScreen() {
           ))}
           {loading && (
             <View style={{ paddingTop: 20 }}>
-              <Skeleton colorMode={colorScheme} radius={14} height={200} width={'100%'} />
+              <Skeleton colorMode={themeMode} radius={14} height={200} width={'100%'} />
             </View>
           )}
         </ScrollView>
       )}
 
-      <View style={styles.inputContainer}>
+      <ThemedView style={styles.inputContainer}>
+        <CustomTextInput style={{ width: '90%' }} multiline={true} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
+
+        <CustomButton disabled={!input || loading} style={styles.button} onPress={() => generateImageWithCloudflare(input, imageAiModels)}>
+          <Ionicons name="send" color={themeMode === 'light' ? 'dark' : 'white'} size={18} />
+        </CustomButton>
+      </ThemedView>
+      {/* <View style={styles.inputContainer}>
         <CustomTextInput multiline={true} style={styles.textInput} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="Make something unique!" />
 
         <CustomButton disabled={!input || loading} style={[styles.button, { height: Math.max(35, inputHeight) }]} onPress={() => generateImageWithCloudflare(input, imageAiModels)}>
-          <Ionicons name="send" color={colorScheme === 'light' ? 'dark' : 'white'} size={18} />
+          <Ionicons name="send" color={themeMode === 'light' ? 'dark' : 'white'} size={18} />
         </CustomButton>
-      </View>
+      </View> */}
     </ThemedView>
   );
 }
@@ -135,29 +143,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     overflow: 'hidden',
   },
-  textInput: {
-    flex: 1,
-    borderWidth: 2,
-    borderRadius: 12,
-    padding: 12,
+  button: {
+    backgroundColor: 'transparent',
+    marginTop: 'auto',
   },
   inputContainer: {
+    display: 'flex',
     position: 'relative',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 10,
+    borderWidth: 2,
+    borderRadius: 12,
+    padding: 10,
   },
   prompt: {
     width: '95%',
     borderRadius: 12,
     padding: 12,
     marginTop: 10,
-  },
-  button: {
-    position: 'absolute',
-    backgroundColor: 'transparent',
-    right: 12,
-    top: 15,
   },
 });
