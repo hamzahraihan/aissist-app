@@ -1,7 +1,7 @@
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
 import { StyleSheet, useColorScheme } from 'react-native';
-import Markdown, { MarkdownProps } from 'react-native-markdown-display';
+import Markdown, { MarkdownIt, MarkdownProps } from 'react-native-markdown-display';
 
 export type AIResponseProps = MarkdownProps & {
   lightColor?: string;
@@ -242,5 +242,5 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
     },
   });
 
-  return <Markdown style={markdownStyles} {...props} />;
+  return <Markdown style={markdownStyles} {...props} markdownit={MarkdownIt({ typographer: true })} />;
 }
