@@ -2,7 +2,7 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
 import { useGenerateText } from '@/hooks/useGenerateText';
@@ -47,16 +47,14 @@ export default function ChatScreen() {
             ))}
           </View>
         ) : (
-          <>
+          <Text selectable>
             {generatedMessages?.message?.slice(1).map((item, index) => (
               <ThemedView type={item.role as any} style={{ padding: 18 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
-                <Text selectable>
-                  <AIResponse>{item.content}</AIResponse>
-                </Text>
+                <AIResponse>{item.content}</AIResponse>
               </ThemedView>
             ))}
-          </>
+          </Text>
         )}
 
         {loading && (
@@ -69,13 +67,17 @@ export default function ChatScreen() {
         )}
       </ScrollView>
 
-      <ThemedView style={styles.inputContainer}>
-        <CustomTextInput style={{ width: '90%' }} multiline={true} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
+      {Platform.OS !== 'web' ? (
+        <ThemedView style={styles.inputContainer}>
+          <CustomTextInput style={{ width: '95%' }} multiline={true} onChangeText={setInput} onContentSizeChange={(event) => setInputHeight(event.nativeEvent.contentSize.height)} value={input} placeholder="How can I help you today?" />
 
-        <CustomButton disabled={!input || loading} style={styles.button} onPress={() => generateTextByAi()}>
-          <Ionicons name="send" color={themeMode === 'light' ? 'dark' : 'white'} size={18} />
-        </CustomButton>
-      </ThemedView>
+          <CustomButton disabled={!input || loading} style={styles.button} onPress={() => generateTextByAi()}>
+            <Ionicons name="send" color={themeMode === 'light' ? 'dark' : 'white'} size={18} />
+          </CustomButton>
+        </ThemedView>
+      ) : (
+        ''
+      )}
     </ThemedView>
   );
 }
