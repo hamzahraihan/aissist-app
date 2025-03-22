@@ -2,7 +2,7 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text, Platform } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
 import { useGenerateText } from '@/hooks/useGenerateText';
@@ -47,14 +47,15 @@ export default function ChatScreen() {
             ))}
           </View>
         ) : (
-          <Text selectable>
+          <>
             {generatedMessages?.message?.slice(1).map((item, index) => (
               <ThemedView type={item.role as any} style={{ padding: 18 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
+
                 <AIResponse>{item.content}</AIResponse>
               </ThemedView>
             ))}
-          </Text>
+          </>
         )}
 
         {loading && (
