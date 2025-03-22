@@ -123,8 +123,6 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
         }),
       });
 
-      console.log(res);
-
       if (!res.ok || !res.body) {
         throw new Error(`API error: ${res.status}`);
       }
