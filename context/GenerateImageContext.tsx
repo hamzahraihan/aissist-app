@@ -1,4 +1,5 @@
-import { cloudflareImageGenerator } from '@/services/cloudflare';
+// import { cloudflareImageGenerator } from '@/services/cloudflare';
+import { generateAPIUrl } from '@/utils/generateApiUrl';
 // import { generateImageFalAI } from '@/services/fal-ai';
 // import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
@@ -76,9 +77,23 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
         setGeneratedImage((prev) => prev);
         return;
       }
-      const response: any = await cloudflareImageGenerator(input, modelName);
-      console.log(response);
-      const image = response.image || response;
+
+      const response = await fetch(generateAPIUrl('/api/generateImage') || '', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: input,
+          modelName,
+        }),
+      });
+      // console.log('Response from fetch', await fetchRes.json());
+      const result: any = await response.json();
+      // const response: any = await cloudflareImageGenerator(input, modelName);
+      // const image = response.image || response;
+
+      const image = result.image || response;
 
       setInput('');
 
@@ -86,7 +101,15 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
         setGeneratedImage((prev) => prev);
       }
 
-      setGeneratedImage((prev) => [...prev, { source: 'cloudflare', input: input, images: `data:image/png;base64,${image}`, requestId: uuid.v4() }]);
+      setGeneratedImage((prev) => [
+        ...prev,
+        {
+          source: 'cloudflare',
+          input: input,
+          images: `data:image/png;base64,${image}`,
+          requestId: uuid.v4(),
+        },
+      ]);
       setLoading(false);
     } catch (error: any) {
       console.error(error);
