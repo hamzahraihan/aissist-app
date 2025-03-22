@@ -1,7 +1,10 @@
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
-import { StyleSheet, useColorScheme } from 'react-native';
-import Markdown, { MarkdownIt, MarkdownProps } from 'react-native-markdown-display';
+import { StyleSheet, Text, View } from 'react-native';
+import Markdown, { MarkdownIt, MarkdownProps, RenderRules } from 'react-native-markdown-display';
+import { useCustomTheme } from '@/context/ThemeContext';
+import SyntaxHighlighter from 'react-native-syntax-highlighter';
+import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 
 export type AIResponseProps = MarkdownProps & {
   lightColor?: string;
@@ -11,10 +14,27 @@ export type AIResponseProps = MarkdownProps & {
 
 export function AIResponse({ style, lightColor, darkColor, ...props }: AIResponseProps) {
   const color = useTheme({ light: lightColor, dark: darkColor }, 'textColor');
-  const secondaryTextColor = useTheme({ light: lightColor, dark: darkColor }, 'secondaryTextColor');
   const secondaryBackgroundColor = useTheme({ light: lightColor, dark: darkColor }, 'secondaryBackgroundColor');
 
-  const colorScheme = useColorScheme();
+  const { themeMode } = useCustomTheme();
+
+  const renderRules: Partial<RenderRules> = {
+    fence: (node: any, children, parent, styles) => {
+      console.log(node);
+      const language = node.sourceInfo?.trimStart() || 'javascript';
+      console.log(language);
+      const code = node.content || '';
+
+      return (
+        <View key={node.key} style={styles.fence}>
+          <SyntaxHighlighter language={language} style={themeMode === 'dark' ? atomOneDark : atomOneLight}>
+            {code}
+          </SyntaxHighlighter>
+          {language && <Text style={styles.fence_language_label}>{language}</Text>}
+        </View>
+      );
+    },
+  };
 
   // Create a merged style object - this is the key fix
   const markdownStyles = StyleSheet.create({
@@ -50,16 +70,26 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
     fence: {
       marginVertical: 12,
       marginHorizontal: 0,
-      padding: 16,
-      paddingVertical: 12,
-      color: colorScheme === 'light' ? secondaryTextColor : color,
+      padding: 0, // No padding as SyntaxHighlighter has its own padding
       backgroundColor: 'rgba(20, 20, 20, 0.95)', // Darker background for code blocks
       borderColor: 'rgba(255, 255, 255, 0.15)',
       borderWidth: 1,
       borderRadius: 6,
-      fontFamily: fonts.regularFont,
-      fontSize: 14, // Smaller text for code blocks
-      lineHeight: 20,
+      position: 'relative', // For positioning the language label
+    },
+
+    // Language label for code blocks
+    fence_language_label: {
+      position: 'absolute',
+      top: 4,
+      right: 8,
+      color: 'rgba(255, 255, 255, 0.6)',
+      fontSize: 12,
+      fontFamily: fonts.mediumFont,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: 4,
     },
 
     // Code block with language label
@@ -242,5 +272,5 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
     },
   });
 
-  return <Markdown style={markdownStyles} {...props} markdownit={MarkdownIt({ typographer: true })} />;
+  return <Markdown style={markdownStyles} rules={renderRules} {...props} markdownit={MarkdownIt({ typographer: true })} />;
 }
