@@ -1,7 +1,4 @@
-// import { cloudflareImageGenerator } from '@/services/cloudflare';
 import { generateAPIUrl } from '@/utils/generateApiUrl';
-// import { generateImageFalAI } from '@/services/fal-ai';
-// import { openAiGenerateImage } from '@/services/openai';
 import { Image } from '@fal-ai/client/endpoints';
 import { AIRunResponse } from 'cloudflare/resources/ai/ai';
 import { createContext, ReactNode, useState } from 'react';
