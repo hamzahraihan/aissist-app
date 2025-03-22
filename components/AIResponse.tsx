@@ -1,10 +1,12 @@
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View, Clipboard } from 'react-native';
 import Markdown, { MarkdownIt, MarkdownProps, RenderRules } from 'react-native-markdown-display';
 import { useCustomTheme } from '@/context/ThemeContext';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { ThemedText } from './ThemedText';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export type AIResponseProps = MarkdownProps & {
   lightColor?: string;
@@ -18,6 +20,10 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
 
   const { themeMode } = useCustomTheme();
 
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
+  };
+
   const renderRules: Partial<RenderRules> = {
     fence: (node: any, children, parent, styles) => {
       console.log(node);
@@ -30,7 +36,23 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
           <SyntaxHighlighter language={language} style={themeMode === 'dark' ? atomOneDark : atomOneLight}>
             {code}
           </SyntaxHighlighter>
-          {language && <Text style={styles.fence_language_label}>{language}</Text>}
+          {language && (
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignContent: 'center',
+                alignItems: 'center',
+                padding: 10,
+              }}
+            >
+              <ThemedText style={styles.fence_language_label}>{language}</ThemedText>
+              <Pressable android_ripple={{ color: '#77777761', radius: 18, borderless: true, foreground: true }} onPress={() => copyToClipboard(node.content)}>
+                <MaterialIcons name="content-copy" color="#fefefe" size={16} />
+              </Pressable>
+            </View>
+          )}
         </View>
       );
     },
@@ -75,21 +97,13 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
       borderColor: 'rgba(255, 255, 255, 0.15)',
       borderWidth: 1,
       borderRadius: 6,
-      position: 'relative', // For positioning the language label
     },
 
     // Language label for code blocks
     fence_language_label: {
-      position: 'absolute',
-      top: 4,
-      right: 8,
-      color: 'rgba(255, 255, 255, 0.6)',
       fontSize: 12,
       fontFamily: fonts.mediumFont,
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-      paddingHorizontal: 6,
-      paddingVertical: 2,
-      borderRadius: 4,
+      borderRadius: 6,
     },
 
     // Code block with language label
