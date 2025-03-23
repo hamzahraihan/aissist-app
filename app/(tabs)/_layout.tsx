@@ -3,27 +3,29 @@ import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
 import { IMAGE_MODELS } from '@/constants/ai-image-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
 import CustomBottomSheet from '@/components/BottomSheet';
-import { useCallback, useRef } from 'react';
 import { useCustomTheme } from '@/context/ThemeContext';
+import { useBottomSheet } from '@/hooks/useBottomSheet';
+import { TEXT_MODELS } from '@/constants/ai-text-models';
 
 export default function TabLayout() {
   const { themeMode } = useCustomTheme();
+  const { bottomSheetModalRef, handlePresentModalPress, setTypeModel, typeModel } = useBottomSheet();
   // ref
-  const bottomSheetModalImageRef = useRef<BottomSheetModal>(null);
+  // const bottomSheetModalImageRef = useRef<BottomSheetModal>(null);
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    // open bottom sheet modal
-    bottomSheetModalImageRef.current?.present();
-    // close bottom sheet modal
-    bottomSheetModalImageRef.current?.close();
-  }, []);
+  // // callbacks
+  // const handlePresentModalPress = useCallback(() => {
+  //   // open bottom sheet modal
+  //   bottomSheetModalImageRef.current?.present();
+  //   // close bottom sheet modal
+  //   bottomSheetModalImageRef.current?.close();
+  // }, []);
 
   const { setImageAiModels, imageAiModels } = useGenerateImage();
   return (
@@ -69,15 +71,25 @@ export default function TabLayout() {
             title: 'images',
             headerTitle: 'Images',
             tabBarIcon: ({ color }) => <Ionicons size={32} name="image" color={color} />,
-            headerRight: ({ tintColor }) => <MaterialIcons size={28} name="more-vert" color={tintColor} onPress={handlePresentModalPress} />,
+            headerRight: ({ tintColor }) => (
+              <MaterialIcons
+                size={28}
+                name="more-vert"
+                color={tintColor}
+                onPress={() => {
+                  setTypeModel('IMAGE_MODEL');
+                  handlePresentModalPress();
+                }}
+              />
+            ),
           }}
         />
 
         <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon: ({ color }) => <Ionicons size={32} name="settings" color={color} /> }} />
       </Tabs>
 
-      <CustomBottomSheet ref={bottomSheetModalImageRef}>
-        {IMAGE_MODELS.map((item) => (
+      <CustomBottomSheet ref={bottomSheetModalRef}>
+        {(typeModel === 'IMAGE_MODEL' ? IMAGE_MODELS : TEXT_MODELS).map((item) => (
           <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
             <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
               <ThemedText
