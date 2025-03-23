@@ -2,18 +2,15 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateText } from '@/hooks/useGenerateText';
 import { ThemedText } from '@/components/ThemedText';
 import { ChatMessageProps } from '@/context/GenerateTextContext';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import CustomBottomSheet from '@/components/BottomSheet';
-import { TEXT_MODELS } from '@/constants/ai-text-models';
-import { ThemedView } from '@/components/ThemedView';
-import { useCallback, useRef } from 'react';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { CustomButton } from '@/components/Button';
 import { useCustomTheme } from '@/context/ThemeContext';
+import { useBottomSheet } from '@/hooks/useBottomSheet';
 
 function CustomDrawerContent(props: any) {
   const { chatHistory, setGeneratedMessages } = useGenerateText();
@@ -53,16 +50,16 @@ function CustomDrawerContent(props: any) {
 export default function ChatLayout() {
   const { saveChatHistory } = useGenerateText();
   const { themeMode } = useCustomTheme();
-  const { textModel, setTextModel } = useGenerateText();
-
-  const bottomSheetModalTextRef = useRef<BottomSheetModal>(null);
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    // open bottom sheet modal
-    bottomSheetModalTextRef.current?.present();
-    // close bottom sheet modal
-    bottomSheetModalTextRef.current?.close();
-  }, []);
+  const { textModel } = useGenerateText();
+  const { handlePresentModalPress, setTypeModel } = useBottomSheet();
+  // const bottomSheetModalTextRef = useRef<BottomSheetModal>(null);
+  // // callbacks
+  // const handlePresentModalPress = useCallback(() => {
+  //   // open bottom sheet modal
+  //   bottomSheetModalTextRef.current?.present();
+  //   // close bottom sheet modal
+  //   bottomSheetModalTextRef.current?.close();
+  // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -78,7 +75,13 @@ export default function ChatLayout() {
             ),
             headerRightContainerStyle: { padding: 10 },
             headerTitle: (props) => (
-              <CustomButton onPress={handlePresentModalPress} style={styles.headerTitle}>
+              <CustomButton
+                onPress={() => {
+                  setTypeModel('TEXT_MODEL');
+                  handlePresentModalPress();
+                }}
+                style={styles.headerTitle}
+              >
                 <ThemedText>{textModel.name}</ThemedText>
                 <MaterialIcons color={themeMode === 'dark' ? 'white' : 'black'} name="assistant" size={18} />
               </CustomButton>
@@ -94,7 +97,7 @@ export default function ChatLayout() {
             },
           }}
         />
-        <CustomBottomSheet ref={bottomSheetModalTextRef}>
+        {/* <CustomBottomSheet ref={bottomSheetModalTextRef}>
           {TEXT_MODELS.map((item) => (
             <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ name: item.name, model: item.model })}>
               <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
@@ -109,7 +112,7 @@ export default function ChatLayout() {
               </ThemedView>
             </TouchableOpacity>
           ))}
-        </CustomBottomSheet>
+          </CustomBottomSheet> */}
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
