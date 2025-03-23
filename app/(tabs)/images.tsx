@@ -58,8 +58,6 @@ export default function ImagesScreen() {
     }
   };
 
-  console.log(loading);
-
   return (
     <ThemedView style={styles.container}>
       {!loading && generatedImage?.length === 0 ? (
