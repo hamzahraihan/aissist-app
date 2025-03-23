@@ -1,13 +1,22 @@
-import React, { createContext, ReactNode, useCallback, useRef } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useRef, useState } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-export const BottomSheetContext = createContext<{ handlePresentModalPress: () => void; handleSheetChanges: (index: number) => void; bottomSheetModalRef: any }>({
+export const BottomSheetContext = createContext<{
+  handlePresentModalPress: () => void;
+  handleSheetChanges: (index: number) => void;
+  bottomSheetModalRef: any;
+  typeModel: string;
+  setTypeModel: Dispatch<SetStateAction<string>>;
+}>({
   handlePresentModalPress: () => {},
   bottomSheetModalRef: () => {},
   handleSheetChanges: () => {},
+  typeModel: '',
+  setTypeModel: () => {},
 });
 
 export const BottomSheetProvider = ({ children }: { children: ReactNode }) => {
+  const [typeModel, setTypeModel] = useState<string>('');
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -23,5 +32,5 @@ export const BottomSheetProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // renders
-  return <BottomSheetContext.Provider value={{ handlePresentModalPress, handleSheetChanges, bottomSheetModalRef }}>{children}</BottomSheetContext.Provider>;
+  return <BottomSheetContext.Provider value={{ handlePresentModalPress, handleSheetChanges, bottomSheetModalRef, typeModel, setTypeModel }}>{children}</BottomSheetContext.Provider>;
 };
