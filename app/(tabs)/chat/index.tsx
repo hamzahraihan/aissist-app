@@ -23,9 +23,7 @@ const promptList: { prompt: string }[] = [
 
 export default function ChatScreen() {
   const { themeMode } = useCustomTheme();
-
   const [, setInputHeight] = useState<number>(0);
-
   const { generateTextByAi, setInput, input, loading, generatedMessages } = useGenerateText();
 
   return (
