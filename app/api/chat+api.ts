@@ -1,12 +1,14 @@
 import { openai } from '@ai-sdk/openai';
 import { streamText, CoreMessage } from 'ai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 // import OpenAI from 'openai';
 // import { ChatCompletionMessageParam } from 'openai/resources';
 // const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+const google = createGoogleGenerativeAI();
 
 export async function POST(req: Request) {
   const body: { model: any; messages: CoreMessage[]; prompt: string } = await req.json();
-  const { model, messages, prompt } = body;
+  const { type, model, messages, prompt } = body;
   console.log('🚀 ~ POST ~ prompt:', messages);
 
   if (!prompt) {
