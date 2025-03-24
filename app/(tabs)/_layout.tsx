@@ -5,13 +5,12 @@ import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Platform } from 'react-native';
-import { IMAGE_MODELS } from '@/constants/ai-image-model';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
 import CustomBottomSheet from '@/components/BottomSheet';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
-import { TEXT_MODELS } from '@/constants/ai-text-models';
+import { TEXT_MODELS, IMAGE_MODELS } from '@/constants/models';
 
 export default function TabLayout() {
   const { themeMode } = useCustomTheme();
