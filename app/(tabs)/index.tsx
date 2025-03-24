@@ -7,7 +7,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={{ paddingBottom: 34 }}>
-        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 33 }} type="title">
+        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
           Social Media
         </ThemedText>
         <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
@@ -23,7 +23,7 @@ export default function HomeScreen() {
         </ScrollView>
       </View>
       <View style={{ paddingBottom: 34 }}>
-        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 33 }} type="title">
+        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
           Social Media
         </ThemedText>
         <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
