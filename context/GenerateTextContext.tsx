@@ -12,6 +12,7 @@ export type ChatMessageProps = {
 };
 
 export type ChatModelProps = {
+  label: string;
   name: string;
   model: string;
 };
@@ -39,13 +40,13 @@ export const GenerateTextContext = createContext<{
   setChatHistory: () => {},
   saveChatHistory: () => {},
   setTextModel: () => {},
-  textModel: { name: '', model: '' },
+  textModel: { label: '', name: '', model: '' },
 });
 
 export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [textModel, setTextModel] = useState<ChatModelProps>({ name: 'gpt-4o-mini', model: 'gpt-4o-mini' });
+  const [textModel, setTextModel] = useState<ChatModelProps>({ label: 'openai', name: 'gpt-4o-mini', model: 'gpt-4o-mini' });
 
   const date = Date.now();
 
@@ -117,6 +118,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          label: textModel.label,
           model: textModel.model,
           messages: [...generatedMessages.message, { role: 'user', content: input.trim() }],
           prompt: input,
@@ -205,7 +207,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   // };
 
   const saveChatHistory = () => {
-    if (!generatedMessages.uuid) {
+    if (!generatedMessages.uuid && generatedMessages.message.length === 1) {
       return;
     }
 
