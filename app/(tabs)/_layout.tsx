@@ -11,22 +11,14 @@ import CustomBottomSheet from '@/components/BottomSheet';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { TEXT_MODELS, IMAGE_MODELS } from '@/constants/models';
+import { useGenerateText } from '@/hooks/useGenerateText';
 
 export default function TabLayout() {
   const { themeMode } = useCustomTheme();
   const { bottomSheetModalRef, handlePresentModalPress, setTypeModel, typeModel } = useBottomSheet();
-  // ref
-  // const bottomSheetModalImageRef = useRef<BottomSheetModal>(null);
-
-  // // callbacks
-  // const handlePresentModalPress = useCallback(() => {
-  //   // open bottom sheet modal
-  //   bottomSheetModalImageRef.current?.present();
-  //   // close bottom sheet modal
-  //   bottomSheetModalImageRef.current?.close();
-  // }, []);
 
   const { setImageAiModels, imageAiModels } = useGenerateImage();
+  const { setTextModel, textModel } = useGenerateText();
   return (
     <BottomSheetModalProvider>
       <Tabs
@@ -88,21 +80,36 @@ export default function TabLayout() {
       </Tabs>
 
       <CustomBottomSheet ref={bottomSheetModalRef}>
-        {(typeModel === 'IMAGE_MODEL' ? IMAGE_MODELS : TEXT_MODELS).map((item) => (
-          <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
-            <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
-              <ThemedText
-                onSelected={item.model === imageAiModels}
-                style={{
-                  textAlign: 'center',
-                  color: !item.available ? 'gray' : 'white',
-                }}
-              >
-                {item.name}
-              </ThemedText>
-            </ThemedView>
-          </TouchableOpacity>
-        ))}
+        {typeModel === 'IMAGE_MODELS'
+          ? IMAGE_MODELS.map((item) => (
+              <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
+                <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
+                  <ThemedText
+                    onSelected={item.model === imageAiModels}
+                    style={{
+                      textAlign: 'center',
+                      color: !item.available ? 'gray' : 'white',
+                    }}
+                  >
+                    {item.name}
+                  </ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+            ))
+          : TEXT_MODELS.map((item) => (
+              <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ label: item.label, name: item.name, model: item.model })}>
+                <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
+                  <ThemedText
+                    onSelected={item.model === textModel.model}
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    {item.name}
+                  </ThemedText>
+                </ThemedView>
+              </TouchableOpacity>
+            ))}
       </CustomBottomSheet>
     </BottomSheetModalProvider>
   );
