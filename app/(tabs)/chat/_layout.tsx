@@ -31,10 +31,10 @@ function CustomDrawerContent(props: any) {
         Object.entries(groupedChatHistory).map(([date, message]) => (
           <>
             <ThemedText>{date}</ThemedText>
-            {message.map((item) => (
+            {message?.map((item) => (
               <DrawerItem
-                key={item.uuid}
-                label={item.message[1]?.content as string}
+                key={item?.uuid}
+                label={item?.message[1]?.content as string}
                 onPress={() => {
                   setGeneratedMessages(item);
                 }}
@@ -48,7 +48,7 @@ function CustomDrawerContent(props: any) {
 }
 
 export default function ChatLayout() {
-  const { saveChatHistory } = useGenerateText();
+  const { saveChatHistory, generatedMessages } = useGenerateText();
   const { themeMode } = useCustomTheme();
   const { textModel } = useGenerateText();
   const { handlePresentModalPress, setTypeModel } = useBottomSheet();
@@ -69,15 +69,15 @@ export default function ChatLayout() {
           screenOptions={{
             drawerType: 'back',
             headerRight: (props) => (
-              <Pressable onPress={saveChatHistory}>
+              <Pressable disabled={generatedMessages.message.length === 1} onPress={saveChatHistory}>
                 <MaterialIcons color={props.tintColor} name="edit-note" size={28} />
               </Pressable>
             ),
-            headerRightContainerStyle: { padding: 10 },
+            headerRightContainerStyle: { paddingRight: 10 },
             headerTitle: (props) => (
               <CustomButton
                 onPress={() => {
-                  setTypeModel('TEXT_MODEL');
+                  setTypeModel('TEXT_MODELS');
                   handlePresentModalPress();
                 }}
                 style={styles.headerTitle}

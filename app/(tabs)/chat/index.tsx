@@ -15,10 +15,10 @@ import { AIResponse } from '@/components/AIResponse';
 import { useCustomTheme } from '@/context/ThemeContext';
 
 const promptList: { prompt: string }[] = [
-  { prompt: 'If you could instantly master any skill, but only use it for one day each year, what skill would you choose and why?' },
-  { prompt: 'Imagine you wake up tomorrow with the ability to speak and understand one secret language (could be an ancient, lost, or even an alien language). Which one would you choose?' },
-  { prompt: 'You get to have dinner with one historical figure, one fictional character, and one person from your life. Who are they, and what’s the topic of conversation?' },
-  { prompt: 'If schools could teach one subject that isn’t currently part of the standard curriculum, what do you think it should be and why?' },
+  { prompt: 'Write a short story about a robot discovering emotions ' },
+  { prompt: 'Help me outline a sci-fi novel set in a post-apocalyptic world' },
+  { prompt: 'Create a character profile for a complex villain with sympathetic motives ' },
+  { prompt: 'Give me 5 creative writing prompts for flash fiction ' },
 ];
 
 export default function ChatScreen() {
@@ -30,14 +30,14 @@ export default function ChatScreen() {
     <ThemedView style={styles.container}>
       <ScrollView>
         {generatedMessages?.message?.length <= 1 ? (
-          <View style={{ padding: 18 }}>
+          <View style={{ padding: 34 }}>
             <ThemedText style={styles.textHeading} type="defaultSemiBold">
               Hello!
             </ThemedText>
             {promptList.map((item) => (
               <TouchableOpacity key={item.prompt} onPress={() => setInput(item.prompt)}>
                 <Card style={styles.card}>
-                  <ThemedText selectable style={{ textAlign: 'center' }}>
+                  <ThemedText style={{ textAlign: 'center' }} type="subtitle">
                     {item.prompt}
                   </ThemedText>
                 </Card>
@@ -47,7 +47,7 @@ export default function ChatScreen() {
         ) : (
           <>
             {generatedMessages?.message?.slice(1).map((item, index) => (
-              <ThemedView type={item.role as any} style={{ padding: 18 }} key={`message-${index}`}>
+              <ThemedView type={item.role as any} style={{ padding: 34 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
                 <AIResponse>{item.content}</AIResponse>
               </ThemedView>
@@ -56,7 +56,7 @@ export default function ChatScreen() {
         )}
 
         {loading && (
-          <ThemedView type="assistant" style={{ padding: 10, display: 'flex', gap: 8 }}>
+          <ThemedView type="assistant" style={{ paddingHorizontal: 34, paddingBottom: 20, display: 'flex', gap: 8 }}>
             <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
             <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
             <Skeleton colorMode={themeMode} radius={14} height={20} width={'100%'} />
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 30,
+    padding: 24,
   },
   button: {
     // position: 'absolute',
