@@ -1,44 +1,47 @@
 import { Card } from '@/components/Card';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <View style={{ paddingBottom: 34 }}>
-        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
-          Social Media
-        </ThemedText>
-        <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
-          <Card style={styles.card}>
-            <ThemedText type="default">Hello</ThemedText>
-          </Card>
-          <Card style={styles.card}>
-            <ThemedText>Hello</ThemedText>
-          </Card>
-          <Card style={styles.card}>
-            <ThemedText>Hello</ThemedText>
-          </Card>
-        </ScrollView>
-      </View>
-      <View style={{ paddingBottom: 34 }}>
-        <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
-          Social Media
-        </ThemedText>
-        <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
-          <Card style={styles.card}>
-            <ThemedText type="default">Hello</ThemedText>
-          </Card>
-          <Card style={styles.card}>
-            <ThemedText>Hello</ThemedText>
-          </Card>
-          <Card style={styles.card}>
-            <ThemedText>Hello</ThemedText>
-          </Card>
-        </ScrollView>
-      </View>
-    </ScrollView>
+    <ThemedView style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <View style={{ paddingBottom: 34 }}>
+          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+            Social Media
+          </ThemedText>
+          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            <Card style={styles.card}>
+              <ThemedText type="default">Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+          </ScrollView>
+        </View>
+        <View style={{ paddingBottom: 34 }}>
+          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+            Social Media
+          </ThemedText>
+          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            <Card style={styles.card}>
+              <ThemedText type="default">Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </ThemedView>
   );
 }
 
