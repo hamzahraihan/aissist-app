@@ -1,6 +1,6 @@
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
-import { Pressable, StyleSheet, View, Clipboard } from 'react-native';
+import { Pressable, StyleSheet, View, Clipboard, Text } from 'react-native';
 import Markdown, { MarkdownIt, MarkdownProps, RenderRules } from 'react-native-markdown-display';
 import { useCustomTheme } from '@/context/ThemeContext';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
@@ -47,7 +47,7 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
                 padding: 10,
               }}
             >
-              <ThemedText style={styles.fence_language_label}>{language}</ThemedText>
+              <Text style={styles.fence_language_label}>{language}</Text>
               <Pressable android_ripple={{ color: '#77777761', radius: 18, borderless: true, foreground: true }} onPress={() => copyToClipboard(node.content)}>
                 <MaterialIcons name="content-copy" color="#fefefe" size={16} />
               </Pressable>
@@ -101,6 +101,7 @@ export function AIResponse({ style, lightColor, darkColor, ...props }: AIRespons
 
     // Language label for code blocks
     fence_language_label: {
+      color: 'white',
       fontSize: 12,
       fontFamily: fonts.mediumFont,
       borderRadius: 6,
