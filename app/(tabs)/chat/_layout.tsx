@@ -2,7 +2,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateText } from '@/hooks/useGenerateText';
 import { ThemedText } from '@/components/ThemedText';
@@ -29,7 +29,7 @@ function CustomDrawerContent(props: any) {
         <ThemedText>You haven't create any chats yet!</ThemedText>
       ) : (
         Object.entries(groupedChatHistory).map(([date, message]) => (
-          <>
+          <View key={date}>
             <ThemedText>{date}</ThemedText>
             {message?.map((item) => (
               <DrawerItem
@@ -40,7 +40,7 @@ function CustomDrawerContent(props: any) {
                 }}
               />
             ))}
-          </>
+          </View>
         ))
       )}
     </DrawerContentScrollView>
