@@ -1,22 +1,27 @@
 import { openai } from '@ai-sdk/openai';
 import { streamText, CoreMessage } from 'ai';
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 // import OpenAI from 'openai';
 // import { ChatCompletionMessageParam } from 'openai/resources';
 // const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
+const google = createGoogleGenerativeAI({ apiKey: process.env.EXPO_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY });
+
 export async function POST(req: Request) {
-  const body: { type: string; model: any; messages: CoreMessage[]; prompt: string } = await req.json();
-  const { type, model, messages, prompt } = body;
+  const body: { label: string; model: any; messages: CoreMessage[]; prompt: string } = await req.json();
+  const { label, model, messages, prompt } = body;
+
+  console.log(label);
+  console.log(model);
 
   if (!prompt) {
     return new Response('No prompt provided', { status: 400 });
   }
 
-  const handleModel: any = type === 'openai' ? openai(model) : google(model);
+  const handleModel: any = label === 'openai' ? openai(model) : google(model);
 
   try {
-    if (type === 'cloudflare') {
+    if (label === 'cloudflare') {
       const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_WORKERS_URL || '', {
         method: 'POST',
         headers: {
@@ -33,7 +38,6 @@ export async function POST(req: Request) {
         },
       });
     }
-
     const result = streamText({
       model: handleModel,
       messages,
@@ -79,6 +83,7 @@ export async function POST(req: Request) {
         Connection: 'keep-alive',
       },
     });
+
     // const response = await fetch('https://api.openai.com/v1/chat/completions', {
     //   method: 'POST',
     //   headers: {
