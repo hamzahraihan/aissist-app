@@ -23,9 +23,10 @@ export default function TabLayout() {
     <BottomSheetModalProvider>
       <Tabs
         screenOptions={{
-          tabBarButton: (props) => <Pressable {...props} android_ripple={{ color: 'transparent' }} />,
+          tabBarButton: (props) => <Pressable {...props} android_ripple={{ color: '#77777761', borderless: true, foreground: true, radius: 90 }} />,
           tabBarActiveTintColor: themeMode === 'light' ? lightTheme.tabBarActiveTintColor : darkTheme.tabBarActiveTintColor,
-          tabBarStyle: { height: 70 },
+          tabBarStyle: { height: 70, overflow: 'hidden' },
+          tabBarItemStyle: { overflow: 'hidden' },
           tabBarIconStyle: { height: 40 },
           headerShadowVisible: false,
           headerTitleAlign: 'center',
