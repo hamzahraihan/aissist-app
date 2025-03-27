@@ -20,12 +20,12 @@ export default function HomeScreen() {
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
             <TouchableOpacity>
               <Card style={styles.card}>
-                <Ionicons name="logo-tiktok" size={32} color={iconColor} />
-                <ThemedText style={{ color: 'gray', fontSize: 12, textAlign: 'center' }} type="default">
+                <Ionicons name="logo-tiktok" size={24} color={iconColor} />
+                <ThemedText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
                   Generate a content for TikTok
                 </ThemedText>
-                <View>
-                  <Ionicons name="chevron-forward-outline" size={32} color={iconColor} />
+                <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
+                  <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
                 </View>
               </Card>
             </TouchableOpacity>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     padding: 12,
     height: 163,
     width: 130,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 });
