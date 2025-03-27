@@ -46,7 +46,7 @@ export const GenerateTextContext = createContext<{
 export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [textModel, setTextModel] = useState<ChatModelProps>({ label: 'openai', name: 'gpt-4o-mini', model: 'gpt-4o-mini' });
+  const [textModel, setTextModel] = useState<ChatModelProps>({ label: 'gemini', name: 'gemini-2.0-flash-001', model: 'gemini-2.0-flash-001' });
 
   const date = Date.now();
 
@@ -78,7 +78,7 @@ export const GenerateTextProvider = ({ children }: { children: ReactNode }) => {
 
   // // generate a text by AI following a model chosen by user
   // const generateTextByAi = async () => {
-  //   switch (textModel) {
+  // switch (textModel) {
   //     case 'gpt-4o-mini':
   //       return generateTextFromOpenAI();
   //     default:
