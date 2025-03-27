@@ -12,6 +12,25 @@ export default function HomeScreen() {
           <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
             Social Media
           </ThemedText>
+
+          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            <Card style={styles.card}>
+              <ThemedText type="default">Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+            <Card style={styles.card}>
+              <ThemedText>Hello</ThemedText>
+            </Card>
+          </ScrollView>
+        </View>
+
+        <View style={{ paddingBottom: 34 }}>
+          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+            Social Media
+          </ThemedText>
+
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
             <Card style={styles.card}>
               <ThemedText type="default">Hello</ThemedText>
