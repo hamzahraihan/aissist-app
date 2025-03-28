@@ -16,29 +16,28 @@ export default function HomeScreen() {
           <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
             Social Media
           </ThemedText>
-
-          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
-            <TouchableOpacity>
-              <Card style={styles.card}>
-                <Ionicons name="logo-tiktok" size={24} color={iconColor} />
-                <ThemedText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
-                  Generate a content for TikTok
-                </ThemedText>
-                <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
-                  <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
-                </View>
-              </Card>
-            </TouchableOpacity>
-            <Card style={styles.card}>
-              <Ionicons name="logo-instagram" size={32} color={iconColor} />
-              <ThemedText>Hello</ThemedText>
-            </Card>
-            <Card style={styles.card}>
-              <Ionicons name="logo-facebook" size={32} color={iconColor} />
-              <ThemedText>Hello</ThemedText>
-            </Card>
-          </ScrollView>
         </View>
+        <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity>
+            <Card style={styles.card}>
+              <Ionicons name="logo-tiktok" size={24} color={iconColor} />
+              <ThemedText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
+                Generate a content for TikTok
+              </ThemedText>
+              <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
+                <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
+              </View>
+            </Card>
+          </TouchableOpacity>
+          <Card style={styles.card}>
+            <Ionicons name="logo-instagram" size={32} color={iconColor} />
+            <ThemedText>Hello</ThemedText>
+          </Card>
+          <Card style={styles.card}>
+            <Ionicons name="logo-facebook" size={32} color={iconColor} />
+            <ThemedText>Hello</ThemedText>
+          </Card>
+        </ScrollView>
 
         <View style={{ paddingBottom: 34 }}>
           <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
