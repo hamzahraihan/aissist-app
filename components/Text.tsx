@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { fonts } from '@/constants/theme';
 import { useTheme } from '@/hooks/useTheme';
 import { StyleSheet, Text, TextProps } from 'react-native';
@@ -9,7 +10,7 @@ export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
-export function ThemedText({ style, lightColor, darkColor, onSelected, type = 'default', ...props }: ThemedTextProps) {
+export function CustomText({ style, lightColor, darkColor, onSelected, type = 'default', ...props }: ThemedTextProps) {
   let color = useTheme({ light: lightColor, dark: darkColor }, 'textColor');
   if (onSelected) {
     color = 'white';
