@@ -5,7 +5,7 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { useGenerateText } from '@/hooks/useGenerateText';
-import { ThemedText } from '@/components/ThemedText';
+import { CustomText } from '@/components/Text';
 import { ChatMessageProps } from '@/context/GenerateTextContext';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { CustomButton } from '@/components/Button';
@@ -26,11 +26,11 @@ function CustomDrawerContent(props: any) {
   return (
     <DrawerContentScrollView {...props}>
       {chatHistory.length === 0 ? (
-        <ThemedText>You haven't create any chats yet!</ThemedText>
+        <CustomText>You haven't create any chats yet!</CustomText>
       ) : (
         Object.entries(groupedChatHistory).map(([date, message]) => (
           <View key={date}>
-            <ThemedText>{date}</ThemedText>
+            <CustomText>{date}</CustomText>
             {message?.map((item) => (
               <DrawerItem
                 key={item?.uuid}
@@ -52,14 +52,6 @@ export default function ChatLayout() {
   const { themeMode } = useCustomTheme();
   const { textModel } = useGenerateText();
   const { handlePresentModalPress, setTypeModel } = useBottomSheet();
-  // const bottomSheetModalTextRef = useRef<BottomSheetModal>(null);
-  // // callbacks
-  // const handlePresentModalPress = useCallback(() => {
-  //   // open bottom sheet modal
-  //   bottomSheetModalTextRef.current?.present();
-  //   // close bottom sheet modal
-  //   bottomSheetModalTextRef.current?.close();
-  // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -82,7 +74,9 @@ export default function ChatLayout() {
                 }}
                 style={styles.headerTitle}
               >
-                <ThemedText>{textModel.name}</ThemedText>
+                <CustomText style={{ overflow: 'hidden', textAlign: 'center' }} ellipsizeMode="tail" numberOfLines={1}>
+                  {textModel.name}
+                </CustomText>
                 <MaterialIcons color={themeMode === 'dark' ? 'white' : 'black'} name="assistant" size={18} />
               </CustomButton>
             ),
@@ -101,14 +95,14 @@ export default function ChatLayout() {
           {TEXT_MODELS.map((item) => (
             <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ name: item.name, model: item.model })}>
               <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
-                <ThemedText
+                <CustomText
                   onSelected={item.model === textModel.model}
                   style={{
                     textAlign: 'center',
                   }}
                 >
                   {item.name}
-                </ThemedText>
+                </CustomText>
               </ThemedView>
             </TouchableOpacity>
           ))}

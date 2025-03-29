@@ -5,7 +5,6 @@ import Markdown, { MarkdownIt, MarkdownProps, RenderRules } from 'react-native-m
 import { useCustomTheme } from '@/context/ThemeContext';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import { ThemedText } from './ThemedText';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export type AIResponseProps = MarkdownProps & {

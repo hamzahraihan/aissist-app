@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
 import { useGenerateText } from '@/hooks/useGenerateText';
 import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { CustomText } from '@/components/Text';
 import { Card } from '@/components/Card';
 import { CustomTextInput } from '@/components/TextInput';
 import { CustomButton } from '@/components/Button';
@@ -31,15 +31,15 @@ export default function ChatScreen() {
       <ScrollView>
         {generatedMessages?.message?.length <= 1 ? (
           <View style={{ padding: 34 }}>
-            <ThemedText style={styles.textHeading} type="defaultSemiBold">
+            <CustomText style={styles.textHeading} type="defaultSemiBold">
               Hello!
-            </ThemedText>
+            </CustomText>
             {promptList.map((item) => (
               <TouchableOpacity key={item.prompt} onPress={() => setInput(item.prompt)}>
                 <Card style={styles.card}>
-                  <ThemedText style={{ textAlign: 'center' }} type="subtitle">
+                  <CustomText style={{ textAlign: 'center' }} type="subtitle">
                     {item.prompt}
-                  </ThemedText>
+                  </CustomText>
                 </Card>
               </TouchableOpacity>
             ))}

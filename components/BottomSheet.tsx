@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { ThemedText } from './ThemedText';
+import { CustomText } from './Text';
 import { ForwardedRef, forwardRef, ReactNode } from 'react';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { Platform, StyleSheet } from 'react-native';
@@ -24,7 +24,7 @@ const CustomBottomSheet = forwardRef(function CustomBottomSheet({ children }: { 
       onChange={handleSheetChanges}
     >
       <BottomSheetScrollView style={styles.contentContainer}>
-        <ThemedText style={{ textAlign: 'center' }}>Try different models</ThemedText>
+        <CustomText style={{ textAlign: 'center' }}>Try different models</CustomText>
         {children}
       </BottomSheetScrollView>
     </BottomSheetModal>

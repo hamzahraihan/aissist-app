@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { CustomSwitch } from '@/components/Switch';
-import { ThemedText } from '@/components/ThemedText';
+import { CustomText } from '@/components/Text';
 import { ThemedView } from '@/components/ThemedView';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -100,7 +100,7 @@ export default function SettingsScreen() {
       <View style={[styles.flexRow, { margin: 10 }]}>
         <View style={[styles.flexRow, { gap: 10 }]}>
           <Ionicons name="brush" color={isDarkMode ? 'white' : 'black'} size={22} />
-          <ThemedText>Dark mode</ThemedText>
+          <CustomText>Dark mode</CustomText>
         </View>
         <CustomSwitch onValueChange={toggleTheme} value={isDarkMode} isEnabled />
       </View>

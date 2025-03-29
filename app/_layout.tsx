@@ -18,7 +18,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
-import 'react-native-gesture-handler';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';

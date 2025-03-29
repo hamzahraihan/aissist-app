@@ -1,10 +1,9 @@
-import { ThemedText } from '@/components/ThemedText';
+import { CustomText } from '@/components/Text';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Platform } from 'react-native';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { ThemedView } from '@/components/ThemedView';
 import CustomBottomSheet from '@/components/BottomSheet';
@@ -84,7 +83,7 @@ export default function TabLayout() {
           ? IMAGE_MODELS.map((item) => (
               <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
                 <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
-                  <ThemedText
+                  <CustomText
                     onSelected={item.model === imageAiModels}
                     style={{
                       textAlign: 'center',
@@ -92,21 +91,21 @@ export default function TabLayout() {
                     }}
                   >
                     {item.name}
-                  </ThemedText>
+                  </CustomText>
                 </ThemedView>
               </TouchableOpacity>
             ))
           : TEXT_MODELS.map((item) => (
               <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ label: item.label, name: item.name, model: item.model })}>
                 <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
-                  <ThemedText
+                  <CustomText
                     onSelected={item.model === textModel.model}
                     style={{
                       textAlign: 'center',
                     }}
                   >
                     {item.name}
-                  </ThemedText>
+                  </CustomText>
                 </ThemedView>
               </TouchableOpacity>
             ))}
