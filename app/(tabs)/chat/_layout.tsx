@@ -52,14 +52,6 @@ export default function ChatLayout() {
   const { themeMode } = useCustomTheme();
   const { textModel } = useGenerateText();
   const { handlePresentModalPress, setTypeModel } = useBottomSheet();
-  // const bottomSheetModalTextRef = useRef<BottomSheetModal>(null);
-  // // callbacks
-  // const handlePresentModalPress = useCallback(() => {
-  //   // open bottom sheet modal
-  //   bottomSheetModalTextRef.current?.present();
-  //   // close bottom sheet modal
-  //   bottomSheetModalTextRef.current?.close();
-  // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
