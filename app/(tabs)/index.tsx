@@ -1,5 +1,5 @@
+import { CustomText } from '@/components/Text';
 import { Card } from '@/components/Card';
-import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,62 +13,73 @@ export default function HomeScreen() {
     <ThemedView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
         <View style={{ paddingBottom: 34 }}>
-          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+          <CustomText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
             Social Media
-          </ThemedText>
-        </View>
-        <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity>
-            <Card style={styles.card}>
-              <Ionicons name="logo-tiktok" size={24} color={iconColor} />
-              <ThemedText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
-                Generate a content for TikTok
-              </ThemedText>
-              <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
-                <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
-              </View>
-            </Card>
-          </TouchableOpacity>
-          <Card style={styles.card}>
-            <Ionicons name="logo-instagram" size={32} color={iconColor} />
-            <ThemedText>Hello</ThemedText>
-          </Card>
-          <Card style={styles.card}>
-            <Ionicons name="logo-facebook" size={32} color={iconColor} />
-            <ThemedText>Hello</ThemedText>
-          </Card>
-        </ScrollView>
-
-        <View style={{ paddingBottom: 34 }}>
-          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
-            Social Media
-          </ThemedText>
+          </CustomText>
 
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            <TouchableOpacity>
+              <Card style={styles.card}>
+                <Ionicons name="logo-tiktok" size={24} color={iconColor} />
+                <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
+                  Generate a content for TikTok
+                </CustomText>
+                <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
+                  <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
+                </View>
+              </Card>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Card style={styles.card}>
+                <Ionicons name="logo-instagram" size={24} color={iconColor} />
+                <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
+                  Generate a content for instagram
+                </CustomText>
+                <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
+                  <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
+                </View>
+              </Card>
+            </TouchableOpacity>
+
             <Card style={styles.card}>
-              <ThemedText type="default">Hello</ThemedText>
-            </Card>
-            <Card style={styles.card}>
-              <ThemedText>Hello</ThemedText>
-            </Card>
-            <Card style={styles.card}>
-              <ThemedText>Hello</ThemedText>
+              <Ionicons name="logo-facebook" size={32} color={iconColor} />
+              <CustomText>Hello</CustomText>
             </Card>
           </ScrollView>
         </View>
+
         <View style={{ paddingBottom: 34 }}>
-          <ThemedText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+          <CustomText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
             Social Media
-          </ThemedText>
+          </CustomText>
+
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
             <Card style={styles.card}>
-              <ThemedText type="default">Hello</ThemedText>
+              <CustomText type="default">Hello</CustomText>
             </Card>
             <Card style={styles.card}>
-              <ThemedText>Hello</ThemedText>
+              <CustomText>Hello</CustomText>
             </Card>
             <Card style={styles.card}>
-              <ThemedText>Hello</ThemedText>
+              <CustomText>Hello</CustomText>
+            </Card>
+          </ScrollView>
+        </View>
+
+        <View style={{ paddingBottom: 34 }}>
+          <CustomText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+            Social Media
+          </CustomText>
+          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            <Card style={styles.card}>
+              <CustomText type="default">Hello</CustomText>
+            </Card>
+            <Card style={styles.card}>
+              <CustomText>Hello</CustomText>
+            </Card>
+            <Card style={styles.card}>
+              <CustomText>Hello</CustomText>
             </Card>
           </ScrollView>
         </View>
