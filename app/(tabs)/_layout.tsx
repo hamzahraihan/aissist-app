@@ -1,16 +1,15 @@
-import { CustomText } from '@/components/Text';
 import { darkTheme, fonts, lightTheme } from '@/constants/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Platform, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { Pressable } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
-import { ThemedView } from '@/components/ThemedView';
-import CustomBottomSheet from '@/components/BottomSheet';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { TEXT_MODELS, IMAGE_MODELS } from '@/constants/models';
 import { useGenerateText } from '@/hooks/useGenerateText';
+import { useCallback, useMemo } from 'react';
+import ModelSelector from '@/components/ui/ModelSelector';
 
 export default function TabLayout() {
   const { themeMode } = useCustomTheme();
@@ -18,6 +17,25 @@ export default function TabLayout() {
 
   const { setImageAiModels, imageAiModels } = useGenerateImage();
   const { setTextModel, textModel } = useGenerateText();
+
+  const models = useMemo(() => (typeModel === 'IMAGE_MODELS' ? IMAGE_MODELS : TEXT_MODELS), [typeModel]);
+
+  const handleSelectModel = useCallback(
+    (model: string) => {
+      if (typeModel === 'IMAGES_MODELS') {
+        setImageAiModels(model);
+      } else {
+        const selectedItem = TEXT_MODELS.find((item) => item.model === model);
+        setTextModel({
+          label: selectedItem!.label,
+          name: selectedItem!.name,
+          model: selectedItem!.model,
+        });
+      }
+    },
+    [typeModel, setImageAiModels, setTextModel]
+  );
+
   return (
     <BottomSheetModalProvider>
       <Tabs
@@ -67,7 +85,7 @@ export default function TabLayout() {
                 name="more-vert"
                 color={tintColor}
                 onPress={() => {
-                  setTypeModel('IMAGE_MODEL');
+                  setTypeModel('IMAGE_MODELS');
                   handlePresentModalPress();
                 }}
               />
@@ -78,7 +96,8 @@ export default function TabLayout() {
         <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon: ({ color }) => <Ionicons size={32} name="settings" color={color} /> }} />
       </Tabs>
 
-      <CustomBottomSheet ref={bottomSheetModalRef}>
+      <ModelSelector bottomSheetModalRef={bottomSheetModalRef} models={models} onModelSelect={handleSelectModel} selectedModel={typeModel === 'IMAGE_MODELS' ? imageAiModels : textModel.model} />
+      {/* <CustomBottomSheet ref={bottomSheetModalRef}>
         {typeModel === 'IMAGE_MODELS'
           ? IMAGE_MODELS.map((item) => (
               <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
@@ -109,48 +128,48 @@ export default function TabLayout() {
                 </ThemedView>
               </TouchableOpacity>
             ))}
-      </CustomBottomSheet>
+      </CustomBottomSheet> */}
     </BottomSheetModalProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-    padding: 10,
-  },
-  sheetSelectableContent: {
-    width: '100%',
-    padding: 10,
-    borderRadius: 12,
-  },
-  sheetContainer: {
-    borderTopStartRadius: 24,
-    borderTopEndRadius: 24,
-  },
-  sheetContainerShadow: Platform.select({
-    ios: {
-      shadowOffset: {
-        width: 0,
-        height: 12,
-      },
-      shadowOpacity: 0.8,
-      shadowRadius: 16.0,
-      shadowColor: '#000',
-    },
-    android: {
-      shadowColor: '#000000',
-      shadowOffset: {
-        width: 0,
-        height: 12,
-      },
-      shadowOpacity: 0.58,
-      shadowRadius: 16.0,
+// const styles = StyleSheet.create({
+//   contentContainer: {
+//     flex: 1,
+//     padding: 10,
+//   },
+//   sheetSelectableContent: {
+//     width: '100%',
+//     padding: 10,
+//     borderRadius: 12,
+//   },
+//   sheetContainer: {
+//     borderTopStartRadius: 24,
+//     borderTopEndRadius: 24,
+//   },
+//   sheetContainerShadow: Platform.select({
+//     ios: {
+//       shadowOffset: {
+//         width: 0,
+//         height: 12,
+//       },
+//       shadowOpacity: 0.8,
+//       shadowRadius: 16.0,
+//       shadowColor: '#000',
+//     },
+//     android: {
+//       shadowColor: '#000000',
+//       shadowOffset: {
+//         width: 0,
+//         height: 12,
+//       },
+//       shadowOpacity: 0.58,
+//       shadowRadius: 16.0,
 
-      elevation: 24,
-    },
-    web: {
-      boxShadow: '0px -4px 16px rgba(0,0,0, 0.25)',
-    },
-  }) as any,
-});
+//       elevation: 24,
+//     },
+//     web: {
+//       boxShadow: '0px -4px 16px rgba(0,0,0, 0.25)',
+//     },
+//   }) as any,
+// });
