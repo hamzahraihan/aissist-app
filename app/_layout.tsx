@@ -21,6 +21,7 @@ import 'react-native-reanimated';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,9 +29,12 @@ function AppContent() {
   const { theme } = useCustomTheme();
   return (
     <ThemeProvider value={theme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-      </Stack>
+      <SafeAreaProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom' }} />
+        </Stack>
+      </SafeAreaProvider>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
