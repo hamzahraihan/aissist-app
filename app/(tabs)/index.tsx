@@ -5,10 +5,15 @@ import { useCustomTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const { themeMode } = useCustomTheme();
   const iconColor = themeMode === 'dark' ? 'white' : 'black';
+  const backgroundIconColor = themeMode === 'dark' ? '#464646' : '#e2e2e2';
+
+  const router = useRouter();
+
   return (
     <ThemedView style={{ flex: 1 }}>
       <ScrollView style={styles.container}>
@@ -18,13 +23,13 @@ export default function HomeScreen() {
           </CustomText>
 
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.navigate('/assistant')}>
               <Card style={styles.card}>
                 <Ionicons name="logo-tiktok" size={24} color={iconColor} />
                 <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
                   Generate a content for TikTok
                 </CustomText>
-                <View style={{ padding: 10, backgroundColor: '#464646', borderRadius: 99 }}>
+                <View style={{ padding: 10, backgroundColor: backgroundIconColor, borderRadius: 99 }}>
                   <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
                 </View>
               </Card>
