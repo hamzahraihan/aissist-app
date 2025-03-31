@@ -30,6 +30,7 @@ const CustomBottomSheet = forwardRef(function CustomBottomSheet({ children }: { 
     </BottomSheetModal>
   );
 });
+
 export default CustomBottomSheet;
 
 const styles = StyleSheet.create({
