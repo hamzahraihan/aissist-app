@@ -65,11 +65,6 @@ export default function TabLayout() {
             headerShown: false,
             title: 'Chat',
             tabBarIcon: ({ color }) => <Ionicons size={32} name="chatbubble" color={color} />,
-            // headerRight: (props) => (
-            //   <Pressable {...props} android_ripple={{ color: props.pressColor, radius: 20 }}>
-            //     <MaterialIcons selectionColor="black" size={32} name="edit-note" color={props.tintColor} />
-            //   </Pressable>
-            // ),
           }}
         />
 
@@ -97,79 +92,6 @@ export default function TabLayout() {
       </Tabs>
 
       <ModelSelector bottomSheetModalRef={bottomSheetModalRef} models={models} onModelSelect={handleSelectModel} selectedModel={typeModel === 'IMAGE_MODELS' ? imageAiModels : textModel.model} />
-      {/* <CustomBottomSheet ref={bottomSheetModalRef}>
-        {typeModel === 'IMAGE_MODELS'
-          ? IMAGE_MODELS.map((item) => (
-              <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setImageAiModels(item.model)}>
-                <ThemedView onSelected={item.model === imageAiModels} style={[styles.sheetSelectableContent, { backgroundColor: item.model === imageAiModels ? '#272727' : '' }]}>
-                  <CustomText
-                    onSelected={item.model === imageAiModels}
-                    style={{
-                      textAlign: 'center',
-                      color: !item.available ? 'gray' : 'white',
-                    }}
-                  >
-                    {item.name}
-                  </CustomText>
-                </ThemedView>
-              </TouchableOpacity>
-            ))
-          : TEXT_MODELS.map((item) => (
-              <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ label: item.label, name: item.name, model: item.model })}>
-                <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
-                  <CustomText
-                    onSelected={item.model === textModel.model}
-                    style={{
-                      textAlign: 'center',
-                    }}
-                  >
-                    {item.name}
-                  </CustomText>
-                </ThemedView>
-              </TouchableOpacity>
-            ))}
-      </CustomBottomSheet> */}
     </BottomSheetModalProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   contentContainer: {
-//     flex: 1,
-//     padding: 10,
-//   },
-//   sheetSelectableContent: {
-//     width: '100%',
-//     padding: 10,
-//     borderRadius: 12,
-//   },
-//   sheetContainer: {
-//     borderTopStartRadius: 24,
-//     borderTopEndRadius: 24,
-//   },
-//   sheetContainerShadow: Platform.select({
-//     ios: {
-//       shadowOffset: {
-//         width: 0,
-//         height: 12,
-//       },
-//       shadowOpacity: 0.8,
-//       shadowRadius: 16.0,
-//       shadowColor: '#000',
-//     },
-//     android: {
-//       shadowColor: '#000000',
-//       shadowOffset: {
-//         width: 0,
-//         height: 12,
-//       },
-//       shadowOpacity: 0.58,
-//       shadowRadius: 16.0,
-
-//       elevation: 24,
-//     },
-//     web: {
-//       boxShadow: '0px -4px 16px rgba(0,0,0, 0.25)',
-//     },
-//   }) as any,
-// });

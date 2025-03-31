@@ -5,8 +5,17 @@ import CustomBottomSheet from '../BottomSheet';
 import { ThemedView } from '../ThemedView';
 import { CustomText } from '../Text';
 import { AiModelType } from '@/constants/models';
+import { useCustomTheme } from '@/context/ThemeContext';
 
 export default function ModelSelector({ models, selectedModel, onModelSelect, bottomSheetModalRef }: { models: AiModelType[]; selectedModel: string; onModelSelect: (model: string) => void; bottomSheetModalRef: any }) {
+  const { themeMode } = useCustomTheme();
+
+  const handleModelAvailable = (isAvailable: boolean) => {
+    if (themeMode === 'light' && isAvailable) return 'black';
+    if (themeMode === 'dark' && isAvailable) return 'white';
+    if (!isAvailable) return 'gray';
+  };
+
   const handleSelectModel = useCallback(
     (model: string) => {
       onModelSelect(model);
@@ -20,8 +29,8 @@ export default function ModelSelector({ models, selectedModel, onModelSelect, bo
       <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => handleSelectModel(item.model)}>
         <ThemedView onSelected={item.model === selectedModel} style={[styles.sheetSelectableContent, { backgroundColor: item.model === selectedModel ? '#272727' : '' }]}>
           <CustomText
-            onSelected={item.model === selectedModel}
             style={{
+              color: item.model === selectedModel ? 'white' : handleModelAvailable(item.available),
               textAlign: 'center',
             }}
           >
@@ -30,6 +39,7 @@ export default function ModelSelector({ models, selectedModel, onModelSelect, bo
         </ThemedView>
       </TouchableOpacity>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedModel, handleSelectModel]
   );
 
