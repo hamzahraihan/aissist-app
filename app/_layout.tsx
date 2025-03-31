@@ -21,7 +21,7 @@ import 'react-native-reanimated';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,12 +30,14 @@ function AppContent() {
   return (
     <ThemeProvider value={theme}>
       <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom' }} />
-        </Stack>
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar style="inverted" />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom' }} />
+          </Stack>
+        </SafeAreaView>
       </SafeAreaProvider>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }
