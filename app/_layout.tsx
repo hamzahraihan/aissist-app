@@ -21,22 +21,20 @@ import 'react-native-reanimated';
 import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
 function AppContent() {
-  const { theme } = useCustomTheme();
+  const { theme, themeMode } = useCustomTheme();
   return (
     <ThemeProvider value={theme}>
+      <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} animated />
       <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar style="inverted" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom' }} />
-          </Stack>
-        </SafeAreaView>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom', headerShown: true, headerShadowVisible: false, headerTitle: 'AI Post Analysis' }} />
+        </Stack>
       </SafeAreaProvider>
     </ThemeProvider>
   );
