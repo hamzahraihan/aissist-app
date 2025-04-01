@@ -1,22 +1,26 @@
 import { openai } from '@ai-sdk/openai';
-import { generateObject } from 'ai';
+import { streamObject } from 'ai';
 import { z } from 'zod';
 
+export const socialMediaSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  thoughts: z.string(),
+});
+
 export async function POST(req: Request) {
-  const { assistType, prompt }: any = await req.json();
+  const { category, prompt, description }: any = await req.json();
 
   try {
-    const result = await generateObject({
+    const result = streamObject({
       model: openai('gpt-4o-mini', { structuredOutputs: true }),
-      schemaName: assistType,
-      schema: z.object({
-        title: z.string(),
-        content: z.string(),
-        thoughts: z.string(),
-      }),
-      prompt,
+      schemaDescription: description,
+      schemaName: category,
+      schema: socialMediaSchema,
+      prompt: `Here is the post idea: ${prompt}`,
     });
-    return result.toJsonResponse();
+
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error(error);
     return new Response('Error', { status: 500 });
