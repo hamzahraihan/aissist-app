@@ -22,6 +22,7 @@ import { GenerateImageProvider } from '@/context/GenerateImageContext';
 import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { darkTheme, lightTheme } from '@/constants/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,7 +34,19 @@ function AppContent() {
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="assistant" options={{ presentation: 'modal', animation: 'fade_from_bottom', headerShown: true, headerShadowVisible: false, headerTitle: 'AI Post Analysis' }} />
+          <Stack.Screen
+            name="assistant"
+            options={{
+              presentation: 'modal',
+              animation: 'fade_from_bottom',
+              headerShown: true,
+              headerShadowVisible: false,
+              headerTitle: 'AI Post Analysis',
+              headerStyle: {
+                backgroundColor: themeMode === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
+              },
+            }}
+          />
         </Stack>
       </SafeAreaProvider>
     </ThemeProvider>
