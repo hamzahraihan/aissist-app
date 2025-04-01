@@ -91,22 +91,6 @@ export default function ChatLayout() {
             },
           }}
         />
-        {/* <CustomBottomSheet ref={bottomSheetModalTextRef}>
-          {TEXT_MODELS.map((item) => (
-            <TouchableOpacity disabled={!item.available} key={item.name} onPress={() => setTextModel({ name: item.name, model: item.model })}>
-              <ThemedView onSelected={item.model === textModel.model} style={[styles.sheetSelectableContent, { backgroundColor: item.model === textModel.model ? '#272727' : '' }]}>
-                <CustomText
-                  onSelected={item.model === textModel.model}
-                  style={{
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.name}
-                </CustomText>
-              </ThemedView>
-            </TouchableOpacity>
-          ))}
-          </CustomBottomSheet> */}
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
