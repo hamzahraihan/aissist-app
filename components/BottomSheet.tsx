@@ -36,8 +36,8 @@ export default CustomBottomSheet;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    padding: 10,
     zIndex: 99,
+    paddingHorizontal: 12,
   },
   sheetContainer: {
     borderTopStartRadius: 24,
