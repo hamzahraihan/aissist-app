@@ -23,6 +23,8 @@ import { BottomSheetProvider } from '@/context/BottomSheetContext';
 import { CustomThemeProvider, useCustomTheme } from '@/context/ThemeContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { darkTheme, lightTheme } from '@/constants/theme';
+import { GenerateAssistantProvider } from '@/context/GenerateAssistantContext';
+import './polyfills';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -81,11 +83,13 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <CustomThemeProvider>
         <GenerateTextProvider>
-          <BottomSheetProvider>
-            <GenerateImageProvider>
-              <AppContent />
-            </GenerateImageProvider>
-          </BottomSheetProvider>
+          <GenerateAssistantProvider>
+            <BottomSheetProvider>
+              <GenerateImageProvider>
+                <AppContent />
+              </GenerateImageProvider>
+            </BottomSheetProvider>
+          </GenerateAssistantProvider>
         </GenerateTextProvider>
       </CustomThemeProvider>
     </GestureHandlerRootView>
