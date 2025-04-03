@@ -16,11 +16,12 @@ export default function GeneratedContentModal() {
       <ScrollView>
         <View style={{ gap: 14 }}>
           <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" />
+
           <Button title="Generate" disabled={isLoading} onPress={() => submit('i want to create a popular content that will get more views, content will be like a meme and adding a valueable knowledge')} />
         </View>
 
         {/* divider line */}
-        <View style={{ flex: 1, borderWidth: 2, backgroundColor: 'gray' }} />
+        <View style={{ margin: 20, flex: 1, borderWidth: 2, backgroundColor: 'gray' }} />
 
         <View style={{ display: 'flex', gap: 14 }}>
           <View style={{ gap: 8 }}>
