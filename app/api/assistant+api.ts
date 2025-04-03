@@ -3,9 +3,9 @@ import { streamObject } from 'ai';
 import { z } from 'zod';
 
 export const socialMediaSchema = z.object({
-  title: z.string(),
-  content: z.string(),
-  thoughts: z.string().describe('Strategy thoughts on why this content would perform well'),
+  title: z.string().describe('Provide a concise and engaging title for the social media post.'),
+  content: z.string().describe('Write the main content of the post, ensuring it is relevant and captivating.'),
+  thoughts: z.string().describe('Provide a detailed strategy explaining why this content would perform well, ensuring consistency and accuracy across generations.'),
 });
 
 export async function POST(req: Request) {
