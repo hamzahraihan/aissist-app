@@ -1,0 +1,45 @@
+import { z, ZodType } from 'zod';
+
+export const AI_ASSISTANTS = [
+  {
+    type: 'tiktok',
+    initialPrompt: 'Here is the post idea: ',
+    description: 'you are the best content create of tiktok. you will help people to create the best content to get so much views.',
+    assistantType: 'social',
+  },
+];
+
+const socialMediaSchema = z.object({
+  title: z.string().describe('Provide a concise and engaging title for the social media post.'),
+  content: z.string().describe('Write the main content of the post, ensuring it is relevant and captivating.'),
+  thoughts: z.string().describe('Provide a detailed strategy explaining why this content would perform well, ensuring consistency and accuracy across generations.'),
+});
+
+const healthAssistantSchema = z.object({
+  userAge: z.number().int().positive().optional().describe('The age of the user, used to tailor medicine recommendations.'),
+  userGender: z.enum(['male', 'female', 'other']).optional().describe('The gender of the user, used for personalized medicine suggestions.'),
+  symptoms: z
+    .array(
+      z.object({
+        name: z.string().describe('The name of the symptom.'),
+        duration: z.string().optional().describe('How long the symptom has been present.'),
+        severity: z.enum(['mild', 'moderate', 'severe']).optional().describe('The severity of the symptom.'),
+      })
+    )
+    .nonempty()
+    .describe('A list of symptoms the user is experiencing to recommend appropriate medicines.'),
+  allergies: z.array(z.string()).optional().describe('A list of known allergies to avoid recommending harmful medicines.'),
+  currentMedications: z.array(z.string()).optional().describe('A list of medications the user is currently taking to prevent interactions.'),
+  medicalHistory: z.string().optional().describe('A brief description of the user’s medical history, if applicable.'),
+});
+
+export const handleAiSchema = (schemaType: string): ZodType => {
+  switch (schemaType) {
+    case 'social':
+      return socialMediaSchema;
+    case 'health':
+      return healthAssistantSchema;
+    default:
+      return socialMediaSchema;
+  }
+};
