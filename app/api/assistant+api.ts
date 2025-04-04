@@ -9,7 +9,6 @@ export const socialMediaSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  // const { category, prompt, description }: any = await req.json();
   const context = await req.json();
   console.log(context);
   try {
@@ -22,7 +21,6 @@ export async function POST(req: Request) {
     });
 
     return result.toTextStreamResponse();
-    // return result.toTextStreamResponse({ headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   } catch (error) {
     console.error(error);
     return new Response('Error', { status: 500 });
