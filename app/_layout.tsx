@@ -43,7 +43,7 @@ function AppContent() {
               animation: 'fade_from_bottom',
               headerShown: true,
               headerShadowVisible: false,
-              headerTitle: 'AI Post Analysis',
+              headerTitle: 'AI Assistant',
               headerStyle: {
                 backgroundColor: themeMode === 'light' ? lightTheme.backgroundColor : darkTheme.backgroundColor,
               },
