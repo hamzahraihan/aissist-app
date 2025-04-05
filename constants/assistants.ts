@@ -2,10 +2,38 @@ import { z, ZodType } from 'zod';
 
 export const AI_ASSISTANTS = [
   {
-    type: 'tiktok',
-    initialPrompt: 'Here is the post idea: ',
-    description: 'you are the best content create of tiktok. you will help people to create the best content to get so much views.',
-    assistantType: 'social',
+    socialMedia: [
+      {
+        type: 'tiktok',
+        logo: 'logo-tiktok',
+        initialPrompt: 'Here is the post idea: ',
+        description: 'you are the best content creator of tiktok. you will help people to create the best content to get so much views or audiences.',
+        assistantType: 'social',
+      },
+      {
+        type: 'facebook',
+        logo: 'logo-facebook',
+        initialPrompt: 'Here is the post idea: ',
+        description: 'you are the best content creator of facebook. you will help people to create the best content to get so much views or audiences.',
+        assistantType: 'social',
+      },
+      {
+        type: 'instagram',
+        logo: 'logo-instagram',
+        initialPrompt: 'Here is the post idea: ',
+        description: 'you are the best content creator of instagram. you will help people to create the best content to get so much views or audiences and followers.',
+        assistantType: 'social',
+      },
+    ],
+    health: [
+      {
+        type: 'health',
+        logo: 'logo-facebook',
+        initialPrompt: 'Here is the patient illness or consult about their health: ',
+        description: 'you are the best doctor that could provide the best health advice to a user illness and provide a recommentation of appropriate medicine user needs. ',
+        assistantType: 'health',
+      },
+    ],
   },
 ];
 
