@@ -13,15 +13,14 @@ export default function GeneratedContentModal() {
   console.log(error);
   return (
     <ThemedView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View style={{ gap: 14 }}>
           <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" />
-
           <Button title="Generate" disabled={isLoading} onPress={() => submit('i want to create a popular content that will get more views, content will be like a meme and adding a valueable knowledge')} />
         </View>
 
         {/* divider line */}
-        <View style={{ marginVertical: 14, marginHorizontal: 10, flex: 1, height: 3, borderRadius: 99, backgroundColor: '#5e5e5e' }} />
+        <View style={{ marginVertical: 14, marginHorizontal: 10, flex: 1, height: 1, borderRadius: 99, backgroundColor: '#5e5e5e' }} />
 
         <View style={{ display: 'flex', gap: 14 }}>
           <View style={{ gap: 8 }}>
