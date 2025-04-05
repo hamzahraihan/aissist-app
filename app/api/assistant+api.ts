@@ -3,7 +3,7 @@ import { openai } from '@ai-sdk/openai';
 import { streamObject } from 'ai';
 
 export async function POST(req: Request) {
-  const { inputPrompt, schemaName, schemaDescription }: any = await req.json();
+  const { initialPrompt, inputPrompt, schemaName, schemaDescription }: any = await req.json();
   console.log(inputPrompt);
 
   try {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       schemaDescription,
       schemaName,
       schema: handleAiSchema(schemaName),
-      prompt: `Here is the post idea: ${inputPrompt}`,
+      prompt: initialPrompt + inputPrompt,
     });
 
     return result.toTextStreamResponse();
