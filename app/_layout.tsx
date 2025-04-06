@@ -36,7 +36,7 @@ function AppContent() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen
-            name="assistant"
+            name="assistant/[assistantId]"
             options={{
               presentation: 'containedModal',
               animation: 'fade_from_bottom',
