@@ -5,7 +5,9 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
+        path: ['app'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'app/'],
       },
       typescript: {},
     },
