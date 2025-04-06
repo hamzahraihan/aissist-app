@@ -32,14 +32,13 @@ function AppContent() {
   const { theme, themeMode } = useCustomTheme();
   return (
     <ThemeProvider value={theme}>
-      <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} animated />
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen
-            name="assistant"
+            name="assistant/[assistantId]"
             options={{
-              presentation: 'modal',
+              presentation: 'containedModal',
               animation: 'fade_from_bottom',
               headerShown: true,
               headerShadowVisible: false,
@@ -50,6 +49,7 @@ function AppContent() {
             }}
           />
         </Stack>
+        <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} />
       </SafeAreaProvider>
     </ThemeProvider>
   );
