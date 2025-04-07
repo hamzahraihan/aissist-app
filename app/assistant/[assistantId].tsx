@@ -5,31 +5,27 @@ import { CustomTextInput } from '@/components/TextInput';
 import { ThemedView } from '@/components/ThemedView';
 import { AI_ASSISTANTS } from '@/constants/assistants';
 import { useGenerateAssistant } from '@/hooks/useGenerateAssistant';
-import { ItemListResponsesCursorPagination } from 'cloudflare/resources/rules/lists/items';
 import { useLocalSearchParams } from 'expo-router';
 import { Button, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function GeneratedContentModal() {
   const { assistantId, assistantType } = useLocalSearchParams();
-  console.log(assistantId);
+  console.log(`assistanttype: ${assistantType}`, assistantId);
+
   const { object, isLoading, error, submit } = useGenerateAssistant();
   console.log('generated object: ', object);
   console.log(error);
-  const handleAssistantType = () => {
-    return AI_ASSISTANTS.map((item) => {
-      if (assistantType === 'social') {
-        item.socialMedia.filter((item) => item.type === assistantId);
-      }
-      if (assistantType === 'health') {
-        item.health.filter((item) => item.type === assistantType);
-      }
-    });
-  };
-  const socialMediaAssistant = AI_ASSISTANTS.map((item) => item.socialMedia.filter((item) => item.type === assistantId));
 
-  const healthAssistant = AI_ASSISTANTS.map((item) => item.socialMedia.filter((item) => item.type === assistantId));
-  console.log(socialMediaAssistant);
+  const assistant = AI_ASSISTANTS.map((item) => {
+    if (assistantType === 'social') {
+      return item.socialMedia.filter((item) => item.type === assistantId)[0];
+    }
+    if (assistantType === 'health') {
+      return item.health.filter((item) => item.type === assistantType)[0];
+    }
+  })[0];
+  console.log(assistant);
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
