@@ -26,7 +26,7 @@ export default function HomeScreen() {
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
             {AI_ASSISTANTS.map((item) =>
               item.socialMedia.map((social) => (
-                <TouchableOpacity onPress={() => router.navigate(`/assistant/${social.type}`)}>
+                <TouchableOpacity onPress={() => router.navigate(`/assistant/${social.type}?assistantType=${social.assistantType}`)}>
                   <Card style={styles.card}>
                     <Ionicons name={social.logo as any} size={24} color={iconColor} />
                     <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
@@ -50,7 +50,7 @@ export default function HomeScreen() {
           <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
             {AI_ASSISTANTS.map((item) =>
               item.health.map((health) => (
-                <TouchableOpacity onPress={() => router.navigate(`/assistant/${health.type}`)}>
+                <TouchableOpacity onPress={() => router.navigate(`/assistant/${health.type}?assistantType=${health.assistantType}`)}>
                   <Card style={styles.card}>
                     <Ionicons name="medical" size={24} color={iconColor} />
                     <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
