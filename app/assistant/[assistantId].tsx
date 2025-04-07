@@ -3,17 +3,33 @@ import { AIResponse } from '@/components/AIResponse';
 import { CustomText } from '@/components/Text';
 import { CustomTextInput } from '@/components/TextInput';
 import { ThemedView } from '@/components/ThemedView';
+import { AI_ASSISTANTS } from '@/constants/assistants';
 import { useGenerateAssistant } from '@/hooks/useGenerateAssistant';
+import { ItemListResponsesCursorPagination } from 'cloudflare/resources/rules/lists/items';
 import { useLocalSearchParams } from 'expo-router';
 import { Button, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function GeneratedContentModal() {
-  const { assistantId } = useLocalSearchParams();
+  const { assistantId, assistantType } = useLocalSearchParams();
   console.log(assistantId);
   const { object, isLoading, error, submit } = useGenerateAssistant();
   console.log('generated object: ', object);
   console.log(error);
+  const handleAssistantType = () => {
+    return AI_ASSISTANTS.map((item) => {
+      if (assistantType === 'social') {
+        item.socialMedia.filter((item) => item.type === assistantId);
+      }
+      if (assistantType === 'health') {
+        item.health.filter((item) => item.type === assistantType);
+      }
+    });
+  };
+  const socialMediaAssistant = AI_ASSISTANTS.map((item) => item.socialMedia.filter((item) => item.type === assistantId));
+
+  const healthAssistant = AI_ASSISTANTS.map((item) => item.socialMedia.filter((item) => item.type === assistantId));
+  console.log(socialMediaAssistant);
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
@@ -22,7 +38,7 @@ export default function GeneratedContentModal() {
           <TouchableOpacity style={{ padding: 8, backgroundColor: '#fcfcfc', borderRadius: 12, overflow: 'hidden' }}>
             <CustomText style={{ color: 'black', textAlign: 'center' }}>Generate</CustomText>
           </TouchableOpacity>
-          <Button title="Generate" color={'gray'} disabled={isLoading} onPress={() => submit('i want to create a popular content that will get more views, content will be like a meme and adding a valueable knowledge')} />
+          <Button title="Generate" color={'gray'} disabled={isLoading} onPress={() => submit({ initialPrompt: '' })} />
         </View>
 
         {/* divider line */}
