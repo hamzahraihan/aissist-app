@@ -1,5 +1,13 @@
 import { z, ZodType } from 'zod';
 
+export type AiResponse = {
+  type: string;
+  logo: string;
+  initialPrompt: string;
+  description: string;
+  assistantType: string;
+};
+
 export const AI_ASSISTANTS = [
   {
     socialMedia: [
