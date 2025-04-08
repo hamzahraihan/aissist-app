@@ -3,7 +3,7 @@ import { darkTheme, lightTheme } from '@/constants/theme';
 import { useCustomTheme } from '@/context/ThemeContext';
 import { Stack } from 'expo-router';
 
-export const AssistantLayout = () => {
+export default function AssistantLayout() {
   const { themeMode } = useCustomTheme();
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -22,4 +22,4 @@ export const AssistantLayout = () => {
       />
     </Stack>
   );
-};
+}
