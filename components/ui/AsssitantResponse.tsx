@@ -3,17 +3,33 @@ import { AIResponse } from '@/components/AIResponse';
 import { CustomText } from '@/components/Text';
 import { CustomTextInput } from '@/components/TextInput';
 import { ThemedView } from '@/components/ThemedView';
+import { AiResponse } from '@/constants/assistants';
+import { Dispatch, SetStateAction } from 'react';
 import { Button, TouchableOpacity, View } from 'react-native';
 
-export function SocialMediaAssistantResponse({ object, isLoading, submit }: any) {
+export function SocialMediaAssistantResponse({
+  input,
+  setInput,
+  assistant,
+  object,
+  isLoading,
+  submit,
+}: {
+  assistant: AiResponse | undefined;
+  object: any;
+  isLoading: boolean;
+  submit: any;
+  input: string;
+  setInput: Dispatch<SetStateAction<string>>;
+}) {
   return (
     <>
       <View style={{ gap: 14 }}>
-        <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" />
+        <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" onChangeText={setInput} value={input} />
         <TouchableOpacity style={{ padding: 8, backgroundColor: '#fcfcfc', borderRadius: 12, overflow: 'hidden' }}>
           <CustomText style={{ color: 'black', textAlign: 'center' }}>Generate</CustomText>
         </TouchableOpacity>
-        <Button title="Generate" color={'gray'} disabled={isLoading} onPress={() => submit({ initialPrompt: '' })} />
+        <Button title="Generate" color={'gray'} disabled={isLoading} onPress={() => submit({ initialPrompt: assistant?.initialPrompt, prompt: input, description: assistant?.description })} />
       </View>
 
       {/* divider line */}
