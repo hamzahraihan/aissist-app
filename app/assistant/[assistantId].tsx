@@ -16,7 +16,6 @@ export default function GeneratedContentModal() {
   const { object, isLoading, error, submit } = useGenerateAssistant();
   console.log('generated object: ', object);
   console.log(error);
-
   const assistant = AI_ASSISTANTS.map((item) => {
     if (assistantType === 'social') {
       return item.socialMedia.filter((item) => item.type === assistantId)[0];
@@ -26,6 +25,7 @@ export default function GeneratedContentModal() {
     }
   })[0];
   console.log(assistant);
+
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
