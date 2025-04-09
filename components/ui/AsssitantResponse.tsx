@@ -5,7 +5,7 @@ import { CustomTextInput } from '@/components/TextInput';
 import { ThemedView } from '@/components/ThemedView';
 import { AiResponse } from '@/constants/assistants';
 import { Dispatch, SetStateAction } from 'react';
-import { Button, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 export function SocialMediaAssistantResponse({
   input,
@@ -26,10 +26,13 @@ export function SocialMediaAssistantResponse({
     <>
       <View style={{ gap: 14 }}>
         <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" onChangeText={setInput} value={input} />
-        <TouchableOpacity style={{ padding: 8, backgroundColor: '#fcfcfc', borderRadius: 12, overflow: 'hidden' }}>
+        <TouchableOpacity
+          disabled={isLoading}
+          style={{ padding: 8, backgroundColor: '#fcfcfc', borderRadius: 12, overflow: 'hidden' }}
+          onPress={() => submit({ initialPrompt: assistant?.initialPrompt, prompt: input, schemaName: assistant?.type, description: assistant?.description })}
+        >
           <CustomText style={{ color: 'black', textAlign: 'center' }}>Generate</CustomText>
         </TouchableOpacity>
-        <Button title="Generate" color={'gray'} disabled={isLoading} onPress={() => submit({ initialPrompt: assistant?.initialPrompt, prompt: input, description: assistant?.description })} />
       </View>
 
       {/* divider line */}
