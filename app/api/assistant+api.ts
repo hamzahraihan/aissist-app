@@ -3,13 +3,13 @@ import { openai } from '@ai-sdk/openai';
 import { streamObject } from 'ai';
 
 export async function POST(req: Request) {
-  const { initialPrompt, prompt, schemaName, schemaDescription }: any = await req.json();
-  console.log(prompt);
+  const { initialPrompt, prompt, schemaName, description }: any = await req.json();
+  console.log(`${initialPrompt}, ${prompt}, ${schemaName}, ${description}`);
 
   try {
     const result = streamObject({
       model: openai('gpt-4o-mini', { structuredOutputs: true }),
-      schemaDescription,
+      schemaDescription: description,
       schemaName,
       schema: handleAiSchema(schemaName),
       prompt: initialPrompt + prompt,
