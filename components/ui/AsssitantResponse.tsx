@@ -43,21 +43,21 @@ export function SocialMediaAssistantResponse({
         <View style={{ gap: 8 }}>
           <CustomText style={{ paddingHorizontal: 24 }}>Recommended Content Title</CustomText>
           <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
-            {object !== undefined ? <AIResponse>{object.title}</AIResponse> : <CustomText style={{ paddingVertical: 6 }}>Content Title</CustomText>}
+            <AIResponse>{object !== undefined ? object?.title : 'Content Title'}</AIResponse>
           </ThemedView>
         </View>
 
         <View style={{ gap: 8 }}>
           <CustomText style={{ paddingHorizontal: 24 }}>Recommended Content Description</CustomText>
           <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
-            <AIResponse>{object !== undefined ? object.content : 'content description'}</AIResponse>
+            <AIResponse>{object !== undefined ? object.content : 'Content Description'}</AIResponse>
           </ThemedView>
         </View>
 
         <View style={{ paddingBottom: 80, gap: 8 }}>
           <CustomText style={{ paddingHorizontal: 24 }}>Thoughts on this content</CustomText>
           <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
-            <AIResponse>{object !== undefined ? object.thoughts : 'content description'}</AIResponse>
+            <AIResponse>{object !== undefined ? object.thoughts : 'Thoughts About Content'}</AIResponse>
           </ThemedView>
         </View>
       </View>
