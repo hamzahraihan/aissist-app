@@ -26,7 +26,7 @@ export function SocialMediaAssistantResponse({
   return (
     <>
       <View style={{ gap: 14 }}>
-        <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder="Generate a Tiktok content Idea ✨" onChangeText={setInput} value={input} />
+        <CustomTextInput style={{ borderWidth: 2, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8 }} placeholder={assistant?.placeholder} onChangeText={setInput} value={input} />
         <CustomButton
           disabled={isLoading}
           style={{ padding: 8, borderRadius: 12, overflow: 'hidden' }}
