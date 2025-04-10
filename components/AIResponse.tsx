@@ -6,11 +6,12 @@ import { useCustomTheme } from '@/context/ThemeContext';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ReactNode } from 'react';
 
 export type AIResponseProps = MarkdownProps & {
   lightColor?: string;
   darkColor?: string;
-  children: any;
+  children?: ReactNode;
 };
 
 export function AIResponse({ style, lightColor, darkColor, ...props }: AIResponseProps) {
