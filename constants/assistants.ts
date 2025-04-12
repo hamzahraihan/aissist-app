@@ -1,6 +1,6 @@
 import { z, ZodType } from 'zod';
 
-export type AiResponse = {
+export type AssistantResponsesTypes = {
   type: string;
   logo: string;
   initialPrompt: string;
@@ -44,7 +44,7 @@ export const AI_ASSISTANTS = [
         initialPrompt: 'Here is the patient illness or consult about their health: ',
         description: 'you are the best doctor that could provide the best health advice to a user illness and provide a recommentation of appropriate medicine user needs. ',
         assistantType: 'health',
-        placeholder: 'Generate a Health Advice ✨',
+        placeholder: 'Describe your age, gender, symptoms, allergies, and your current medications for your disease.',
       },
     ],
   },
