@@ -46,10 +46,10 @@ export default function ChatScreen() {
           </View>
         ) : (
           <>
-            {generatedMessages?.message?.slice(1).map((item, index) => (
+            {generatedMessages?.message?.slice(1).map((item, index: number) => (
               <ThemedView type={item.role as any} style={{ padding: 34 }} key={`message-${index}`}>
                 {item.role === 'user' && <Image style={styles.image} source={require('@/assets/images/user-default.png')} />}
-                <AIResponse>{item.content}</AIResponse>
+                <AIResponse>{item.content?.toString()}</AIResponse>
               </ThemedView>
             ))}
           </>
