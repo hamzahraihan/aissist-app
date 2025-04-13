@@ -30,7 +30,7 @@ export default function HomeScreen() {
                   <Card style={styles.card}>
                     <Ionicons name={social.logo as any} size={24} color={iconColor} />
                     <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
-                      Generate a content for TikTok
+                      {social.placeholder}
                     </CustomText>
                     <View style={{ padding: 10, backgroundColor: backgroundIconColor, borderRadius: 99 }}>
                       <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />
@@ -54,7 +54,7 @@ export default function HomeScreen() {
                   <Card style={styles.card}>
                     <Ionicons name="medical" size={24} color={iconColor} />
                     <CustomText style={{ color: 'gray', fontSize: 10, textAlign: 'center' }} type="default">
-                      Generate a content for TikTok
+                      Generate a Medical Recommendation
                     </CustomText>
                     <View style={{ padding: 10, backgroundColor: backgroundIconColor, borderRadius: 99 }}>
                       <Ionicons name="chevron-forward-outline" size={18} color={iconColor} />

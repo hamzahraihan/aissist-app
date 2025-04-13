@@ -12,6 +12,7 @@ export const GenerateAssistantContext = createContext<{
   isLoading: any;
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
+  stop: any;
   schemaType: string;
   setSchemaType: Dispatch<SetStateAction<string>>;
 }>({
@@ -21,21 +22,26 @@ export const GenerateAssistantContext = createContext<{
   isLoading: null,
   input: '',
   setInput: () => {},
+  stop: () => {},
   schemaType: '',
   setSchemaType: () => {},
 });
 
 export const GenerateAssistantProvider = ({ children }: { children: ReactNode }) => {
   const [schemaType, setSchemaType] = useState<string>('');
-
-  const { object, error, submit, isLoading } = useObject({
+  console.log('from context:', schemaType);
+  const { object, error, submit, isLoading, stop } = useObject({
     onError: (error) => console.error(error),
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     api: generateAPIUrl('/api/assistant') as string,
     schema: handleAiSchema(schemaType),
+    onFinish: ({ object, error }) => {
+      console.log(object);
+      console.log(error);
+    },
   });
 
   const [input, setInput] = useState<string>('');
 
-  return <GenerateAssistantContext.Provider value={{ object, error, submit, isLoading, input, setInput, schemaType, setSchemaType }}>{children}</GenerateAssistantContext.Provider>;
+  return <GenerateAssistantContext.Provider value={{ object, error, submit, isLoading, input, setInput, stop, schemaType, setSchemaType }}>{children}</GenerateAssistantContext.Provider>;
 };
