@@ -9,17 +9,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export default function GeneratedContentModal() {
   const [input, setInput] = useState<string>('');
-  const { assistantId, assistantType } = useLocalSearchParams();
-
-  const assistant = AI_ASSISTANTS.map((item) => {
-    if (assistantType === 'social') {
-      return item.socialMedia.filter((item) => item.type === assistantId)[0];
-    }
-    if (assistantType === 'health') {
-      return item.health.filter((item) => item.type === assistantId)[0];
-    }
-  })[0];
-  console.log(assistant);
 
   return (
     <ThemedView style={styles.container}>
