@@ -44,7 +44,7 @@ export const AI_ASSISTANTS = [
         initialPrompt: 'Here is the patient illness or consult about their health: ',
         description: 'you are the best doctor that could provide the best health advice to a user illness and provide a recommentation of appropriate medicine user needs. ',
         assistantType: 'health',
-        placeholder: 'Describe your age, gender, symptoms, allergies, and your current medications for your disease.',
+        placeholder: '💬 Describe your age, gender, symptoms, allergies, and your current medications for your disease.',
       },
     ],
   },
@@ -57,24 +57,22 @@ const socialMediaSchema = z.object({
 });
 
 const healthAssistantSchema = z.object({
-  userAge: z.number().int().positive().optional().describe('The age of the user, used to tailor medicine recommendations.'),
-  userGender: z.enum(['male', 'female', 'other']).optional().describe('The gender of the user, used for personalized medicine suggestions.'),
-  symptoms: z
+  diagnosis: z.string().describe('The diagnosis or summary of the user’s condition based on the input.'),
+  recommendedMedications: z
     .array(
       z.object({
-        name: z.string().describe('The name of the symptom.'),
-        duration: z.string().optional().describe('How long the symptom has been present.'),
-        severity: z.enum(['mild', 'moderate', 'severe']).optional().describe('The severity of the symptom.'),
+        name: z.string().describe('The name of the recommended medication.'),
+        dosage: z.string().describe('The recommended dosage for the medication.'),
+        frequency: z.string().describe('How often the medication should be taken.'),
       })
     )
-    .nonempty()
-    .describe('A list of symptoms the user is experiencing to recommend appropriate medicines.'),
-  allergies: z.array(z.string()).optional().describe('A list of known allergies to avoid recommending harmful medicines.'),
-  currentMedications: z.array(z.string()).optional().describe('A list of medications the user is currently taking to prevent interactions.'),
-  medicalHistory: z.string().optional().describe('A brief description of the user’s medical history, if applicable.'),
+    .describe('A list of recommended medications with details.'),
+  precautions: z.string().describe('Any precautions or warnings related to the diagnosis or medications.'),
+  followUp: z.string().describe('Suggestions for follow-up actions or further consultation.'),
 });
 
 export const handleAiSchema = (schemaType: string): ZodType => {
+  console.log('which schema: ', schemaType);
   switch (schemaType) {
     case 'social':
       return socialMediaSchema;
