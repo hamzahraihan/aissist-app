@@ -13,11 +13,11 @@ const CustomBottomSheet = forwardRef(function CustomBottomSheet({ children }: { 
   return (
     <BottomSheetModal
       index={1}
-      backgroundStyle={{ backgroundColor: themeMode === 'light' ? colors.lightWhite : colors.lightBlack }}
+      backgroundStyle={{ backgroundColor: themeMode === 'light' ? colors.white : colors.lightBlack }}
       style={[styles.sheetContainer, styles.sheetContainerShadow]}
       backdropComponent={BottomSheetBackdrop}
       handleIndicatorStyle={{ backgroundColor: 'gray' }}
-      snapPoints={['50%', '50%']}
+      snapPoints={[200, '50%']}
       enablePanDownToClose={true}
       enableDynamicSizing={false}
       ref={ref}
