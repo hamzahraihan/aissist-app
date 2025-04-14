@@ -14,7 +14,6 @@ export async function POST(req: Request) {
       schema: handleAiSchema(schemaName),
       prompt: initialPrompt + prompt,
     });
-
     return result.toTextStreamResponse();
   } catch (error) {
     console.error(error);
