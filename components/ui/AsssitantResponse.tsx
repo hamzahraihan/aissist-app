@@ -32,7 +32,6 @@ function AssistantForm() {
       };
     }
   };
-
   const response = responseSchema();
 
   if (assistantType === 'social') {
@@ -76,7 +75,9 @@ function AssistantForm() {
           <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
             {response?.recommendedMedications === undefined && <AIResponse>List of Medications</AIResponse>}
             {response?.recommendedMedications?.map((med: any, index: number) => (
-              <View key={index}>
+              <View key={index} style={{ borderColor: 'white', gap: 0 }}>
+                {/* Divider line */}
+                {index >= 1 && <View style={{ flex: 1, height: 1, borderRadius: 99, backgroundColor: '#5e5e5e' }} />}
                 <AIResponse>{`Name: ${med?.name}`}</AIResponse>
                 <AIResponse>{`Dosage: ${med?.dosage}`}</AIResponse>
                 <AIResponse>{`Frequency: ${med?.frequency}`}</AIResponse>
