@@ -4,6 +4,7 @@ export const generateAPIUrl = (relativePath: string | undefined) => {
   if (!relativePath) return;
   const origin = Constants?.experienceUrl?.replace('exp://', 'http://') || process.env.EXPO_PUBLIC_API_BASE_URL;
 
+  console.log(origin);
   const path = relativePath?.startsWith('/') ? relativePath : `/${relativePath}`;
 
   if (process.env.NODE_ENV === 'development') {
