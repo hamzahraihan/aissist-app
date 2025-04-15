@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "aissist-app",
+    "name": "AIssist",
     "slug": "aissist-app",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -27,7 +27,7 @@
       [
         "expo-router",
         {
-          "origin": "http://10.0.2.2:8081"
+          "origin": "https://aissist-app--up6erysjzc.expo.app"
         }
       ],
       [
@@ -61,7 +61,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#020202"
         }
       ]
     ],
