@@ -1,8 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { ThemedView } from '@/components/ThemedView';
 import { AssistantResponse } from '@/components/ui/AsssitantResponse';
-import { AI_ASSISTANTS } from '@/constants/assistants';
-import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
