@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import { CustomTextInput } from '@/components/TextInput';
 import { useGenerateImage } from '@/hooks/useGenerateImage';
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { colors } from '@/constants/theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Skeleton } from 'moti/skeleton';
@@ -23,7 +23,7 @@ export default function ImagesScreen() {
   const [, setInputHeight] = useState<number>(0);
   const { themeMode } = useCustomTheme();
 
-  const handleDownloadImage = async (imageData: string) => {
+  const handleDownloadImage = useCallback(async (imageData: string) => {
     const fileUri = FileSystem.documentDirectory + uuid.v4() + '.png';
 
     // Check if the imageData is a base64 string
@@ -56,7 +56,7 @@ export default function ImagesScreen() {
         console.error('Error downloading image from URL:', error);
       }
     }
-  };
+  }, []);
 
   return (
     <ThemedView style={styles.container}>
