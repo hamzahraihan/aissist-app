@@ -9,7 +9,6 @@ import { View } from 'react-native';
 import { CustomButton } from '../Button';
 import { useLocalSearchParams } from 'expo-router';
 import { useGenerateAssistant } from '@/hooks/useGenerateAssistant';
-import { generateAPIUrl } from '@/utils/generateApiUrl';
 
 function AssistantForm() {
   const { assistantType } = useLocalSearchParams();
@@ -108,8 +107,6 @@ function AssistantForm() {
 export function AssistantResponse({ input, setInput }: { input: string; setInput: Dispatch<SetStateAction<string>> }) {
   const { assistantId, assistantType } = useLocalSearchParams();
   const { setSchemaType, isLoading, submit, stop } = useGenerateAssistant();
-
-  console.log(generateAPIUrl('/api/assistant'));
 
   const assistant = AI_ASSISTANTS.map((item) => {
     if (assistantType === 'social') return item.socialMedia.filter((item) => item.type === assistantId)[0];
