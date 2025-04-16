@@ -27,6 +27,7 @@ export const BottomSheetProvider = ({ children }: { children: ReactNode }) => {
     // close bottom sheet modal
     bottomSheetModalRef.current?.close();
   }, []);
+
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
