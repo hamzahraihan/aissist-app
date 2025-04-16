@@ -7,6 +7,7 @@ export type AssistantResponsesTypes = {
   description: string;
   assistantType: string;
   placeholder?: string;
+  subtitle?: string;
 };
 
 export const AI_ASSISTANTS = [
@@ -19,6 +20,7 @@ export const AI_ASSISTANTS = [
         description: 'you are the best content creator of tiktok. you will help people to create the best content to get so much views or audiences.',
         assistantType: 'social',
         placeholder: 'Generate a Tiktok Content Idea ✨',
+        subtitle: 'Generate a Tiktok Content Idea',
       },
       {
         type: 'facebook',
@@ -27,6 +29,7 @@ export const AI_ASSISTANTS = [
         description: 'you are the best content creator of facebook. you will help people to create the best content to get so much views or audiences.',
         assistantType: 'social',
         placeholder: 'Generate a Facebook Content Idea ✨',
+        subtitle: 'Generate a Facebook Content Idea',
       },
       {
         type: 'instagram',
@@ -35,15 +38,17 @@ export const AI_ASSISTANTS = [
         description: 'you are the best content creator of instagram. you will help people to create the best content to get so much views or audiences and followers.',
         assistantType: 'social',
         placeholder: 'Generate an Instagram Content Idea ✨',
+        subtitle: 'Generate an Instagram Content Idea',
       },
     ],
     health: [
       {
         type: 'health',
-        logo: 'logo-facebook',
+        logo: 'medical',
         initialPrompt: 'Here is the patient illness or consult about their health: ',
         description: 'you are the best doctor that could provide the best health advice to a user illness and provide a recommentation of appropriate medicine user needs. ',
         assistantType: 'health',
+        subtitle: 'Generate your medical recommendations',
         placeholder: '💬 Describe your age, gender, symptoms, allergies, and your current medications for your disease.',
       },
     ],
