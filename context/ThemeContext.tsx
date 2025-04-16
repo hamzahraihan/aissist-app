@@ -1,8 +1,7 @@
 // ThemeContext.js
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { Appearance } from 'react-native';
+import { Appearance, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 type ThemeContextType = {
