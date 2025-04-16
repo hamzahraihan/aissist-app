@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
 // eslint-disable-next-line import/named
 import { streamText, CoreMessage } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
@@ -6,14 +6,13 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 // import { ChatCompletionMessageParam } from 'openai/resources';
 // const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
+// ai api key config
 const google = createGoogleGenerativeAI({ apiKey: process.env.EXPO_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY });
+const openai = createOpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
 
 export async function POST(req: Request) {
   const body: { label: string; model: any; messages: CoreMessage[]; prompt: string } = await req.json();
   const { label, model, messages, prompt } = body;
-
-  console.log(label);
-  console.log(model);
 
   if (!prompt) {
     return new Response('No prompt provided', { status: 400 });
@@ -39,10 +38,18 @@ export async function POST(req: Request) {
         },
       });
     }
+
+    // this would be easier if i choose useChat or useObject from ai sdk plugin.
+    // if i using it, it would not be this complex
+    // but good thing is, i understand how to create a manual encoder/decoder for returning ai generated text
+    // if you see assistant+api.tsx, im using different approach and started to do it using useChat and useObject from ai sdk
+
     const result = streamText({
       model: handleModel,
       messages,
     });
+
+    console.log(result);
 
     const transformStream = new TransformStream({
       transform(chunk, controller) {
@@ -58,10 +65,18 @@ export async function POST(req: Request) {
             // Check if the line starts with a digit followed by a colon (e.g., "0:")
             if (/^\d:/.test(line)) {
               // Extract the text after the colon
-              const content = line.substring(2); // Remove "0:"
+              let content = line.substring(2); // Remove "0:"
 
-              // Enqueue the raw content (no JSON.stringify!)
-              controller.enqueue(JSON.parse(content));
+              // Sanitize the content by unescaping characters and cleaning up formatting
+              content = content
+                .replace(/\\n/g, '\n') // Replace escaped newlines with actual newlines
+                .replace(/\\"/g, '"') // Replace escaped quotes with actual quotes
+                .replace(/\\\\/g, '\\') // Replace double backslashes with single backslashes
+                .trim(); // Remove leading/trailing whitespace
+
+              // Encode the sanitized content as a Uint8Array and enqueue it
+              const encoder = new TextEncoder();
+              controller.enqueue(encoder.encode(content));
             } else {
               // Log or handle other types of lines (e.g., metadata)
               console.log('Skipping line:', line);
