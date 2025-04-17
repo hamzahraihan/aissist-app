@@ -5,7 +5,7 @@ import { CustomTextInput } from '@/components/TextInput';
 import { ThemedView } from '@/components/ThemedView';
 import { AI_ASSISTANTS } from '@/constants/assistants';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { CustomButton } from '../Button';
 import { useLocalSearchParams } from 'expo-router';
 import { useGenerateAssistant } from '@/hooks/useGenerateAssistant';
@@ -136,9 +136,13 @@ export function AssistantResponse({ input, setInput }: { input: string; setInput
         >
           <CustomText style={{ textAlign: 'center' }}>Generate</CustomText>
         </CustomButton>
+
         {isLoading && (
-          <CustomButton style={{ padding: 8, borderRadius: 12, overflow: 'hidden' }} onPress={() => stop()}>
-            <CustomText>Stop</CustomText>
+          <CustomButton lightColor="#161616" darkColor="white" style={{ flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'center', padding: 8, borderRadius: 12, overflow: 'hidden' }} onPress={() => stop()}>
+            <CustomText lightColor="white" darkColor="black">
+              Stop
+            </CustomText>
+            <ActivityIndicator />
           </CustomButton>
         )}
       </View>
