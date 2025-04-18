@@ -54,6 +54,16 @@ export default function HomeScreen() {
             {AI_ASSISTANTS.map((item) => item.health.map((health) => <HorizontalCardList item={health} />))}
           </ScrollView>
         </View>
+
+        <View style={{ paddingBottom: 34 }}>
+          <CustomText style={{ paddingHorizontal: 34, paddingBottom: 27 }} type="title">
+            Sports
+          </CustomText>
+
+          <ScrollView horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: 34 }} showsHorizontalScrollIndicator={false}>
+            {AI_ASSISTANTS.map((item) => item.sports.map((sport) => <HorizontalCardList item={sport} />))}
+          </ScrollView>
+        </View>
       </ScrollView>
     </ThemedView>
   );
