@@ -52,6 +52,17 @@ export const AI_ASSISTANTS = [
         placeholder: '💬 Describe your age, gender, symptoms, allergies, and your current medications for your disease.',
       },
     ],
+    sports: [
+      {
+        type: 'football',
+        logo: 'football',
+        initialPrompt: 'Here is the recommendation about football: ',
+        description: 'you are a professional fooball player that can give people advice.',
+        assistantType: 'sports',
+        subtitle: 'Generate your football recommendation,etc.',
+        placeholder: '💬 Describe need to become better football player.',
+      },
+    ],
   },
 ];
 
@@ -76,6 +87,12 @@ const healthAssistantSchema = z.object({
   followUp: z.string().describe('Suggestions for follow-up actions or further consultation.'),
 });
 
+const sportAssistantSchema = z.object({
+  sportType: z.string().describe('The type of sport, such as football, basketball, etc.'),
+  trainingTips: z.string().describe('Tips or advice for training and improving performance in the sport.'),
+  thoughts: z.string().describe('Provide a explanation on why this sports would perform well, ensuring physical health and mental health.'),
+});
+
 export const handleAiSchema = (schemaType: string): ZodType => {
   console.log('which schema: ', schemaType);
   switch (schemaType) {
@@ -83,6 +100,8 @@ export const handleAiSchema = (schemaType: string): ZodType => {
       return socialMediaSchema;
     case 'health':
       return healthAssistantSchema;
+    case 'sport':
+      return sportAssistantSchema;
     default:
       return socialMediaSchema;
   }
