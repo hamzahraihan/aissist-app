@@ -1,50 +1,48 @@
-# Welcome to your Expo app 👋
+<p align="center"><a href=""><img src="assets/images/icon.png" width="150"></a></p> 
+<h2 align="center"><b>AIssist</b></h2>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<h4 align="center">Your personal assistant for Android users.</h4>
 
-## Get started
+<p align="center">
+<a href="https://github.com/hamzahraihan/aissist-app/releases/download/v0.5.0-alpha/app-release.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+</p>
 
-1. Install dependencies
+<p align="center">
+  <a href="" alt="GitHub release"><img src="https://img.shields.io/github/release/hamzahraihan/aissist-app.svg" ></a>
+  <a href="https://github.com/hamzahraihan/aissist-app/releases/download/v0.5.0-alpha/app-release.apk" alt="GitHub downloads"><img src="https://img.shields.io/github/downloads/hamzahraihan/aissist-app/total?color=blue" ></a>
+</p>
 
-   ```bash
-   npm install
-   ```
+<hr>
+<p align="center"><a href="#screenshots">Screenshots</a> &bull; <a href="#services">Services</a> &bull; <a href="#description">Description</a> &bull; <a href="#features">Features</a>
 
-2. Start the app
+## Screenshots
 
-   ```bash
-    npx expo start
-   ```
+Currently not available
 
-In the output, you'll find options to open the app in a
+## Services
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+AIssist supports these services:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Cloudflare Worker AI
+- Openai
+- Gemini
 
-## Get a fresh project
+AIssist have more than 5 AI models. Currently AIssist use Cloudflare Worker AI with image ai models to generate image for free but limited. AIssist too get help by AI SDK from vercel to make a fast text generator.
 
-When you're ready, run:
+## Description
 
-```bash
-npm run reset-project
-```
+AIssist is an app to simplify your daily tasks and enhance productivity. With support for over 10 advanced AI models, AIssist enables users to generate text, create stunning images from text prompts, and access tailored assistance for various domains like social media, health, and sports. Leveraging the power of Cloudflare Worker AI and Vercel's AI SDK, AIssist delivers fast, reliable, and free-to-use AI solutions. Whether you're crafting content, seeking medical advice, or exploring creative ideas, AIssist is your go-to personal assistant.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- Generate Text
+- Generate Images (text2image)
+- More than 10 AI models
+- Easy and Free to use
 
-To learn more about developing your project with Expo, look at the following resources:
+## Upcoming Features
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- User authentication
+- More models
+- Save generated text to database
+- UI improvements
