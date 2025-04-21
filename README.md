@@ -28,7 +28,7 @@ AIssist supports these services:
 - Openai
 - Gemini
 
-AIssist have more than 5 AI models. Currently AIssist use Cloudflare Worker AI with image ai models to generate image for free but limited. AIssist too get help by AI SDK from vercel to make a fast text generator.
+AIssist have more than 5 AI models. Currently AIssist use Cloudflare Worker AI with image ai models to generate image for free but limited. AIssist using AI SDK from vercel to make a fast text generator.
 
 ## Description
 
