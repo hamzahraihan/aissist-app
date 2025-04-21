@@ -4,7 +4,7 @@
 <h4 align="center">Your personal assistant for Android users.</h4>
 
 <p align="center">
-Currently not available to download
+Will be upload
   <!-- <a href="https://github.com/hamzahraihan/aissist-app/releases/download/v0.5.0-alpha/app-release.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
 </p> -->
 
@@ -18,7 +18,7 @@ Currently not available to download
 
 ## Screenshots
 
-Currently not available
+Will be upload
 
 ## Services
 
