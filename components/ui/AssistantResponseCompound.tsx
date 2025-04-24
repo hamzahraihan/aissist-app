@@ -26,13 +26,16 @@ type ContentResponseProps = {
   content: string;
   thoughts: string;
 };
+
 type HealthResponseProps = {
   diagnosis: string;
-  recommendedMedication: [{ name: string; dosage: string; frequency: string }];
+  recommendedMedications: [{ name: string; dosage: string; frequency: string }];
   precautions: string;
   followUp: string;
 };
+
 type AssistantResponseProviderType = {
+  assistantType: string;
   assistantId: string;
   setSchemeType: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
@@ -50,9 +53,13 @@ const Root = ({ input, setInput, children }: { input: string; setInput: Dispatch
   const { assistantId, assistantType } = useLocalSearchParams();
   const { setSchemaType, isLoading, submit, stop } = useGenerateAssistant();
   const { object } = useGenerateAssistant();
+
+  console.log('assistant id: ', assistantId);
+  console.log('assistant type: ', assistantType);
   const assistant = AI_ASSISTANTS.map((item) => {
     if (assistantType === 'social') return item.socialMedia.filter((item) => item.type === assistantId)[0];
     if (assistantType === 'health') return item.health.filter((item) => item.type === assistantId)[0];
+    if (assistantType === 'sports') return item.sports.filter((item) => item.type === assistantId)[0];
   })[0];
 
   useEffect(() => {
@@ -68,7 +75,7 @@ const Root = ({ input, setInput, children }: { input: string; setInput: Dispatch
 };
 
 const ContentAssistantResponse = () => {
-  const { object }: { object: ContentResponseProps } = useAssistantResponseContext('ContentAssistantResponse');
+  const { object }: { object: ContentResponseProps } = useAssistantResponseContext('Response');
   return (
     <>
       <View style={{ gap: 8 }}>
@@ -109,22 +116,23 @@ const HealthAssistantResponse = () => {
       <View style={{ gap: 8 }}>
         <CustomText style={{ paddingHorizontal: 24 }}>Recommended Medications</CustomText>
         <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
-          <AIResponse>
-            {object?.recommendedMedication !== undefined
-              ? object.recommendedMedication.map((item) => (
-                  <View style={{}}>
-                    <CustomText>{item.name}</CustomText>
-                    <CustomText>{item.dosage}</CustomText>
-                    <CustomText>{item.frequency}</CustomText>
-                  </View>
-                ))
-              : 'Medication frequency, etc.'}
-          </AIResponse>
+          {object?.recommendedMedications.length > 0 ? (
+            object.recommendedMedications.map((item, index) => (
+              <View key={index}>
+                {index > 0 && <View style={{ height: 1, borderRadius: 99, flex: 1, backgroundColor: '#5e5e5e' }} />}
+                <AIResponse>{`Name: ${item.name}`}</AIResponse>
+                <AIResponse>{`Dosage: ${item.dosage}`}</AIResponse>
+                <AIResponse>{`Frequency: ${item.frequency}`}</AIResponse>
+              </View>
+            ))
+          ) : (
+            <CustomText>Medication frequency, etc.</CustomText>
+          )}
         </ThemedView>
       </View>
 
       <View style={{ gap: 8 }}>
-        <CustomText style={{ paddingHorizontal: 24 }}>Precations</CustomText>
+        <CustomText style={{ paddingHorizontal: 24 }}>Precautions</CustomText>
         <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
           <AIResponse>{object?.precautions !== undefined ? object.precautions : 'Precautions related to the diagnosis'}</AIResponse>
         </ThemedView>
@@ -139,6 +147,23 @@ const HealthAssistantResponse = () => {
     </>
   );
 };
+
+function Response() {
+  const { assistantType } = useAssistantResponseContext('Response');
+
+  if (assistantType === 'social') {
+    return <ContentAssistantResponse />;
+  }
+
+  if (assistantType === 'health') {
+    return <HealthAssistantResponse />;
+  }
+
+  if (assistantType === 'sports') {
+    return <CustomText>Not yet available</CustomText>;
+  }
+}
+
 const Inputs = () => {
   const { assistant, input, setInput, isLoading, stop, submit } = useAssistantResponseContext('Inputs');
   return (
@@ -166,4 +191,8 @@ const Inputs = () => {
   );
 };
 
-export const AssistantResponseCompound = { Root, Inputs, ContentAssistantResponse, HealthAssistantResponse };
+const Divider = () => {
+  return <View style={{ marginVertical: 14, marginHorizontal: 10, flex: 1, height: 1, borderRadius: 99, backgroundColor: '#5e5e5e' }} />;
+};
+
+export const AssistantResponseCompound = { Root, Inputs, Response, Divider };
