@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   try {
     if (label === 'cloudflare') {
-      const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_WORKERS_URL || '', {
+      const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_BASE_URL || '', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,18 +65,10 @@ export async function POST(req: Request) {
             // Check if the line starts with a digit followed by a colon (e.g., "0:")
             if (/^\d:/.test(line)) {
               // Extract the text after the colon
-              let content = line.substring(2); // Remove "0:"
+              const content = line.substring(2); // Remove "0:"
 
-              // Sanitize the content by unescaping characters and cleaning up formatting
-              content = content
-                .replace(/\\n/g, '\n') // Replace escaped newlines with actual newlines
-                .replace(/\\"/g, '"') // Replace escaped quotes with actual quotes
-                .replace(/\\\\/g, '\\') // Replace double backslashes with single backslashes
-                .trim(); // Remove leading/trailing whitespace
-
-              // Encode the sanitized content as a Uint8Array and enqueue it
-              const encoder = new TextEncoder();
-              controller.enqueue(encoder.encode(content));
+              // Enqueue the raw content (no JSON.stringify!)
+              controller.enqueue(JSON.parse(content));
             } else {
               // Log or handle other types of lines (e.g., metadata)
               console.log('Skipping line:', line);
