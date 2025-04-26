@@ -82,7 +82,6 @@ export async function POST(req: Request) {
     });
 
     const readableStream = result.toDataStream().pipeThrough(transformStream);
-    console.log(readableStream);
 
     return new Response(readableStream, {
       headers: {
