@@ -22,7 +22,7 @@ export default function TabLayout() {
 
   const handleSelectModel = useCallback(
     (model: string) => {
-      if (typeModel === 'IMAGES_MODELS') {
+      if (typeModel === 'IMAGE_MODELS') {
         setImageAiModels(model);
       } else {
         const selectedItem = TEXT_MODELS.find((item) => item.model === model);
