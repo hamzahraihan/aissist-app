@@ -87,7 +87,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       });
 
       const result: any = await response.json();
-      const image = result.image || response;
+      const image = result.image || result;
 
       console.log(result);
       // if (image === undefined) {
