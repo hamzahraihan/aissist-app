@@ -67,8 +67,10 @@ export async function POST(req: Request) {
               // Extract the text after the colon
               const content = line.substring(2); // Remove "0:"
 
-              // Enqueue the raw content (no JSON.stringify!)
-              controller.enqueue(JSON.parse(content));
+              // Parse the content as JSON and encode it as a Uint8Array
+              const parsedContent = JSON.parse(content);
+              const encoder = new TextEncoder();
+              controller.enqueue(encoder.encode(parsedContent));
             } else {
               // Log or handle other types of lines (e.g., metadata)
               console.log('Skipping line:', line);
