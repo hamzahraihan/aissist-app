@@ -85,18 +85,14 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
           modelName,
         }),
       });
-      // console.log('Response from fetch', await fetchRes.json());
-      const result: any = await response.json();
-      // const response: any = await cloudflareImageGenerator(input, modelName);
-      // const image = response.image || response;
 
+      const result: any = await response.json();
       const image = result.image || response;
 
-      setInput('');
-
-      if (image === undefined) {
-        setGeneratedImage((prev) => prev);
-      }
+      console.log(result);
+      // if (image === undefined) {
+      //   setGeneratedImage((prev) => prev);
+      // }
 
       setGeneratedImage((prev) => [
         ...prev,
@@ -115,6 +111,7 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       }
     } finally {
       setLoading(false);
+      setInput('');
     }
   };
 
