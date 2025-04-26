@@ -87,12 +87,13 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
       });
 
       const result: any = await response.json();
-      const image = result.image || result;
+      const image = result.image || response;
 
       console.log(result);
-      // if (image === undefined) {
-      //   setGeneratedImage((prev) => prev);
-      // }
+
+      if (image === undefined) {
+        setGeneratedImage((prev) => prev);
+      }
 
       setGeneratedImage((prev) => [
         ...prev,
