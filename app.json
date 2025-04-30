@@ -27,8 +27,8 @@
       [
         "expo-router",
         {
-          // "origin": "http://10.0.2.2:8081"
-          "origin": "https://aissist-app--q4k1jiq1um.expo.app"
+          "origin": "http://10.0.2.2:8081"
+          // "origin": "https://aissist-app--q4k1jiq1um.expo.app"
         }
       ],
       [
