@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   try {
     if (label === 'cloudflare') {
-      const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_BASE_URL || '', {
+      const response = await fetch(process.env.EXPO_PUBLIC_CLOUDFLARE_BASE_URL + '/chat' || '', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
