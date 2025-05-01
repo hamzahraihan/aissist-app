@@ -116,8 +116,8 @@ const HealthAssistantResponse = () => {
       <View style={{ gap: 8 }}>
         <CustomText style={{ paddingHorizontal: 24 }}>Recommended Medications</CustomText>
         <ThemedView type="assistant" style={{ paddingHorizontal: 24, borderRadius: 12 }}>
-          {object?.recommendedMedications.length > 0 ? (
-            object.recommendedMedications.map((item, index) => (
+          {object?.recommendedMedications?.length > 0 ? (
+            object?.recommendedMedications.map((item, index) => (
               <View key={index}>
                 {index > 0 && <View style={{ height: 1, borderRadius: 99, flex: 1, backgroundColor: '#5e5e5e' }} />}
                 <AIResponse>{`Name: ${item.name}`}</AIResponse>
@@ -126,7 +126,7 @@ const HealthAssistantResponse = () => {
               </View>
             ))
           ) : (
-            <CustomText>Medication frequency, etc.</CustomText>
+            <AIResponse>Medication frequency, etc.</AIResponse>
           )}
         </ThemedView>
       </View>
