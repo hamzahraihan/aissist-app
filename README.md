@@ -18,7 +18,15 @@ Will be upload
 
 ## Screenshots
 
-Will be upload
+[<img src="screenshots/home_screen.png" width=160>](screenshots/home_screen.png)
+[<img src="screenshots/ai_assistant.png" width=160>](screenshots/home_screen.png)
+[<img src="screenshots/assistant_response.png" width=160>](screenshots/assistant_response.png)
+[<img src="screenshots/chat_screen.png" width=160>](screenshots/chat_screen.png)
+[<img src="screenshots/chat_bottom_sheet.png" width=160>](screenshots/chat_bottom_sheet.png)
+[<img src="screenshots/text_generator.png" width=160>](screenshots/text_generator.png)
+[<img src="screenshots/image_screen.png" width=160>](screenshots/image_screen.png)
+[<img src="screenshots/image_generator.png" width=160>](screenshots/image_generator.png)
+[<img src="screenshots/image_bottom_sheet.png" width=160>](screenshots/image_bottom_sheet.png)
 
 ## Services
 
