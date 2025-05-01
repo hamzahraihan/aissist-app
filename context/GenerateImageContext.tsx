@@ -80,7 +80,6 @@ export function GenerateImageProvider({ children }: { children: ReactNode }) {
           modelName,
         }),
       });
-
       const result: any = await response.json();
       const image = result.image || response;
 
