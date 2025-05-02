@@ -2,9 +2,6 @@ import { createOpenAI } from '@ai-sdk/openai';
 // eslint-disable-next-line import/named
 import { streamText, CoreMessage } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-// import OpenAI from 'openai';
-// import { ChatCompletionMessageParam } from 'openai/resources';
-// const openai = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY, dangerouslyAllowBrowser: true });
 
 // ai api key config
 const google = createGoogleGenerativeAI({ apiKey: process.env.EXPO_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY });
@@ -39,10 +36,9 @@ export async function POST(req: Request) {
       });
     }
 
-    // this would be easier if i choose useChat or useObject from ai sdk plugin.
-    // if i using it, it would not be this complex
+    // it would not be this complicated when i use useChat or useObject from ai sdk plugin.
     // but good thing is, i understand how to create a manual encoder/decoder for returning ai generated text
-    // if you see assistant+api.tsx, im using different approach and started to do it using useChat and useObject from ai sdk
+    // if you see assistant+api.tsx, im using different approach and started to do it with useChat and useObject
 
     const result = streamText({
       model: handleModel,
