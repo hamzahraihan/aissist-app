@@ -5,7 +5,7 @@
 
 <p align="center">
 <!-- Will be upload -->
-  <a href="https://expo.dev/artifacts/eas/aM2ephaL42gR4seRT3cNrs.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+  <a href="https://expo.dev/artifacts/eas/fKiyDZiP8AvdSG69FDoWZ7.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
 </p>
 
 <p align="center">
