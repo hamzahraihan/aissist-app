@@ -1,10 +1,3 @@
-// import Cloudflare from 'cloudflare';
-
-// const client = new Cloudflare({
-//   apiToken: process.env.EXPO_PUBLIC_CLOUDFLARE_API_TOKEN,
-//   apiKey: process.env.EXPO_PUBLIC_CLOUDFLARE_API_KEY,
-// });
-
 export async function POST(req: Request) {
   const { prompt, modelName }: { prompt: string; modelName: string } = await req.json();
   console.log(prompt);
@@ -29,17 +22,6 @@ export async function POST(req: Request) {
         'Content-Type': 'image/png',
       },
     });
-    // const response = await client.ai.run(modelName, {
-    //   account_id: '9b37eea8034fbf61191d273e000f450e',
-    //   prompt: prompt || 'cyberpunk cat',
-    // });
-
-    // console.log(response);
-    // return Response.json(response, {
-    //   headers: {
-    //     'Content-Type': 'image/png',
-    //   },
-    // });
   } catch (error) {
     console.error(error);
     return new Response('Error', { status: 500 });
