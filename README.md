@@ -4,8 +4,7 @@
 <h4 align="center">Your personal assistant for Android users.</h4>
 
 <p align="center">
-<!-- Will be upload -->
-  <a href="https://expo.dev/artifacts/eas/fKiyDZiP8AvdSG69FDoWZ7.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+  <a href="https://github.com/hamzahraihan/aissist-app/releases/download/v0.1.0-alpha/app-release.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
 </p>
 
 <p align="center">
