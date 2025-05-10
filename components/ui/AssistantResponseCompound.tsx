@@ -50,15 +50,13 @@ type AssistantResponseProviderType = {
 const [AssistantResponseContextProvider, useAssistantResponseContext] = createContext<AssistantResponseProviderType>('AssistantResponseCompount');
 
 const Root = ({ input, setInput, children }: { input: string; setInput: Dispatch<SetStateAction<string>>; children: ReactNode }) => {
-  const { assistantId, assistantType } = useLocalSearchParams();
+  const { assistantId, assistantType }: { assistantId: 'health' | 'social' | 'sports' | string | string[]; assistantType: string | string[] } = useLocalSearchParams();
   const { setSchemaType, isLoading, submit, stop } = useGenerateAssistant();
   const { object } = useGenerateAssistant();
 
-  console.log('assistant id: ', assistantId);
-  console.log('assistant type: ', assistantType);
   const assistant = AI_ASSISTANTS.map((item) => {
-    if (assistantType === 'social') return item.socialMedia.filter((item) => item.type === assistantId)[0];
     if (assistantType === 'health') return item.health.filter((item) => item.type === assistantId)[0];
+    if (assistantType === 'social') return item.socialMedia.filter((item) => item.type === assistantId)[0];
     if (assistantType === 'sports') return item.sports.filter((item) => item.type === assistantId)[0];
   })[0];
 
