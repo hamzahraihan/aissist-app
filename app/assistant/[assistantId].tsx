@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { ThemedView } from '@/components/ThemedView';
 import { AssistantResponse } from '@/components/ui/AsssitantResponse';
 import { useState } from 'react';
